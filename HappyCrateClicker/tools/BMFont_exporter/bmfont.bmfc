@@ -2,10 +2,10 @@
 fileVersion=1
 
 # font settings
-fontName=Hobo Std
+fontName=Emulogic
 fontFile=
 charSet=0
-fontSize=32
+fontSize=20
 aa=4
 scaleH=100
 useSmoothing=1
@@ -38,9 +38,9 @@ fourChnlPacked=0
 textureFormat=png
 textureCompression=0
 alphaChnl=0
-redChnl=3
-greenChnl=3
-blueChnl=3
+redChnl=4
+greenChnl=4
+blueChnl=4
 invA=0
 invR=0
 invG=0
@@ -50,6 +50,6 @@ invB=0
 outlineThickness=5
 
 # selected chars
-chars=32-126,128,130-140,142,145-156,158-255
+chars=32-125,169
 
 # imported icon images

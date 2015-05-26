@@ -74,6 +74,8 @@ protected:
 	int textArr;
 	int temp;
 
+	float sizeMod;
+
 	Buildings *Cursor;
 	Buildings *Grandma;
 	Buildings *Farm;

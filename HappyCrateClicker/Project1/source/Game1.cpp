@@ -7,11 +7,13 @@
 #include <string>
 #include <iostream>
 #include <windows.h>
+using namespace std;
 
 Game1::Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscreen, const char *title) : Application(windowWidth, windowHeight, fullscreen, title)
 {
 	m_spritebatch = SpriteBatch::Factory::Create(this, SpriteBatch::GL3);
 	m_crate = new Texture("./Images/happy_crate.png");
+
 	CursorBoxTexture = new Texture("./Images/cursor.png");
 	GrandmaBoxTexture = new Texture("./Images/grandma.png");
 	FarmBoxTexture = new Texture("./Images/farm.png");
@@ -21,6 +23,7 @@ Game1::Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscree
 	AlchemyLabBoxTexture = new Texture("./Images/alchemylab.png");
 	PortalBoxTexture = new Texture("./Images/portal.png");
 	TimeMachineBoxTexture = new Texture("./Images/timemachine.png");
+
 	CursorBoxClickedTexture = new Texture("./Images/cursorClicked.png");
 	GrandmaBoxClickedTexture = new Texture("./Images/grandmaClicked.png");
 	FarmBoxClickedTexture = new Texture("./Images/farmClicked.png");
@@ -31,8 +34,9 @@ Game1::Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscree
 	PortalBoxClickedTexture = new Texture("./Images/portalClicked.png");
 	TimeMachineBoxClickedTexture = new Texture("./Images/timemachineClicked.png");
 	
+	sizeMod = 1.0f;
 
-	m_text = new Font("./Fonts/hobo_32px.fnt");
+	m_text = new Font("./Fonts/emulogic_16px.fnt");
 	m_crateCount = 0.0f;
 	m_mouseCheck = false;
 
@@ -88,6 +92,7 @@ Game1::Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscree
 	int m = 138;
 	int h = CursorBoxTexture->GetHeight() / 2;
 	int w = CursorBoxTexture->GetWidth() / 2;
+
 	CursorBox = new Box(Vector2(temp - w, 100 - h), Vector2(temp + w, 100 + h));
 	GrandmaBox = new Box(Vector2((temp += m) - w, 100 - h), Vector2(temp + w, 100 + h));
 	FarmBox = new Box(Vector2((temp += m) - w, 100 - h), Vector2(temp + w, 100 + h));
@@ -203,7 +208,7 @@ void Game1::Update(float deltaTime)
 		{
 		case 'C':
 		{
-					
+					sizeMod = 0.9f;
 					break;
 		}
 		case 'K':
@@ -262,6 +267,7 @@ void Game1::Update(float deltaTime)
 				   BuildTexture[6] = AlchemyLabBoxTexture;
 				   BuildTexture[7] = PortalBoxTexture;
 				   BuildTexture[8] = TimeMachineBoxTexture;
+				   sizeMod = 1.0f;
 				   break;
 		}
 		}
@@ -272,6 +278,7 @@ void Game1::Update(float deltaTime)
 		{
 		case 'C':
 		{
+					sizeMod = 1.0f;
 					m_crateCount += m_mousePower;
 					break;
 		}
@@ -397,11 +404,12 @@ void Game1::Draw()
 	cps.erase(cps.find_last_of('.') + 2, std::string::npos);
 	m_spritebatch->Begin();
 	
-	m_spritebatch->DrawSprite(m_crate, 640, 360, m_crate->GetWidth(), m_crate->GetHeight());
+	m_spritebatch->DrawSprite(m_crate, 640, 360, m_crate->GetWidth()*sizeMod, m_crate->GetHeight()*sizeMod);
 	for (int i = temp; i < 1280; i += 138)
 	{
 		m_spritebatch->DrawString(m_text, BuildNames[textArr], i, 40, 0.5f, 0.5f);
-		m_spritebatch->DrawSprite(BuildTexture[textArr++], i, temp, CursorBoxTexture->GetWidth(), CursorBoxTexture->GetHeight());
+		m_spritebatch->DrawSprite(BuildTexture[textArr], i, temp, CursorBoxTexture->GetWidth(), CursorBoxTexture->GetHeight());
+		m_spritebatch->DrawString(m_text, to_string(Builds[textArr++]->GetCost()).c_str(), i, 160, 0.0f, 0.0f);
 	}
 	m_spritebatch->DrawString(m_text, "Crates:", 590, 520, 0.5f, 0.5f);
 	m_spritebatch->DrawString(m_text, str.c_str(), 650, 520, 0.0f, 0.0f);
