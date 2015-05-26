@@ -21,8 +21,16 @@ Game1::Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscree
 	AlchemyLabBoxTexture = new Texture("./Images/alchemylab.png");
 	PortalBoxTexture = new Texture("./Images/portal.png");
 	TimeMachineBoxTexture = new Texture("./Images/timemachine.png");
-	BoxBackgroundTexture = new Texture("./Images/buildingBackground.png");
-	BoxBackgroundTextureClicked = new Texture("./Images/buildingBackgroundClicked.png");
+	CursorBoxClickedTexture = new Texture("./Images/cursorClicked.png");
+	GrandmaBoxClickedTexture = new Texture("./Images/grandmaClicked.png");
+	FarmBoxClickedTexture = new Texture("./Images/farmClicked.png");
+	FactoryBoxClickedTexture = new Texture("./Images/factoryClicked.png");
+	MineBoxClickedTexture = new Texture("./Images/mineClicked.png");
+	ShipmentBoxClickedTexture = new Texture("./Images/shipmentClicked.png");
+	AlchemyLabBoxClickedTexture = new Texture("./Images/alchemylabClicked.png");
+	PortalBoxClickedTexture = new Texture("./Images/portalClicked.png");
+	TimeMachineBoxClickedTexture = new Texture("./Images/timemachineClicked.png");
+	
 
 	m_text = new Font("./Fonts/hobo_32px.fnt");
 	m_crateCount = 0.0f;
@@ -75,10 +83,11 @@ Game1::Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscree
 	BuildTexture[7] = PortalBoxTexture;
 	BuildTexture[8] = TimeMachineBoxTexture;
 
+
 	temp = 100;
 	int m = 138;
-	int h = BoxBackgroundTexture->GetHeight() / 2;
-	int w = BoxBackgroundTexture->GetWidth() / 2;
+	int h = CursorBoxTexture->GetHeight() / 2;
+	int w = CursorBoxTexture->GetWidth() / 2;
 	CursorBox = new Box(Vector2(temp - w, 100 - h), Vector2(temp + w, 100 + h));
 	GrandmaBox = new Box(Vector2((temp += m) - w, 100 - h), Vector2(temp + w, 100 + h));
 	FarmBox = new Box(Vector2((temp += m) - w, 100 - h), Vector2(temp + w, 100 + h));
@@ -124,8 +133,16 @@ Game1::~Game1()
 	delete AlchemyLabBoxTexture;
 	delete PortalBoxTexture;
 	delete TimeMachineBoxTexture;
-	delete BoxBackgroundTexture;
-	delete BoxBackgroundTextureClicked;
+	
+	delete CursorBoxClickedTexture;
+	delete GrandmaBoxClickedTexture;
+	delete FarmBoxClickedTexture;
+	delete FactoryBoxClickedTexture;
+	delete MineBoxClickedTexture;
+	delete ShipmentBoxClickedTexture;
+	delete AlchemyLabBoxClickedTexture;
+	delete PortalBoxClickedTexture;
+	delete TimeMachineBoxClickedTexture;
 
 	delete[] BuildTexture;
 	delete[] Builds;
@@ -182,6 +199,72 @@ void Game1::Update(float deltaTime)
 	if (GetInput()->IsMouseButtonDown(0))
 	{
 		m_mouseCheck = true;
+		switch (ClickInput())
+		{
+		case 'C':
+		{
+					
+					break;
+		}
+		case 'K':
+		{
+					BuildTexture[0] = CursorBoxClickedTexture;
+					break;
+		}
+		case 'G':
+		{
+					BuildTexture[1] = GrandmaBoxClickedTexture;
+					break;
+		}
+		case 'B':
+		{
+					BuildTexture[2] = FarmBoxClickedTexture;
+					break;
+		}
+		case 'F':
+		{
+					BuildTexture[3] = FactoryBoxClickedTexture;
+					break;
+		}
+		case 'M':
+		{
+					BuildTexture[4] = MineBoxClickedTexture;
+					break;
+		}
+		case 'S':
+		{
+					BuildTexture[5] = ShipmentBoxClickedTexture;
+					break;
+		}
+		case 'A':
+		{
+					BuildTexture[6] = AlchemyLabBoxClickedTexture;
+					break;
+		}
+		case 'P':
+		{
+					BuildTexture[7] = PortalBoxClickedTexture;
+					break;
+		}
+		case 'T':
+		{
+					BuildTexture[8] = TimeMachineBoxClickedTexture;
+					break;
+		}
+		default:
+		{
+				   BuildTexture[0] = CursorBoxTexture;
+				   BuildTexture[1] = GrandmaBoxTexture;
+				   BuildTexture[2] = FarmBoxTexture;
+				   BuildTexture[3] = FactoryBoxTexture;
+				   BuildTexture[4] = MineBoxTexture;
+				   BuildTexture[5] = ShipmentBoxTexture;
+				   BuildTexture[6] = AlchemyLabBoxTexture;
+				   BuildTexture[7] = PortalBoxTexture;
+				   BuildTexture[8] = TimeMachineBoxTexture;
+				   break;
+		}
+		}
 	}
 	else if (GetInput()->WasMouseButtonReleased(0) && m_mouseCheck)
 	{
@@ -194,6 +277,7 @@ void Game1::Update(float deltaTime)
 		}
 		case 'K':
 		{
+					BuildTexture[0] = CursorBoxTexture;
 					if (m_crateCount >= Cursor->GetCost())
 					{
 						m_crateCount -= Cursor->GetCost();
@@ -204,6 +288,7 @@ void Game1::Update(float deltaTime)
 		}
 		case 'G':
 		{
+					BuildTexture[1] = GrandmaBoxTexture;
 					if (m_crateCount >= Grandma->GetCost())
 					{
 						m_crateCount -= Grandma->GetCost();
@@ -214,6 +299,7 @@ void Game1::Update(float deltaTime)
 		}
 		case 'B':
 		{
+					BuildTexture[2] = FarmBoxTexture;
 					if (m_crateCount >= Farm->GetCost())
 					{
 						m_crateCount -= Farm->GetCost();
@@ -224,6 +310,7 @@ void Game1::Update(float deltaTime)
 		}
 		case 'F':
 		{
+					BuildTexture[3] = FactoryBoxTexture;
 					if (m_crateCount >= Factory->GetCost())
 					{
 						m_crateCount -= Factory->GetCost();
@@ -234,6 +321,7 @@ void Game1::Update(float deltaTime)
 		}
 		case 'M':
 		{
+					BuildTexture[4] = MineBoxTexture;
 					if (m_crateCount >= Mine->GetCost())
 					{
 						m_crateCount -= Mine->GetCost();
@@ -244,6 +332,7 @@ void Game1::Update(float deltaTime)
 		}
 		case 'S':
 		{
+					BuildTexture[5] = ShipmentBoxTexture;
 					if (m_crateCount >= Shipment->GetCost())
 					{
 						m_crateCount -= Shipment->GetCost();
@@ -254,6 +343,7 @@ void Game1::Update(float deltaTime)
 		}
 		case 'A':
 		{
+					BuildTexture[6] = AlchemyLabBoxTexture;
 					if (m_crateCount >= AlchemyLab->GetCost())
 					{
 						m_crateCount -= AlchemyLab->GetCost();
@@ -264,6 +354,7 @@ void Game1::Update(float deltaTime)
 		}
 		case 'P':
 		{
+					BuildTexture[7] = PortalBoxTexture;
 					if (m_crateCount >= Portal->GetCost())
 					{
 						m_crateCount -= Portal->GetCost();
@@ -274,6 +365,7 @@ void Game1::Update(float deltaTime)
 		}
 		case 'T':
 		{
+					BuildTexture[8] = TimeMachineBoxTexture;
 					if (m_crateCount >= TimeMachine->GetCost())
 					{
 						m_crateCount -= TimeMachine->GetCost();
@@ -309,8 +401,7 @@ void Game1::Draw()
 	for (int i = temp; i < 1280; i += 138)
 	{
 		m_spritebatch->DrawString(m_text, BuildNames[textArr], i, 40, 0.5f, 0.5f);
-		m_spritebatch->DrawSprite(BoxBackgroundTexture, i, temp, BoxBackgroundTexture->GetWidth(), BoxBackgroundTexture->GetHeight());
-		m_spritebatch->DrawSprite(BuildTexture[textArr++], i, temp, BoxBackgroundTexture->GetWidth()-10, BoxBackgroundTexture->GetHeight()-10);
+		m_spritebatch->DrawSprite(BuildTexture[textArr++], i, temp, CursorBoxTexture->GetWidth(), CursorBoxTexture->GetHeight());
 	}
 	m_spritebatch->DrawString(m_text, "Crates:", 590, 520, 0.5f, 0.5f);
 	m_spritebatch->DrawString(m_text, str.c_str(), 650, 520, 0.0f, 0.0f);

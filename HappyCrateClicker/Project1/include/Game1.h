@@ -48,9 +48,16 @@ protected:
 	Texture	*AlchemyLabBoxTexture;
 	Texture	*PortalBoxTexture;
 	Texture *TimeMachineBoxTexture;
-	Texture *BoxBackgroundTexture;
-	Texture *BoxBackgroundTextureClicked;
-	Texture *Temp;
+
+	Texture *CursorBoxClickedTexture;
+	Texture	*GrandmaBoxClickedTexture;
+	Texture	*FarmBoxClickedTexture;
+	Texture	*FactoryBoxClickedTexture;
+	Texture	*MineBoxClickedTexture;
+	Texture	*ShipmentBoxClickedTexture;
+	Texture	*AlchemyLabBoxClickedTexture;
+	Texture	*PortalBoxClickedTexture;
+	Texture *TimeMachineBoxClickedTexture;
 
 	Font *m_text;
 
