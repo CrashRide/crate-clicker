@@ -41,9 +41,39 @@ float Vector2::SqrMagnatude()
 
 void Vector2::Normalise()
 {
-	float mag = this->Magnatude();
+	float mag = Magnatude();
 	x /= mag;
 	y /= mag;
+}
+
+Vector2 Vector2::Normalised()
+{
+	float mag = Magnatude();
+	Vector2 temp(x / mag, y / mag);
+	return temp;
+}
+
+float Vector2::Dot(const Vector2 &a)
+{
+	float temp = 0.0f;
+	temp += a.x*x;
+	temp += a.y*y;
+	return temp;
+}
+
+Vector2 Vector2::Perpendicular()
+{
+	return Vector2(-y, x);
+}
+
+float Vector2::AngleOf()
+{
+	return AngleBetween(Vector2(1,0));
+}
+
+float Vector2::AngleBetween(const Vector2 &a)
+{
+	return acos(Dot(a) / Magnatude());
 }
 
 Vector2 Vector2::operator+(const Vector2 &rhs) const

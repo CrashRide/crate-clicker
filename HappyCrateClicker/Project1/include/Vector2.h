@@ -16,6 +16,13 @@ public:
 	float SqrMagnatude();
 
 	void Normalise();
+	Vector2 Normalised();
+
+	float Dot(const Vector2 &a);
+	Vector2 Perpendicular();
+
+	float AngleOf();
+	float AngleBetween(const Vector2 &a);
 
 	Vector2 operator+(const Vector2 &rhs)const;
 	Vector2 operator-(const Vector2 &rhs)const;
