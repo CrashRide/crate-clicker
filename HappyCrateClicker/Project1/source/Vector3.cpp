@@ -20,21 +20,6 @@ Vector3::Vector3(const Vector3 &rhs)
 	*this = rhs;
 }
 
-float Vector3::GetX()
-{
-	return x;
-}
-
-float Vector3::GetY()
-{
-	return y;
-}
-
-float Vector3::GetZ()
-{
-	return z;
-}
-
 float Vector3::Magnatude()
 {
 	return sqrt(SqrMagnatude());

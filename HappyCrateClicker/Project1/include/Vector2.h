@@ -2,15 +2,14 @@
 #define _VECTOR2_H_
 #include <cmath>
 
+class Matrix2x2;
+
 class Vector2
 {
 public:
 	Vector2();
 	Vector2(float a, float b);
 	Vector2(const Vector2 &rhs);
-
-	float GetX();
-	float GetY();
 
 	float Magnatude();
 	float SqrMagnatude();
@@ -32,6 +31,8 @@ public:
 	Vector2 operator*(float rhs)const;
 	void operator*=(float rhs);
 
+
+
 	Vector2 operator/(float rhs)const;
 	void operator/=(float rhs);
 
@@ -52,7 +53,7 @@ public:
 	}
 
 	~Vector2();
-private:
+
 	float x;
 	float y;
 };

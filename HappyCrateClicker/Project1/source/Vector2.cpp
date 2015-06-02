@@ -1,5 +1,5 @@
 #include "Vector2.h"
-
+#include "Matrix2x2.h"
 
 Vector2::Vector2()
 {
@@ -16,16 +16,6 @@ Vector2::Vector2(float a, float b)
 Vector2::Vector2(const Vector2 &rhs)
 {
 	*this = rhs;
-}
-
-float Vector2::GetX()
-{
-	return x;
-}
-
-float Vector2::GetY()
-{
-	return y;
 }
 
 float Vector2::Magnatude()

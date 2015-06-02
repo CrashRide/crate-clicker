@@ -22,26 +22,6 @@ Vector4::Vector4(const Vector4 &rhs)
 	*this = rhs;
 }
 
-float Vector4::GetX()
-{
-	return x;
-}
-
-float Vector4::GetY()
-{
-	return y;
-}
-
-float Vector4::GetZ()
-{
-	return z;
-}
-
-float Vector4::GetW()
-{
-	return w;
-}
-
 float Vector4::Magnatude()
 {
 	return sqrt(SqrMagnatude());

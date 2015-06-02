@@ -9,11 +9,6 @@ public:
 	Vector4(float a, float b, float c, float d);
 	Vector4(const Vector4 &rhs);
 
-	float GetX();
-	float GetY();
-	float GetZ();
-	float GetW();
-
 	float Magnatude();
 	float SqrMagnatude();
 
@@ -53,7 +48,7 @@ public:
 	}
 
 	~Vector4();
-private:
+
 	float x;
 	float y;
 	float z;

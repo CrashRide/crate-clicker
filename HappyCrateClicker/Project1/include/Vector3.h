@@ -9,10 +9,6 @@ public:
 	Vector3(float a, float b, float c);
 	Vector3(const Vector3 &rhs);
 
-	float GetX();
-	float GetY();
-	float GetZ();
-
 	float Magnatude();
 	float SqrMagnatude();
 
@@ -52,7 +48,7 @@ public:
 	}
 
 	~Vector3();
-private:
+
 	float x;
 	float y;
 	float z;
