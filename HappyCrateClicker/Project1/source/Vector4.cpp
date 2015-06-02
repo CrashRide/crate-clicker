@@ -160,6 +160,27 @@ bool Vector4::operator!=(const Vector4 &rhs) const
 	return !(*this == rhs);
 }
 
+float& Vector4::operator[](const int index)
+{
+	switch (index)
+	{
+	case 0:
+		return x;
+		break;
+	case 1:
+		return y;
+		break;
+	case 2:
+		return z;
+		break;
+	case 3:
+		return w;
+		break;
+	default:
+		break;
+	}
+}
+
 Vector4::~Vector4()
 {
 }

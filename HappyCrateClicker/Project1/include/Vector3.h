@@ -38,6 +38,8 @@ public:
 	bool operator==(const Vector3 &rhs)const;
 	bool operator!=(const Vector3 &rhs)const;
 
+	float& operator[](const int index);
+
 	friend Vector3 operator*(float lhs, const Vector3 &rhs)
 	{
 		return rhs * lhs;

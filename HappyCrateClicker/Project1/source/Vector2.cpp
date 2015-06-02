@@ -152,6 +152,21 @@ bool Vector2::operator!=(const Vector2 &rhs) const
 	return !(*this == rhs);
 }
 
+float& Vector2::operator[](const int index)
+{
+	switch (index)
+	{
+	case 0:
+		return x;
+		break;
+	case 1:
+		return y;
+		break;
+	default:
+		break;
+	}
+}
+
 Vector2::~Vector2()
 {
 }

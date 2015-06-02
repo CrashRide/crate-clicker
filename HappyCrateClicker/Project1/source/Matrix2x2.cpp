@@ -14,8 +14,8 @@ Matrix2x2::Matrix2x2(Vector2 &rowOne, Vector2 &rowTwo)
 {
 	float m_mat[2][2] =
 	{
-		{ rowOne.GetX(), rowOne.GetY() },
-		{ rowTwo.GetX(), rowTwo.GetY() },
+		{ rowOne.x, rowOne.y },
+		{ rowTwo.x, rowTwo.y },
 	};
 }
 
@@ -78,4 +78,9 @@ void Matrix2x2::operator*=(Matrix2x2 &rhs)
 	Vector2 rowOne((m_mat[0][0] * rhs.m_mat[0][0]) + (m_mat[0][1] * rhs.m_mat[1][0]), (m_mat[0][0] * rhs.m_mat[1][0]) + (m_mat[0][1] * rhs.m_mat[1][1]));
 	Vector2 rowTwo((m_mat[1][0] * rhs.m_mat[0][0]) + (m_mat[1][1] * rhs.m_mat[1][0]), (m_mat[1][0] * rhs.m_mat[0][1]) + (m_mat[1][1] * rhs.m_mat[1][1]));
 	*this = Matrix2x2(rowOne, rowTwo);
+}
+
+Vector2 Matrix2x2::operator*(Vector2 &rhs)
+{
+	return Vector2((m_mat[0][0] * rhs.x) + (m_mat[0][1] * rhs.y), (m_mat[1][0] * rhs.x) + (m_mat[1][1] * rhs.y));
 }

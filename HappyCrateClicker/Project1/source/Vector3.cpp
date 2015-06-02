@@ -158,6 +158,24 @@ bool Vector3::operator!=(const Vector3 &rhs) const
 	return !(*this == rhs);
 }
 
+float& Vector3::operator[](const int index)
+{
+	switch (index)
+	{
+	case 0:
+		return x;
+		break;
+	case 1:
+		return y;
+		break;
+	case 2:
+		return z;
+		break;
+	default:
+		break;
+	}
+}
+
 Vector3::~Vector3()
 {
 }

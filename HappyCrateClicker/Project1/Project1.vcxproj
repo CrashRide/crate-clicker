@@ -87,10 +87,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Matrix2x2.cpp" />
     <ClCompile Include="source\Box.cpp" />
     <ClCompile Include="source\Buildings.cpp" />
     <ClCompile Include="source\Game1.cpp" />
+    <ClCompile Include="source\Matrix2x2.cpp" />
+    <ClCompile Include="source\Matrix3x3.cpp" />
+    <ClCompile Include="source\Matrix4x4.cpp" />
     <ClCompile Include="source\Mouse.cpp" />
     <ClCompile Include="source\Shop.cpp" />
     <ClCompile Include="source\Upgrade.cpp" />
@@ -102,13 +104,15 @@
     <ClInclude Include="include\Box.h" />
     <ClInclude Include="include\Buildings.h" />
     <ClInclude Include="include\Game1.h" />
+    <ClInclude Include="include\Matrix2x2.h" />
+    <ClInclude Include="include\Matrix3x3.h" />
+    <ClInclude Include="include\Matrix4x4.h" />
     <ClInclude Include="include\Mouse.h" />
     <ClInclude Include="include\Shop.h" />
     <ClInclude Include="include\Upgrade.h" />
     <ClInclude Include="include\Vector2.h" />
     <ClInclude Include="include\Vector3.h" />
     <ClInclude Include="include\Vector4.h" />
-    <ClInclude Include="Matrix2x2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -19,6 +19,7 @@ public:
 	void operator-=(Matrix2x2 &rhs);
 	Matrix2x2 operator*(const Matrix2x2 &rhs);
 	void operator*=(Matrix2x2 &rhs);
+	Vector2 operator*(Vector2 &rhs);
 
 	float m_mat[2][2];
 };

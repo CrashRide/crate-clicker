@@ -31,7 +31,7 @@ public:
 	Vector2 operator*(float rhs)const;
 	void operator*=(float rhs);
 
-
+	float& operator[](const int index);
 
 	Vector2 operator/(float rhs)const;
 	void operator/=(float rhs);

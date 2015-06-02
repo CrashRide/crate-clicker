@@ -39,13 +39,19 @@
     <ClCompile Include="source\Box.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Matrix2x2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\Vector3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\Vector4.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Matrix2x2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Matrix3x3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Matrix4x4.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -71,13 +77,19 @@
     <ClInclude Include="include\Box.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Matrix2x2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Vector3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Vector4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Matrix2x2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Matrix3x3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Matrix4x4.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
