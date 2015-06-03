@@ -4,6 +4,7 @@
 #include "Font.h"
 #include "Input.h"
 #include "Box.h"
+#include "Matrix3x3.h"
 #include <string>
 #include <iostream>
 #include <windows.h>
@@ -13,6 +14,8 @@ Game1::Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscree
 {
 	m_spritebatch = SpriteBatch::Factory::Create(this, SpriteBatch::GL3);
 	m_crate = new Texture("./Images/happy_crate.png");
+	tankBase = new Texture("./Images/tankBase.png");
+	tankTurret = new Texture("./Images/tankTurret.png");
 
 	CursorBoxTexture = new Texture("./Images/cursor.png");
 	GrandmaBoxTexture = new Texture("./Images/grandma.png");
@@ -103,6 +106,9 @@ Game1::Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscree
 	PortalBox = new Box(Vector2((temp += m) - w, 100 - h), Vector2(temp + w, 100 + h));
 	TimeMachineBox = new Box(Vector2((temp += m) - w, 100 - h), Vector2(temp + w, 100 + h));
 
+	v_tankBase = new Vector2(tankBase->GetWidth() / 2, 720 - tankBase->GetHeight() / 2);
+	v_tankTurret = new Vector2(tankBase->GetWidth(), v_tankBase->y);
+
 	shop = new Shop(50);
 	textArr = 0;
 	temp = 100;
@@ -112,6 +118,10 @@ Game1::Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscree
 Game1::~Game1()
 {
 	SpriteBatch::Factory::Destroy(m_spritebatch);
+	delete tankBase;
+	delete tankTurret;
+	delete v_tankBase;
+	delete v_tankTurret;
 	delete m_crate;
 	delete m_text;
 	delete m_mouseX;
@@ -387,6 +397,10 @@ void Game1::Update(float deltaTime)
 		}
 		}
 	}
+	else if (GetInput()->IsKeyDown('W'))
+	{
+		v_tankBase->y -= 50 * deltaTime;
+	}
 	else
 	{
 		m_mouseCheck = false;
@@ -405,6 +419,8 @@ void Game1::Draw()
 	m_spritebatch->Begin();
 	
 	m_spritebatch->DrawSprite(m_crate, 640, 360, m_crate->GetWidth()*sizeMod, m_crate->GetHeight()*sizeMod);
+	m_spritebatch->DrawSprite(tankBase, v_tankBase->x, v_tankBase->y, tankBase->GetWidth(), tankBase->GetHeight(), 0.0f);
+	m_spritebatch->DrawSprite(tankTurret, v_tankTurret->x, v_tankTurret->y, tankTurret->GetWidth(), tankTurret->GetHeight(), 0.0f, 0.0);
 	for (int i = temp; i < 1280; i += 138)
 	{
 		m_spritebatch->DrawString(m_text, BuildNames[textArr], i, 40, 0.5f, 0.5f);

@@ -11,6 +11,7 @@ Description:
 #include "Shop.h"
 #include "Box.h"
 
+class Matrix3x3;
 class String;
 class Box;
 class Vector2;
@@ -39,6 +40,8 @@ protected:
 	SpriteBatch *m_spritebatch;
 
 	Texture *m_crate;
+	Texture *tankBase;
+	Texture *tankTurret;
 	Texture *CursorBoxTexture;
 	Texture	*GrandmaBoxTexture;
 	Texture	*FarmBoxTexture;
@@ -97,6 +100,9 @@ protected:
 	Box *AlchemyLabBox;
 	Box *PortalBox;
 	Box *TimeMachineBox;
+
+	Vector2 *v_tankBase;
+	Vector2 *v_tankTurret;
 
 	Shop *shop;
 

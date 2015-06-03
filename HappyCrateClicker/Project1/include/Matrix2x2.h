@@ -12,6 +12,7 @@ public:
 	~Matrix2x2();
 
 	void Transpose();
+	Matrix2x2 Transposed();
 
 	Matrix2x2 operator+(const Matrix2x2 &rhs);
 	void operator+=(Matrix2x2 &rhs);

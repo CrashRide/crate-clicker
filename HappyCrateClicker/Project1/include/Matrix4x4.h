@@ -12,6 +12,13 @@ public:
 	~Matrix4x4();
 
 	void Transpose();
+	Matrix4x4 Transposed();
+	static Matrix4x4 CreateScaleMat(float xScale, float yScale, float zScale);
+	static Matrix4x4 CreateZRotateMat(float angle);
+	static Matrix4x4 CreateYRotateMat(float angle);
+	static Matrix4x4 CreateXRotateMat(float angle);
+	static Matrix4x4 CreateTranslateMat(float xTrans, float yTrans, float zTrans);
+
 	void ScaleMat(float xScale, float yScale, float zScale);
 	void ZRotateMat(float angle);
 	void YRotateMat(float angle);

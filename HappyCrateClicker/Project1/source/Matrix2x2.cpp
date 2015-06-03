@@ -40,6 +40,15 @@ void Matrix2x2::Transpose()
 	m_mat[1][0] = temp;
 }
 
+Matrix2x2 Matrix2x2::Transposed()
+{
+	Matrix2x2 tempF;
+	float temp = tempF.m_mat[0][1];
+	tempF.m_mat[0][1] = tempF.m_mat[1][0];
+	tempF.m_mat[1][0] = temp;
+	return tempF;
+}
+
 Matrix2x2 Matrix2x2::operator+(const Matrix2x2 &rhs)
 {
 	Vector2 rowOne(m_mat[0][0] + rhs.m_mat[0][0], m_mat[0][1] + rhs.m_mat[0][1]);
