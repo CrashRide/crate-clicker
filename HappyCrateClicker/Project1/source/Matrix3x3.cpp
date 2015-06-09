@@ -4,12 +4,18 @@
 
 Matrix3x3::Matrix3x3()
 {
-	float m_mat[3][3] =
+	for (int j = 0; j < 3; j++)
 	{
-		{ 1, 0, 0 },
-		{ 0, 1, 0 },
-		{ 0, 0, 1 },
-	};
+		for (int i = 0; i < 3; i++)
+		{
+			if (j == i)
+				m_mat[i][j] = 1;
+			else
+			{
+				m_mat[i][j] = 0;
+			}
+		}
+	}
 }
 
 Matrix3x3::Matrix3x3(Vector3 &rowOne, Vector3 &rowTwo, Vector3 &rowThree)
@@ -24,12 +30,13 @@ Matrix3x3::Matrix3x3(Vector3 &rowOne, Vector3 &rowTwo, Vector3 &rowThree)
 
 Matrix3x3::Matrix3x3(const Matrix3x3 &a_mat)
 {
-	float m_mat[3][3] =
+	for (int j = 0; j < 3; j++)
 	{
-		{ a_mat.m_mat[0][0], a_mat.m_mat[0][1], a_mat.m_mat[0][2] },
-		{ a_mat.m_mat[1][0], a_mat.m_mat[1][1], a_mat.m_mat[1][2] },
-		{ a_mat.m_mat[2][0], a_mat.m_mat[2][1], a_mat.m_mat[2][2] },
-	};
+		for (int i = 0; i < 3; i++)
+		{
+			m_mat[i][j] = a_mat.m_mat[i][j];
+		}
+	}
 }
 
 
@@ -87,7 +94,7 @@ void Matrix3x3::RotateMat(float angle)
 {
 	Matrix3x3 temp;
 	temp.m_mat[0][0] = cos(angle);
-	temp.m_mat[0][1] = -sin(angle);
+	temp.m_mat[0][1] = -(sin(angle));
 	temp.m_mat[1][0] = sin(angle);
 	temp.m_mat[1][1] = temp.m_mat[0][0];
 	*this *= temp;
@@ -113,7 +120,7 @@ Matrix3x3 Matrix3x3::CreateRotateMat(float angle)
 {
 	Matrix3x3 temp;
 	temp.m_mat[0][0] = cos(angle);
-	temp.m_mat[0][1] = -sin(angle);
+	temp.m_mat[0][1] = -(sin(angle));
 	temp.m_mat[1][0] = sin(angle);
 	temp.m_mat[1][1] = temp.m_mat[0][0];
 	return temp;

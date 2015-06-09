@@ -15,6 +15,7 @@ class Matrix3x3;
 class String;
 class Box;
 class Vector2;
+class Vector3;
 class SpriteBatch;
 
 class Game1 : public Application
@@ -103,6 +104,9 @@ protected:
 
 	Vector2 *v_tankBase;
 	Vector2 *v_tankTurret;
+
+	Matrix3x3* m_tankBaseTransMat;
+	Matrix3x3* m_tankTurretTransMat;
 
 	Shop *shop;
 

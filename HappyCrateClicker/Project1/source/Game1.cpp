@@ -5,6 +5,8 @@
 #include "Input.h"
 #include "Box.h"
 #include "Matrix3x3.h"
+#include "Vector2.h"
+#include "Vector3.h"
 #include <string>
 #include <iostream>
 #include <windows.h>
@@ -16,6 +18,7 @@ Game1::Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscree
 	m_crate = new Texture("./Images/happy_crate.png");
 	tankBase = new Texture("./Images/tankBase.png");
 	tankTurret = new Texture("./Images/tankTurret.png");
+	
 
 	CursorBoxTexture = new Texture("./Images/cursor.png");
 	GrandmaBoxTexture = new Texture("./Images/grandma.png");
@@ -90,7 +93,6 @@ Game1::Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscree
 	BuildTexture[7] = PortalBoxTexture;
 	BuildTexture[8] = TimeMachineBoxTexture;
 
-
 	temp = 100;
 	int m = 138;
 	int h = CursorBoxTexture->GetHeight() / 2;
@@ -106,13 +108,21 @@ Game1::Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscree
 	PortalBox = new Box(Vector2((temp += m) - w, 100 - h), Vector2(temp + w, 100 + h));
 	TimeMachineBox = new Box(Vector2((temp += m) - w, 100 - h), Vector2(temp + w, 100 + h));
 
-	v_tankBase = new Vector2(tankBase->GetWidth() / 2, 720 - tankBase->GetHeight() / 2);
-	v_tankTurret = new Vector2(tankBase->GetWidth(), v_tankBase->y);
+	v_tankBase = new Vector2(tankBase->GetWidth(), 720 - tankBase->GetHeight() / 2);
+	v_tankTurret = new Vector2(tankTurret->GetWidth(), 0);
+
+	m_tankBaseTransMat = new Matrix3x3();
+	m_tankBaseTransMat->m_mat[0][2] = v_tankBase->x;
+	m_tankBaseTransMat->m_mat[1][2] = v_tankBase->y;
+	m_tankTurretTransMat = new Matrix3x3();
+	m_tankTurretTransMat->m_mat[0][2] = v_tankBase->x;
+	m_tankTurretTransMat->m_mat[1][2] = v_tankBase->y;
 
 	shop = new Shop(50);
 	textArr = 0;
 	temp = 100;
 	m_cps = new float(0.0f);
+	m_spritebatch->SetColumnMajor(true);
 }
 
 Game1::~Game1()
@@ -128,6 +138,8 @@ Game1::~Game1()
 	delete m_mouseY;
 	delete m_cps;
 	delete shop;
+	delete m_tankBaseTransMat;
+	delete m_tankTurretTransMat;
 
 	delete Cursor;
 	delete Grandma;
@@ -399,7 +411,21 @@ void Game1::Update(float deltaTime)
 	}
 	else if (GetInput()->IsKeyDown('W'))
 	{
-		v_tankBase->y -= 50 * deltaTime;
+		m_tankBaseTransMat->TranslateMat(0, -45 * deltaTime);;
+		*m_tankTurretTransMat *= *m_tankBaseTransMat;
+	}
+	else if (GetInput()->IsKeyDown('S'))
+	{
+		m_tankBaseTransMat->TranslateMat(0, 45 * deltaTime);;
+		*m_tankTurretTransMat *= *m_tankBaseTransMat;
+	}
+	else if (GetInput()->IsKeyDown('D'))
+	{
+		m_tankTurretTransMat->RotateMat(0.7f * deltaTime);
+	}
+	else if (GetInput()->IsKeyDown('A'))
+	{
+		m_tankTurretTransMat->RotateMat(-0.7f * deltaTime);
 	}
 	else
 	{
@@ -416,11 +442,13 @@ void Game1::Draw()
 	str.erase(str.find_last_of('.') + 2, std::string::npos);
 	std::string cps = std::to_string(*m_cps);
 	cps.erase(cps.find_last_of('.') + 2, std::string::npos);
+
 	m_spritebatch->Begin();
-	
+
 	m_spritebatch->DrawSprite(m_crate, 640, 360, m_crate->GetWidth()*sizeMod, m_crate->GetHeight()*sizeMod);
-	m_spritebatch->DrawSprite(tankBase, v_tankBase->x, v_tankBase->y, tankBase->GetWidth(), tankBase->GetHeight(), 0.0f);
-	m_spritebatch->DrawSprite(tankTurret, v_tankTurret->x, v_tankTurret->y, tankTurret->GetWidth(), tankTurret->GetHeight(), 0.0f, 0.0);
+	m_spritebatch->DrawSpriteTransformed3x3(tankBase, &m_tankBaseTransMat->m_mat[0][0],tankBase->GetWidth(),tankBase->GetHeight(),1.0f);
+	m_spritebatch->DrawSpriteTransformed3x3(tankTurret, &m_tankTurretTransMat->m_mat[0][0], tankTurret->GetWidth(), tankTurret->GetHeight(), 0.0f);
+
 	for (int i = temp; i < 1280; i += 138)
 	{
 		m_spritebatch->DrawString(m_text, BuildNames[textArr], i, 40, 0.5f, 0.5f);
