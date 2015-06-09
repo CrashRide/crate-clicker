@@ -7,6 +7,7 @@
 #include "Matrix3x3.h"
 #include "Vector2.h"
 #include "Vector3.h"
+#include "Scene.h"
 #include <string>
 #include <iostream>
 #include <windows.h>
@@ -109,14 +110,19 @@ Game1::Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscree
 	TimeMachineBox = new Box(Vector2((temp += m) - w, 100 - h), Vector2(temp + w, 100 + h));
 
 	v_tankBase = new Vector2(tankBase->GetWidth(), 720 - tankBase->GetHeight() / 2);
-	v_tankTurret = new Vector2(tankTurret->GetWidth(), 0);
+	v_tankTurret = new Vector2(0, 0);
 
-	m_tankBaseTransMat = new Matrix3x3();
-	m_tankBaseTransMat->m_mat[0][2] = v_tankBase->x;
-	m_tankBaseTransMat->m_mat[1][2] = v_tankBase->y;
-	m_tankTurretTransMat = new Matrix3x3();
-	m_tankTurretTransMat->m_mat[0][2] = v_tankBase->x;
-	m_tankTurretTransMat->m_mat[1][2] = v_tankBase->y;
+	m_tankBaseTransMat = new Matrix3x3(Vector3(1,0,0), Vector3(0,1,0), Vector3(v_tankBase->x,v_tankBase->y,1));
+	m_tankTurretTransMat = new Matrix3x3(Vector3(1, 0, 0), Vector3(0, 1, 0), Vector3(v_tankTurret->x, v_tankTurret->y, 1));
+
+	*m_tankTurretTransMat *= *m_tankBaseTransMat;
+	m_tankTurretTransMat->TranslateMat(-30, -6);
+	m_tankTurretTransMat->ScaleMat(1, 1.2);
+
+	tb = new SceneNode(m_tankBaseTransMat, m_tankBaseTransMat);
+	tt = new SceneNode(m_tankTurretTransMat, m_tankBaseTransMat);
+	gameScene = new Scene(tb);
+	tb->AddChild(tt);
 
 	shop = new Shop(50);
 	textArr = 0;
@@ -140,6 +146,9 @@ Game1::~Game1()
 	delete shop;
 	delete m_tankBaseTransMat;
 	delete m_tankTurretTransMat;
+	delete tb;
+	delete tt;
+	delete gameScene;
 
 	delete Cursor;
 	delete Grandma;
@@ -411,13 +420,11 @@ void Game1::Update(float deltaTime)
 	}
 	else if (GetInput()->IsKeyDown('W'))
 	{
-		m_tankBaseTransMat->TranslateMat(0, -45 * deltaTime);;
-		*m_tankTurretTransMat *= *m_tankBaseTransMat;
+		m_tankBaseTransMat->TranslateMat(0, -45 * deltaTime);
 	}
 	else if (GetInput()->IsKeyDown('S'))
 	{
-		m_tankBaseTransMat->TranslateMat(0, 45 * deltaTime);;
-		*m_tankTurretTransMat *= *m_tankBaseTransMat;
+		m_tankBaseTransMat->TranslateMat(0, 45 * deltaTime);
 	}
 	else if (GetInput()->IsKeyDown('D'))
 	{
@@ -431,7 +438,7 @@ void Game1::Update(float deltaTime)
 	{
 		m_mouseCheck = false;
 	}
-	
+	gameScene->UpdateTransforms();
 }
 
 void Game1::Draw()
@@ -445,20 +452,21 @@ void Game1::Draw()
 
 	m_spritebatch->Begin();
 
-	m_spritebatch->DrawSprite(m_crate, 640, 360, m_crate->GetWidth()*sizeMod, m_crate->GetHeight()*sizeMod);
-	m_spritebatch->DrawSpriteTransformed3x3(tankBase, &m_tankBaseTransMat->m_mat[0][0],tankBase->GetWidth(),tankBase->GetHeight(),1.0f);
-	m_spritebatch->DrawSpriteTransformed3x3(tankTurret, &m_tankTurretTransMat->m_mat[0][0], tankTurret->GetWidth(), tankTurret->GetHeight(), 0.0f);
+	m_spritebatch->DrawSprite(m_crate, 640.0f, 360.0f, m_crate->GetWidth()*sizeMod, m_crate->GetHeight()*sizeMod);
+	m_spritebatch->DrawSpriteTransformed3x3(tankTurret, &m_tankTurretTransMat->m_mat[0][0], tankTurret->GetWidth(), tankTurret->GetHeight(), -0.3f);
+	m_spritebatch->DrawSpriteTransformed3x3(tankBase, &m_tankBaseTransMat->m_mat[0][0], tankBase->GetWidth(), tankBase->GetHeight(), 1.0f);
 
 	for (int i = temp; i < 1280; i += 138)
 	{
-		m_spritebatch->DrawString(m_text, BuildNames[textArr], i, 40, 0.5f, 0.5f);
-		m_spritebatch->DrawSprite(BuildTexture[textArr], i, temp, CursorBoxTexture->GetWidth(), CursorBoxTexture->GetHeight());
-		m_spritebatch->DrawString(m_text, to_string(Builds[textArr++]->GetCost()).c_str(), i, 160, 0.0f, 0.0f);
+		m_spritebatch->DrawString(m_text, BuildNames[textArr], (float)i, 40.0f, 0.5f, 0.5f);
+		m_spritebatch->DrawSprite(BuildTexture[textArr], (float)i, temp, CursorBoxTexture->GetWidth(), CursorBoxTexture->GetHeight());
+		m_spritebatch->DrawString(m_text, to_string(Builds[textArr++]->GetCost()).c_str(), (float)i, 160.0f, 0.0f, 0.0f);
 	}
-	m_spritebatch->DrawString(m_text, "Crates:", 590, 520, 0.5f, 0.5f);
-	m_spritebatch->DrawString(m_text, str.c_str(), 650, 520, 0.0f, 0.0f);
-	m_spritebatch->DrawString(m_text, "CPS:", 590, 550, 0.5f, 0.5f);
-	m_spritebatch->DrawString(m_text, cps.c_str(), 650, 550, 0.0f, 0.0f);
+
+	m_spritebatch->DrawString(m_text, "Crates:", 590.0f, 520.0f, 0.5f, 0.5f);
+	m_spritebatch->DrawString(m_text, str.c_str(), 650.0f, 520.0f, 0.0f, 0.0f);
+	m_spritebatch->DrawString(m_text, "CPS:", 590.0f, 550.0f, 0.5f, 0.5f);
+	m_spritebatch->DrawString(m_text, cps.c_str(), 650.0f, 550.0f, 0.0f, 0.0f);
 	// TODO: draw stuff.
 	textArr = 0;
 	m_spritebatch->End();

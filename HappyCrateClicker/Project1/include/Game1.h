@@ -11,6 +11,8 @@ Description:
 #include "Shop.h"
 #include "Box.h"
 
+class Scene;
+class SceneNode;
 class Matrix3x3;
 class String;
 class Box;
@@ -107,6 +109,10 @@ protected:
 
 	Matrix3x3* m_tankBaseTransMat;
 	Matrix3x3* m_tankTurretTransMat;
+
+	Scene *gameScene;
+	SceneNode *tb;
+	SceneNode *tt;
 
 	Shop *shop;
 

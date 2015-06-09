@@ -20,12 +20,12 @@ Matrix3x3::Matrix3x3()
 
 Matrix3x3::Matrix3x3(Vector3 &rowOne, Vector3 &rowTwo, Vector3 &rowThree)
 {
-	float m_mat[3][3] =
+	for (int j = 0; j < 3; j++)
 	{
-		{ rowOne.x, rowOne.y, rowOne.z },
-		{ rowTwo.x, rowTwo.y, rowTwo.z },
-		{ rowThree.x, rowThree.y, rowThree.z},
-	};
+		m_mat[j][0] = rowOne[j];
+		m_mat[j][1] = rowTwo[j];
+		m_mat[j][2] = rowThree[j];
+	}
 }
 
 Matrix3x3::Matrix3x3(const Matrix3x3 &a_mat)
