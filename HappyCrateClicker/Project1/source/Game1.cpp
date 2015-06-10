@@ -460,8 +460,14 @@ void Game1::Update(float deltaTime)
 		if (v_cookieProjectile->x > 1280 || v_cookieProjectile->y < 0 || v_cookieProjectile->y > 720)
 		{
 			cpInFlight = false;
-			//reset cookie pos
+			//delete m_cLocalMat;
+			Matrix3x3 temp;
+			temp.TranslateMat(75, 0);
+			m_cLocalMat = &temp;
+			tt->AddChild(cp);
 		}
+		v_cookieProjectile->x = 0;
+		v_cookieProjectile->y = 0;
 	}
 	gameScene->UpdateTransforms();
 }
