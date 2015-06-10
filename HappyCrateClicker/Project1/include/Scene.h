@@ -32,6 +32,7 @@ public:
 	void UpdateTransforms();
 private:
 	SceneNode* m_scene_root;
-};
+};
+
 
 #endif

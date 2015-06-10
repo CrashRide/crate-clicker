@@ -1,5 +1,7 @@
 #ifndef _MATRIX3X3_H_
 #define _MATRIX3X3_H_
+#include <iostream>
+using namespace std;
 
 class Vector2;
 class Vector3;
@@ -32,6 +34,7 @@ public:
 	void operator*=(Vector3 &rhs);
 	Vector2 operator*(Vector2 &rhs);
 	void operator*=(Vector2 &rhs);
+	friend ostream& operator<< (ostream& stream, const Matrix3x3& matrix);
 
 	float m_mat[3][3];
 };

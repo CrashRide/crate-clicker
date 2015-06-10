@@ -20,6 +20,7 @@ Game1::Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscree
 	tankBase = new Texture("./Images/tankBase.png");
 	tankTurret = new Texture("./Images/tankTurret.png");
 	
+	m_cookie = new Texture("./Images/cookie32.png");
 
 	CursorBoxTexture = new Texture("./Images/cursor.png");
 	GrandmaBoxTexture = new Texture("./Images/grandma.png");
@@ -110,24 +111,29 @@ Game1::Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscree
 	TimeMachineBox = new Box(Vector2((temp += m) - w, 100 - h), Vector2(temp + w, 100 + h));
 
 	v_tankBase = new Vector2(tankBase->GetWidth(), 720 - tankBase->GetHeight() / 2);
-	v_tankTurret = new Vector2(0, 0);
+	v_cookieProjectile = new Vector2(0, 0);
 
 	m_tankBaseTransMat = new Matrix3x3(Vector3(1,0,0), Vector3(0,1,0), Vector3(v_tankBase->x,v_tankBase->y,1));
-	m_tankTurretTransMat = new Matrix3x3(Vector3(1, 0, 0), Vector3(0, 1, 0), Vector3(v_tankTurret->x, v_tankTurret->y, 1));
-
-	*m_tankTurretTransMat *= *m_tankBaseTransMat;
-	m_tankTurretTransMat->TranslateMat(-30, -6);
+	m_ttGlobal = new Matrix3x3();
+	m_tankTurretTransMat = new Matrix3x3();
 	m_tankTurretTransMat->ScaleMat(1, 1.2);
+	m_tankTurretTransMat->TranslateMat(-30, -6);
+	m_cLocalMat = new Matrix3x3();
+	m_cLocalMat->TranslateMat(75, 0);
+	m_cGlobalMat = new Matrix3x3();
 
 	tb = new SceneNode(m_tankBaseTransMat, m_tankBaseTransMat);
-	tt = new SceneNode(m_tankTurretTransMat, m_tankBaseTransMat);
+	tt = new SceneNode(m_tankTurretTransMat, m_ttGlobal);
+	cp = new SceneNode(m_cLocalMat, m_cGlobalMat);
 	gameScene = new Scene(tb);
 	tb->AddChild(tt);
+	tt->AddChild(cp);
 
 	shop = new Shop(50);
 	textArr = 0;
 	temp = 100;
 	m_cps = new float(0.0f);
+	cpInFlight = false;
 	m_spritebatch->SetColumnMajor(true);
 }
 
@@ -137,16 +143,15 @@ Game1::~Game1()
 	delete tankBase;
 	delete tankTurret;
 	delete v_tankBase;
-	delete v_tankTurret;
+	delete v_cookieProjectile;
+	delete m_cookie;
 	delete m_crate;
 	delete m_text;
 	delete m_mouseX;
 	delete m_mouseY;
 	delete m_cps;
 	delete shop;
-	delete m_tankBaseTransMat;
-	delete m_tankTurretTransMat;
-	delete tb;
+	delete cp;
 	delete tt;
 	delete gameScene;
 
@@ -218,6 +223,8 @@ char Game1::ClickInput()
 		return 'P';
 	else if (TimeMachineBox->ClickWithinBox(*m_mouseX, *m_mouseY))
 		return 'T';
+
+	
 }
 
 void Game1::UpdateCPS(float &a_cps)
@@ -418,27 +425,64 @@ void Game1::Update(float deltaTime)
 		}
 		}
 	}
-	else if (GetInput()->IsKeyDown('W'))
-	{
-		m_tankBaseTransMat->TranslateMat(0, -45 * deltaTime);
-	}
-	else if (GetInput()->IsKeyDown('S'))
-	{
-		m_tankBaseTransMat->TranslateMat(0, 45 * deltaTime);
-	}
-	else if (GetInput()->IsKeyDown('D'))
-	{
-		m_tankTurretTransMat->RotateMat(0.7f * deltaTime);
-	}
-	else if (GetInput()->IsKeyDown('A'))
-	{
-		m_tankTurretTransMat->RotateMat(-0.7f * deltaTime);
-	}
 	else
 	{
 		m_mouseCheck = false;
 	}
+	if (GetInput()->IsKeyDown('W'))
+	{
+		m_tankBaseTransMat->TranslateMat(0, -45 * deltaTime);
+	}
+	if (GetInput()->IsKeyDown('S'))
+	{
+		m_tankBaseTransMat->TranslateMat(0, 45 * deltaTime);
+	}
+	if (GetInput()->IsKeyDown('D'))
+	{
+		m_tankTurretTransMat->RotateMat(0.7f * deltaTime);
+		ClampRot();
+	}
+	if (GetInput()->IsKeyDown('A'))
+	{
+		m_tankTurretTransMat->RotateMat(-0.7f * deltaTime);
+		ClampRot();
+	}
+	if (GetInput()->WasKeyPressed('E'))
+	{
+		cpInFlight = true;
+		tt->RemoveChild(cp);
+	}
+	if (cpInFlight)
+	{
+		m_cGlobalMat->TranslateMat(700 * deltaTime, 0);
+		cp->UpdateTransforms();
+		*m_cGlobalMat *= *v_cookieProjectile;
+		if (v_cookieProjectile->x > 1280 || v_cookieProjectile->y < 0 || v_cookieProjectile->y > 720)
+		{
+			cpInFlight = false;
+			//reset cookie pos
+		}
+	}
 	gameScene->UpdateTransforms();
+}
+
+void Game1::ClampRot()
+{
+	float angleClamp = 1.04719755f;
+	Matrix3x3 temp;
+	Matrix3x3 temp2;
+	temp.ScaleMat(1, 1.2);
+	temp2.ScaleMat(1, 1.2);
+	temp.RotateMat(angleClamp);
+	temp2.RotateMat(-angleClamp);
+	if (m_tankTurretTransMat->m_mat[0][0] <= temp2.m_mat[0][0] && m_tankTurretTransMat->m_mat[0][1] >= temp2.m_mat[0][1])
+	{
+		m_tankTurretTransMat->RotateMat(0.0174532925);
+	}
+	else if (m_tankTurretTransMat->m_mat[0][0] <= temp.m_mat[0][0] && m_tankTurretTransMat->m_mat[0][1] <= temp.m_mat[0][1])
+	{
+		m_tankTurretTransMat->RotateMat(-0.0174532925);
+	}
 }
 
 void Game1::Draw()
@@ -453,7 +497,8 @@ void Game1::Draw()
 	m_spritebatch->Begin();
 
 	m_spritebatch->DrawSprite(m_crate, 640.0f, 360.0f, m_crate->GetWidth()*sizeMod, m_crate->GetHeight()*sizeMod);
-	m_spritebatch->DrawSpriteTransformed3x3(tankTurret, &m_tankTurretTransMat->m_mat[0][0], tankTurret->GetWidth(), tankTurret->GetHeight(), -0.3f);
+	m_spritebatch->DrawSpriteTransformed3x3(m_cookie, &m_cGlobalMat->m_mat[0][0], 32, 24, 0.5f);
+	m_spritebatch->DrawSpriteTransformed3x3(tankTurret, &m_ttGlobal->m_mat[0][0], tankTurret->GetWidth(), tankTurret->GetHeight(), -0.3f);
 	m_spritebatch->DrawSpriteTransformed3x3(tankBase, &m_tankBaseTransMat->m_mat[0][0], tankBase->GetWidth(), tankBase->GetHeight(), 1.0f);
 
 	for (int i = temp; i < 1280; i += 138)

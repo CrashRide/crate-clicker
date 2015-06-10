@@ -10,6 +10,8 @@ Description:
 #include "Buildings.h"
 #include "Shop.h"
 #include "Box.h"
+#include <iostream>
+using namespace std;
 
 class Scene;
 class SceneNode;
@@ -42,6 +44,7 @@ protected:
 
 	SpriteBatch *m_spritebatch;
 
+	Texture *m_cookie;
 	Texture *m_crate;
 	Texture *tankBase;
 	Texture *tankTurret;
@@ -105,14 +108,22 @@ protected:
 	Box *TimeMachineBox;
 
 	Vector2 *v_tankBase;
-	Vector2 *v_tankTurret;
+	Vector2 *v_cookieProjectile;
 
 	Matrix3x3* m_tankBaseTransMat;
 	Matrix3x3* m_tankTurretTransMat;
+	Matrix3x3* m_ttGlobal;
+	Matrix3x3* m_cLocalMat;
+	Matrix3x3* m_cGlobalMat;
+
+	void ClampRot();
 
 	Scene *gameScene;
 	SceneNode *tb;
 	SceneNode *tt;
+	SceneNode *cp;
+
+	bool cpInFlight;
 
 	Shop *shop;
 

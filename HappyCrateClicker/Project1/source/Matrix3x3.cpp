@@ -1,6 +1,9 @@
+#include <iostream>
 #include "Matrix3x3.h"
 #include "Vector2.h"
 #include "Vector3.h"
+
+using namespace std;
 
 Matrix3x3::Matrix3x3()
 {
@@ -272,4 +275,17 @@ void Matrix3x3::operator*=(Vector2 &rhs)
 	}
 
 	rhs = Vector2(temp.x, temp.y);
+}
+
+ostream& operator <<(ostream& os, const Matrix3x3& rhs)
+{
+	for (int j = 0; j < 3; j++)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			os << rhs.m_mat[j][i] << "	,	";
+		}
+		os << endl;
+	}
+	return os;
 }
