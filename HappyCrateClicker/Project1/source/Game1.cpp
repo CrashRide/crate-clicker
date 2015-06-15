@@ -9,6 +9,7 @@
 #include "Vector3.h"
 #include "Scene.h"
 #include <string>
+#include <vector>
 #include <iostream>
 #include <windows.h>
 using namespace std;
@@ -111,21 +112,24 @@ Game1::Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscree
 	TimeMachineBox = new Box(Vector2((temp += m) - w, 100 - h), Vector2(temp + w, 100 + h));
 
 	v_tankBase = new Vector2(tankBase->GetWidth(), 720 - tankBase->GetHeight() / 2);
-	v_cookieProjectile = new Vector2(0, 0);
+	v_cookieProjectile = new Vector2(1, 1);
 
 	m_tankBaseTransMat = new Matrix3x3(Vector3(1,0,0), Vector3(0,1,0), Vector3(v_tankBase->x,v_tankBase->y,1));
 	m_ttGlobal = new Matrix3x3();
 	m_tankTurretTransMat = new Matrix3x3();
 	m_tankTurretTransMat->ScaleMat(1, 1.2);
 	m_tankTurretTransMat->TranslateMat(-30, -6);
-	m_cLocalMat = new Matrix3x3();
-	m_cLocalMat->TranslateMat(75, 0);
-	m_cGlobalMat = new Matrix3x3();
+	for (int i = 0; i < 3; i++)
+	{
+		m_cLocalMat[i] = new Matrix3x3();
+		m_cLocalMat[i]->TranslateMat(75, 0);
+		m_cGlobalMat[i] = new Matrix3x3();
+	}
 
 	tb = new SceneNode(m_tankBaseTransMat, m_tankBaseTransMat);
 	tt = new SceneNode(m_tankTurretTransMat, m_ttGlobal);
-	cp = new SceneNode(m_cLocalMat, m_cGlobalMat);
 	gameScene = new Scene(tb);
+
 	tb->AddChild(tt);
 	tt->AddChild(cp);
 
@@ -460,14 +464,14 @@ void Game1::Update(float deltaTime)
 		if (v_cookieProjectile->x > 1280 || v_cookieProjectile->y < 0 || v_cookieProjectile->y > 720)
 		{
 			cpInFlight = false;
-			//delete m_cLocalMat;
-			Matrix3x3 temp;
-			temp.TranslateMat(75, 0);
-			m_cLocalMat = &temp;
+			delete cp;
+			m_cLocalMat = new Matrix3x3();
+			m_cLocalMat->TranslateMat(75, 0);
+			cp = new SceneNode(m_cLocalMat, m_cGlobalMat);
 			tt->AddChild(cp);
 		}
-		v_cookieProjectile->x = 0;
-		v_cookieProjectile->y = 0;
+		v_cookieProjectile->x = 1;
+		v_cookieProjectile->y = 1;
 	}
 	gameScene->UpdateTransforms();
 }

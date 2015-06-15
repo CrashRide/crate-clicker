@@ -113,15 +113,15 @@ protected:
 	Matrix3x3* m_tankBaseTransMat;
 	Matrix3x3* m_tankTurretTransMat;
 	Matrix3x3* m_ttGlobal;
-	Matrix3x3* m_cLocalMat;
-	Matrix3x3* m_cGlobalMat;
+	vector<Matrix3x3*> m_cLocalMat;
+	vector<Matrix3x3*> m_cGlobalMat;
 
 	void ClampRot();
 
 	Scene *gameScene;
 	SceneNode *tb;
 	SceneNode *tt;
-	SceneNode *cp;
+	vector<SceneNode**> cookieMunitions;
 
 	bool cpInFlight;
 
