@@ -14,6 +14,9 @@ public:
 	void AddChild(SceneNode*);
 	void RemoveChild(SceneNode*);
 	void UpdateTransforms();
+	Matrix3x3* GetLocal();
+	Matrix3x3* GetGlobal();
+	void SetLocal(Matrix3x3 &rhs);
 protected:
 	
 	std::vector<SceneNode*> m_children;

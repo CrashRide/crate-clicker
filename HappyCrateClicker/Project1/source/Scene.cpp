@@ -78,4 +78,17 @@ void SceneNode::UpdateTransforms()
 	}
 }
 
+Matrix3x3* SceneNode::GetLocal()
+{
+	return m_local_transform;
+}
 
+Matrix3x3* SceneNode::GetGlobal()
+{
+	return m_global_transform;
+}
+
+void SceneNode::SetLocal(Matrix3x3 &rhs)
+{
+	*m_local_transform = rhs;
+}

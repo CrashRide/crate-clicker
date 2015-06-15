@@ -112,32 +112,33 @@ Game1::Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscree
 	TimeMachineBox = new Box(Vector2((temp += m) - w, 100 - h), Vector2(temp + w, 100 + h));
 
 	v_tankBase = new Vector2(tankBase->GetWidth(), 720 - tankBase->GetHeight() / 2);
-	v_cookieProjectile = new Vector2(1, 1);
+	
 
 	m_tankBaseTransMat = new Matrix3x3(Vector3(1,0,0), Vector3(0,1,0), Vector3(v_tankBase->x,v_tankBase->y,1));
 	m_ttGlobal = new Matrix3x3();
 	m_tankTurretTransMat = new Matrix3x3();
 	m_tankTurretTransMat->ScaleMat(1, 1.2);
 	m_tankTurretTransMat->TranslateMat(-30, -6);
-	for (int i = 0; i < 3; i++)
-	{
-		m_cLocalMat[i] = new Matrix3x3();
-		m_cLocalMat[i]->TranslateMat(75, 0);
-		m_cGlobalMat[i] = new Matrix3x3();
-	}
 
 	tb = new SceneNode(m_tankBaseTransMat, m_tankBaseTransMat);
 	tt = new SceneNode(m_tankTurretTransMat, m_ttGlobal);
 	gameScene = new Scene(tb);
 
 	tb->AddChild(tt);
-	tt->AddChild(cp);
+	
+	for (int i = 0; i < 3; i++)
+	{
+		cookieMunitions.push_back(new SceneNode(&Matrix3x3(), &Matrix3x3()));
+		cookieMunitions[i]->GetLocal()->TranslateMat(75, 0);
+		tt->AddChild(cookieMunitions[i]);
+		v_cookieProjectile.push_back(Vector2(1, 1));
+	}
 
 	shop = new Shop(50);
 	textArr = 0;
 	temp = 100;
 	m_cps = new float(0.0f);
-	cpInFlight = false;
+	allInFlight = false;
 	m_spritebatch->SetColumnMajor(true);
 }
 
@@ -147,7 +148,6 @@ Game1::~Game1()
 	delete tankBase;
 	delete tankTurret;
 	delete v_tankBase;
-	delete v_cookieProjectile;
 	delete m_cookie;
 	delete m_crate;
 	delete m_text;
@@ -155,7 +155,8 @@ Game1::~Game1()
 	delete m_mouseY;
 	delete m_cps;
 	delete shop;
-	delete cp;
+	cookieMunitions.~vector();
+	v_cookieProjectile.~vector();
 	delete tt;
 	delete gameScene;
 
@@ -243,7 +244,7 @@ void Game1::UpdateCPS(float &a_cps)
 void Game1::Update(float deltaTime)
 {
 	m_crateCount += *m_cps * deltaTime;
-	if (GetInput()->IsMouseButtonDown(0))
+	/*if (GetInput()->IsMouseButtonDown(0))
 	{
 		m_mouseCheck = true;
 		switch (ClickInput())
@@ -428,11 +429,11 @@ void Game1::Update(float deltaTime)
 				   break;
 		}
 		}
-	}
-	else
+	}*/
+	/*else
 	{
 		m_mouseCheck = false;
-	}
+	}*/
 	if (GetInput()->IsKeyDown('W'))
 	{
 		m_tankBaseTransMat->TranslateMat(0, -45 * deltaTime);
@@ -453,25 +454,36 @@ void Game1::Update(float deltaTime)
 	}
 	if (GetInput()->WasKeyPressed('E'))
 	{
-		cpInFlight = true;
-		tt->RemoveChild(cp);
-	}
-	if (cpInFlight)
-	{
-		m_cGlobalMat->TranslateMat(700 * deltaTime, 0);
-		cp->UpdateTransforms();
-		*m_cGlobalMat *= *v_cookieProjectile;
-		if (v_cookieProjectile->x > 1280 || v_cookieProjectile->y < 0 || v_cookieProjectile->y > 720)
+		if (projInFlight != cookieMunitions.size())
 		{
-			cpInFlight = false;
-			delete cp;
-			m_cLocalMat = new Matrix3x3();
-			m_cLocalMat->TranslateMat(75, 0);
-			cp = new SceneNode(m_cLocalMat, m_cGlobalMat);
-			tt->AddChild(cp);
+			tt->RemoveChild(cookieMunitions.front());
 		}
-		v_cookieProjectile->x = 1;
-		v_cookieProjectile->y = 1;
+		else
+			allInFlight = true;
+		projInFlight++;
+	}
+	if (projInFlight > 0)
+	{
+		for (int i = 0; i < projInFlight; i++)
+		{
+			cookieMunitions[i]->SetLocal(Matrix3x3::CreateTranslateMat(700 * deltaTime, 0));
+			cookieMunitions[i]->UpdateTransforms();
+
+
+			*cookieMunitions[i]->GetGlobal() *= v_cookieProjectile[i];
+			if (v_cookieProjectile[i].x > 1280 || v_cookieProjectile[i].y < 0 || v_cookieProjectile[i].y > 720)
+			{
+				//allInFlight = false;
+				cookieMunitions.erase(cookieMunitions.begin() + i);
+				
+				
+				cookieMunitions.insert(cookieMunitions.begin() + i, new SceneNode(&Matrix3x3::CreateTranslateMat(75, 0), new Matrix3x3()));
+				tt->AddChild(cookieMunitions[i]);
+				projInFlight--;
+			}
+			v_cookieProjectile[i].x = 1;
+			v_cookieProjectile[i].y = 1;
+		}
 	}
 	gameScene->UpdateTransforms();
 }
@@ -507,7 +519,10 @@ void Game1::Draw()
 	m_spritebatch->Begin();
 
 	m_spritebatch->DrawSprite(m_crate, 640.0f, 360.0f, m_crate->GetWidth()*sizeMod, m_crate->GetHeight()*sizeMod);
-	m_spritebatch->DrawSpriteTransformed3x3(m_cookie, &m_cGlobalMat->m_mat[0][0], 32, 24, 0.5f);
+	for (int i = 0; i < cookieMunitions.size(); i++)
+	{
+		m_spritebatch->DrawSpriteTransformed3x3(m_cookie, &cookieMunitions[i]->GetGlobal()->m_mat[0][0], 32, 24, 0.5f);
+	}
 	m_spritebatch->DrawSpriteTransformed3x3(tankTurret, &m_ttGlobal->m_mat[0][0], tankTurret->GetWidth(), tankTurret->GetHeight(), -0.3f);
 	m_spritebatch->DrawSpriteTransformed3x3(tankBase, &m_tankBaseTransMat->m_mat[0][0], tankBase->GetWidth(), tankBase->GetHeight(), 1.0f);
 

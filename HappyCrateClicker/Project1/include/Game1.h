@@ -11,6 +11,7 @@ Description:
 #include "Shop.h"
 #include "Box.h"
 #include <iostream>
+#include <vector>
 using namespace std;
 
 class Scene;
@@ -108,22 +109,21 @@ protected:
 	Box *TimeMachineBox;
 
 	Vector2 *v_tankBase;
-	Vector2 *v_cookieProjectile;
+	vector<Vector2> v_cookieProjectile;
 
 	Matrix3x3* m_tankBaseTransMat;
 	Matrix3x3* m_tankTurretTransMat;
 	Matrix3x3* m_ttGlobal;
-	vector<Matrix3x3*> m_cLocalMat;
-	vector<Matrix3x3*> m_cGlobalMat;
 
 	void ClampRot();
 
 	Scene *gameScene;
 	SceneNode *tb;
 	SceneNode *tt;
-	vector<SceneNode**> cookieMunitions;
+	vector <SceneNode*> cookieMunitions;
 
-	bool cpInFlight;
+	bool allInFlight;
+	int projInFlight = 0;
 
 	Shop *shop;
 
