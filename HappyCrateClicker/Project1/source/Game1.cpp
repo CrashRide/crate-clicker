@@ -4,15 +4,14 @@
 #include "Font.h"
 #include "Input.h"
 #include "Box.h"
-#include "Matrix3x3.h"
-#include "Vector2.h"
-#include "Vector3.h"
+#include "MathLib.h"
 #include "Scene.h"
 #include <string>
 #include <vector>
 #include <iostream>
 #include <windows.h>
 using namespace std;
+using namespace MathLib;
 
 Game1::Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscreen, const char *title) : Application(windowWidth, windowHeight, fullscreen, title)
 {
@@ -101,45 +100,33 @@ Game1::Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscree
 	int h = CursorBoxTexture->GetHeight() / 2;
 	int w = CursorBoxTexture->GetWidth() / 2;
 
-	CursorBox = new Box(Vector2(temp - w, 100 - h), Vector2(temp + w, 100 + h));
-	GrandmaBox = new Box(Vector2((temp += m) - w, 100 - h), Vector2(temp + w, 100 + h));
-	FarmBox = new Box(Vector2((temp += m) - w, 100 - h), Vector2(temp + w, 100 + h));
-	FactoryBox = new Box(Vector2((temp += m) - w, 100 - h), Vector2(temp + w, 100 + h));
-	MineBox = new Box(Vector2((temp += m) - w, 100 - h), Vector2(temp + w, 100 + h));
-	ShipmentBox = new Box(Vector2((temp += m) - w, 100 - h), Vector2(temp + w, 100 + h));
-	AlchemyLabBox = new Box(Vector2((temp += m) - w, 100 - h), Vector2(temp + w, 100 + h));
-	PortalBox = new Box(Vector2((temp += m) - w, 100 - h), Vector2(temp + w, 100 + h));
-	TimeMachineBox = new Box(Vector2((temp += m) - w, 100 - h), Vector2(temp + w, 100 + h));
+	CursorBox = new Box(Vector2((float)temp - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
+	GrandmaBox = new Box(Vector2((float)temp - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
+	FarmBox = new Box(Vector2((float)temp - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
+	FactoryBox = new Box(Vector2((float)temp - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
+	MineBox = new Box(Vector2((float)temp - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
+	ShipmentBox = new Box(Vector2((float)temp - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
+	AlchemyLabBox = new Box(Vector2((float)temp - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
+	PortalBox = new Box(Vector2((float)temp - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
+	TimeMachineBox = new Box(Vector2((float)temp - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
 
-	v_tankBase = new Vector2(tankBase->GetWidth(), 720 - tankBase->GetHeight() / 2);
-	
+	v_tankBase = new Vector2((float)tankBase->GetWidth(), 720 - (float)tankBase->GetHeight() / 2);
 
-	m_tankBaseTransMat = new Matrix3x3(Vector3(1,0,0), Vector3(0,1,0), Vector3(v_tankBase->x,v_tankBase->y,1));
-	m_ttGlobal = new Matrix3x3();
-	m_tankTurretTransMat = new Matrix3x3();
-	m_tankTurretTransMat->ScaleMat(1, 1.2);
-	m_tankTurretTransMat->TranslateMat(-30, -6);
-
-	tb = new SceneNode(m_tankBaseTransMat, m_tankBaseTransMat);
-	tt = new SceneNode(m_tankTurretTransMat, m_ttGlobal);
+	tb = new SceneNode(new Matrix3x3(Vector3(1, 0, 0), Vector3(0, 1, 0), Vector3(v_tankBase->x, v_tankBase->y, 1)), new Matrix3x3(Vector3(1, 0, 0), Vector3(0, 1, 0), Vector3(v_tankBase->x, v_tankBase->y, 1)));
+	tt = new SceneNode(new Matrix3x3(Vector3(1, 0, 0), Vector3(0, 1.2f, 0), Vector3(-30,-6, 1)), new Matrix3x3());
 	gameScene = new Scene(tb);
 
 	tb->AddChild(tt);
 	
-	for (int i = 0; i < 3; i++)
-	{
-		cookieMunitions.push_back(new SceneNode(&Matrix3x3(), &Matrix3x3()));
-		cookieMunitions[i]->GetLocal()->TranslateMat(75, 0);
-		tt->AddChild(cookieMunitions[i]);
-		v_cookieProjectile.push_back(Vector2(1, 1));
-	}
+	cookieMunitions = new SceneNode(new Matrix3x3(Vector3(1,0,0),Vector3(0,1,0),Vector3(75,0,1)), new Matrix3x3());
+	tt->AddChild(cookieMunitions);	
 
 	shop = new Shop(50);
 	textArr = 0;
 	temp = 100;
 	m_cps = new float(0.0f);
-	allInFlight = false;
 	m_spritebatch->SetColumnMajor(true);
+
 }
 
 Game1::~Game1()
@@ -155,8 +142,7 @@ Game1::~Game1()
 	delete m_mouseY;
 	delete m_cps;
 	delete shop;
-	cookieMunitions.~vector();
-	v_cookieProjectile.~vector();
+	delete cookieMunitions;
 	delete tt;
 	delete gameScene;
 
@@ -228,7 +214,8 @@ char Game1::ClickInput()
 		return 'P';
 	else if (TimeMachineBox->ClickWithinBox(*m_mouseX, *m_mouseY))
 		return 'T';
-
+	else
+		return NULL;
 	
 }
 
@@ -436,54 +423,43 @@ void Game1::Update(float deltaTime)
 	}*/
 	if (GetInput()->IsKeyDown('W'))
 	{
-		m_tankBaseTransMat->TranslateMat(0, -45 * deltaTime);
+		tb->SetLocal(*tb->GetLocal() * Matrix3x3().CreateTranslateMat(0, -45 * deltaTime));
 	}
 	if (GetInput()->IsKeyDown('S'))
 	{
-		m_tankBaseTransMat->TranslateMat(0, 45 * deltaTime);
+		tb->SetLocal(*tb->GetLocal() * Matrix3x3().CreateTranslateMat(0, 45 * deltaTime));
 	}
 	if (GetInput()->IsKeyDown('D'))
 	{
-		m_tankTurretTransMat->RotateMat(0.7f * deltaTime);
+		tt->SetLocal(*tt->GetLocal() * Matrix3x3().CreateRotateMat(0.7f * deltaTime));
 		ClampRot();
 	}
 	if (GetInput()->IsKeyDown('A'))
 	{
-		m_tankTurretTransMat->RotateMat(-0.7f * deltaTime);
+		tt->SetLocal(*tt->GetLocal() * Matrix3x3().CreateRotateMat(-0.7f * deltaTime));
 		ClampRot();
 	}
 	if (GetInput()->WasKeyPressed('E'))
 	{
-		if (projInFlight != cookieMunitions.size())
-		{
-			tt->RemoveChild(cookieMunitions.front());
-		}
-		else
-			allInFlight = true;
-		projInFlight++;
+		tt->RemoveChild(cookieMunitions);
+		allInFlight = true;
 	}
-	if (projInFlight > 0)
+	if (allInFlight)
 	{
-		for (int i = 0; i < projInFlight; i++)
+		//cookieMunitions->SetLocal(*cookieMunitions->GetLocal() * Matrix3x3().CreateTranslateMat(velX * deltaTime, 0));
+		cookieMunitions->UpdateTransforms();
+
+		if (cookieMunitions->pos->x > 1280 || cookieMunitions->pos->y < 0 || cookieMunitions->pos->y > 720)
 		{
-			cookieMunitions[i]->SetLocal(Matrix3x3::CreateTranslateMat(700 * deltaTime, 0));
-			cookieMunitions[i]->UpdateTransforms();
 
-
-			*cookieMunitions[i]->GetGlobal() *= v_cookieProjectile[i];
-			if (v_cookieProjectile[i].x > 1280 || v_cookieProjectile[i].y < 0 || v_cookieProjectile[i].y > 720)
-			{
-				//allInFlight = false;
-				cookieMunitions.erase(cookieMunitions.begin() + i);
-				
-				
-				cookieMunitions.insert(cookieMunitions.begin() + i, new SceneNode(&Matrix3x3::CreateTranslateMat(75, 0), new Matrix3x3()));
-				tt->AddChild(cookieMunitions[i]);
-				projInFlight--;
-			}
-			v_cookieProjectile[i].x = 1;
-			v_cookieProjectile[i].y = 1;
+			//allInFlight = false;
+			
+			//cookieMunitions = new SceneNode(new Matrix3x3(Vector3(1, 0, 0), Vector3(0, 1, 0), Vector3(75, 0, 1)), new Matrix3x3());
+			//tt->AddChild(cookieMunitions);
+			
 		}
+	
+		
 	}
 	gameScene->UpdateTransforms();
 }
@@ -493,17 +469,17 @@ void Game1::ClampRot()
 	float angleClamp = 1.04719755f;
 	Matrix3x3 temp;
 	Matrix3x3 temp2;
-	temp.ScaleMat(1, 1.2);
-	temp2.ScaleMat(1, 1.2);
+	temp.ScaleMat(1, 1.2f);
+	temp2.ScaleMat(1, 1.2f);
 	temp.RotateMat(angleClamp);
 	temp2.RotateMat(-angleClamp);
-	if (m_tankTurretTransMat->m_mat[0][0] <= temp2.m_mat[0][0] && m_tankTurretTransMat->m_mat[0][1] >= temp2.m_mat[0][1])
+	if (tt->GetLocal()->m_mat[0][0] <= temp2.m_mat[0][0] && tt->GetLocal()->m_mat[0][1] >= temp2.m_mat[0][1])
 	{
-		m_tankTurretTransMat->RotateMat(0.0174532925);
+		tt->SetLocal(*tt->GetLocal() * Matrix3x3().CreateRotateMat(0.0174532925f));
 	}
-	else if (m_tankTurretTransMat->m_mat[0][0] <= temp.m_mat[0][0] && m_tankTurretTransMat->m_mat[0][1] <= temp.m_mat[0][1])
+	else if (tt->GetLocal()->m_mat[0][0] <= temp.m_mat[0][0] && tt->GetLocal()->m_mat[0][1] <= temp.m_mat[0][1])
 	{
-		m_tankTurretTransMat->RotateMat(-0.0174532925);
+		tt->SetLocal(*tt->GetLocal() * Matrix3x3().CreateRotateMat(-0.0174532925f));
 	}
 }
 
@@ -519,17 +495,14 @@ void Game1::Draw()
 	m_spritebatch->Begin();
 
 	m_spritebatch->DrawSprite(m_crate, 640.0f, 360.0f, m_crate->GetWidth()*sizeMod, m_crate->GetHeight()*sizeMod);
-	for (int i = 0; i < cookieMunitions.size(); i++)
-	{
-		m_spritebatch->DrawSpriteTransformed3x3(m_cookie, &cookieMunitions[i]->GetGlobal()->m_mat[0][0], 32, 24, 0.5f);
-	}
-	m_spritebatch->DrawSpriteTransformed3x3(tankTurret, &m_ttGlobal->m_mat[0][0], tankTurret->GetWidth(), tankTurret->GetHeight(), -0.3f);
-	m_spritebatch->DrawSpriteTransformed3x3(tankBase, &m_tankBaseTransMat->m_mat[0][0], tankBase->GetWidth(), tankBase->GetHeight(), 1.0f);
+	m_spritebatch->DrawSpriteTransformed3x3(m_cookie, &cookieMunitions->GetGlobal()->m_mat[0][0], 32, 24, 0.5f);
+	m_spritebatch->DrawSpriteTransformed3x3(tankTurret, &tt->GetGlobal()->m_mat[0][0], (float)tankTurret->GetWidth(), (float)tankTurret->GetHeight(), -0.3f);
+	m_spritebatch->DrawSpriteTransformed3x3(tankBase, &tb->GetGlobal()->m_mat[0][0], (float)tankBase->GetWidth(), (float)tankBase->GetHeight(), 1.0f);
 
 	for (int i = temp; i < 1280; i += 138)
 	{
 		m_spritebatch->DrawString(m_text, BuildNames[textArr], (float)i, 40.0f, 0.5f, 0.5f);
-		m_spritebatch->DrawSprite(BuildTexture[textArr], (float)i, temp, CursorBoxTexture->GetWidth(), CursorBoxTexture->GetHeight());
+		m_spritebatch->DrawSprite(BuildTexture[textArr], (float)i, (float)temp, (float)CursorBoxTexture->GetWidth(), (float)CursorBoxTexture->GetHeight());
 		m_spritebatch->DrawString(m_text, to_string(Builds[textArr++]->GetCost()).c_str(), (float)i, 160.0f, 0.0f, 0.0f);
 	}
 

@@ -19,7 +19,7 @@ Upgrade::Upgrade(float a_mod, char a_op, int a_cost, char a_name[])
 	u_cost = a_cost;
 	u_mouseModifier = NULL;
 	u_name = new char[strlen(a_name) + 1];
-	for (int i = 0; i < strlen(a_name); i++)
+	for (unsigned int i = 0; i < strlen(a_name); i++)
 	{
 		u_name[i] = a_name[i];
 	}
@@ -34,7 +34,7 @@ Upgrade::Upgrade(float a_mouseMod, float a_cursorMod, char a_op, int a_cost, cha
 	u_cost = a_cost;
 	u_mouseModifier = a_mouseMod;
 	u_name = new char[strlen(a_name) + 1];
-	for (int i = 0; i < strlen(a_name); i++)
+	for (unsigned int i = 0; i < strlen(a_name); i++)
 	{
 		u_name[i] = a_name[i];
 	}

@@ -1,5 +1,6 @@
 #include "Box.h"
-
+#include "MathLib.h"
+using namespace MathLib;
 
 Box::Box(Vector2 &b_topLeft, Vector2 &b_bottomRight)
 {

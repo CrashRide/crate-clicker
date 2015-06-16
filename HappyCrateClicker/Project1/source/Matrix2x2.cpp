@@ -3,29 +3,38 @@
 
 Matrix2x2::Matrix2x2()
 {
-	float m_mat[2][2] =
+	for (int j = 0; j < 2; j++)
 	{
-		{ 1, 0 },
-		{ 0, 1 },
-	};
+		for (int i = 0; i < 2; i++)
+		{
+			if (j == i)
+				m_mat[i][j] = 1;
+			else
+			{
+				m_mat[i][j] = 0;
+			}
+		}
+	}
 }
 
 Matrix2x2::Matrix2x2(Vector2 &rowOne, Vector2 &rowTwo)
 {
-	float m_mat[2][2] =
+	for (int j = 0; j < 2; j++)
 	{
-		{ rowOne.x, rowOne.y },
-		{ rowTwo.x, rowTwo.y },
-	};
+		m_mat[j][0] = rowOne[j];
+		m_mat[j][1] = rowTwo[j];
+	}
 }
 
 Matrix2x2::Matrix2x2(const Matrix2x2 &a_mat)
 {
-	float m_mat[2][2] = 
+	for (int j = 0; j < 3; j++)
 	{
-		{ a_mat.m_mat[0][0], a_mat.m_mat[0][1] },
-		{ a_mat.m_mat[1][0], a_mat.m_mat[1][1] }
-	};
+		for (int i = 0; i < 3; i++)
+		{
+			m_mat[i][j] = a_mat.m_mat[i][j];
+		}
+	}
 }
 
 

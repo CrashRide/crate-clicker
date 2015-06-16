@@ -1,6 +1,7 @@
 #ifndef _BOX_H_
 #define _BOX_H_
-#include "Vector2.h"
+#include "MathLib.h"
+using namespace MathLib;
 
 class Box
 {

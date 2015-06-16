@@ -1,7 +1,10 @@
 #ifndef _MATRIX4x4_H_
 #define _MATRIX4x4_H_
 
+class Vector3;
 class Vector4;
+#include <iostream>
+using namespace std;
 
 class Matrix4x4
 {
@@ -32,6 +35,10 @@ public:
 	Matrix4x4 operator*(const Matrix4x4 &rhs);
 	void operator*=(Matrix4x4 &rhs);
 	Vector4 operator*(Vector4 &rhs);
+	void operator*=(Vector4 &rhs);
+	Vector3 operator*(Vector3 &rhs);
+	void operator*=(Vector3 &rhs);
+	friend ostream& operator<< (ostream& stream, const Matrix4x4& matrix);
 
 	float m_mat[4][4];
 };

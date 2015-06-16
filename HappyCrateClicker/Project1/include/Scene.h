@@ -2,7 +2,9 @@
 #define _SCENE_H_
 #include <vector>
 
-class Matrix3x3;
+
+#include "MathLib.h"
+using namespace MathLib;
 
 class SceneNode
 {
@@ -17,10 +19,12 @@ public:
 	Matrix3x3* GetLocal();
 	Matrix3x3* GetGlobal();
 	void SetLocal(Matrix3x3 &rhs);
+	Vector2* pos;
 protected:
 	
 	std::vector<SceneNode*> m_children;
 	SceneNode* m_parent;
+
 	
 	Matrix3x3* m_local_transform;
 	

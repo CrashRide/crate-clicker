@@ -10,23 +10,23 @@ Description:
 #include "Buildings.h"
 #include "Shop.h"
 #include "Box.h"
+#include "MathLib.h"
 #include <iostream>
 #include <vector>
 using namespace std;
+using namespace MathLib;
 
 class Scene;
 class SceneNode;
-class Matrix3x3;
 class String;
 class Box;
-class Vector2;
-class Vector3;
 class SpriteBatch;
+
 
 class Game1 : public Application
 {
 public:
-
+	float velX = 700.0f;
 	// assets loaded in constructor
 	Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscreen, const char *title);
 
@@ -42,7 +42,6 @@ public:
 	void UpdateCPS(float &a_cps);
 
 protected:
-
 	SpriteBatch *m_spritebatch;
 
 	Texture *m_cookie;
@@ -109,20 +108,15 @@ protected:
 	Box *TimeMachineBox;
 
 	Vector2 *v_tankBase;
-	vector<Vector2> v_cookieProjectile;
-
-	Matrix3x3* m_tankBaseTransMat;
-	Matrix3x3* m_tankTurretTransMat;
-	Matrix3x3* m_ttGlobal;
 
 	void ClampRot();
 
 	Scene *gameScene;
 	SceneNode *tb;
 	SceneNode *tt;
-	vector <SceneNode*> cookieMunitions;
+	SceneNode *cookieMunitions;
 
-	bool allInFlight;
+	bool allInFlight = false;
 	int projInFlight = 0;
 
 	Shop *shop;

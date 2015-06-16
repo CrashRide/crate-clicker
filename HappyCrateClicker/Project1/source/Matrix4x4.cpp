@@ -1,37 +1,45 @@
 #include "Matrix4x4.h"
 #include "Vector4.h"
+#include "Vector3.h"
+#include <iostream>
+using namespace std;
 
 Matrix4x4::Matrix4x4()
 {
-	float m_mat[4][4] =
+	for (int j = 0; j < 4; j++)
 	{
-		{ 1, 0, 0, 0 },
-		{ 0, 1, 0, 0 },
-		{ 0, 0, 1, 0 },
-		{ 0, 0, 0, 1 },
-	};
+		for (int i = 0; i < 4; i++)
+		{
+			if (j == i)
+				m_mat[i][j] = 1;
+			else
+			{
+				m_mat[i][j] = 0;
+			}
+		}
+	}
 }
 
 Matrix4x4::Matrix4x4(Vector4 &rowOne, Vector4 &rowTwo, Vector4 &rowThree, Vector4 &rowFour)
 {
-	float m_mat[4][4] =
+	for (int j = 0; j < 4; j++)
 	{
-		{ rowOne.x, rowOne.y, rowOne.z, rowOne.w },
-		{ rowTwo.x, rowTwo.y, rowTwo.z, rowTwo.w },
-		{ rowThree.x, rowThree.y, rowThree.z, rowThree.w },
-		{ rowFour.x, rowFour.y, rowFour.z, rowFour.w },
-	};
+		m_mat[j][0] = rowOne[j];
+		m_mat[j][1] = rowTwo[j];
+		m_mat[j][2] = rowThree[j];
+		m_mat[j][3] = rowFour[j];
+	}
 }
 
 Matrix4x4::Matrix4x4(const Matrix4x4 &a_mat)
 {
-	float m_mat[4][4] =
+	for (int j = 0; j < 4; j++)
 	{
-		{ a_mat.m_mat[0][0], a_mat.m_mat[0][1], a_mat.m_mat[0][2], a_mat.m_mat[0][3] },
-		{ a_mat.m_mat[1][0], a_mat.m_mat[1][1], a_mat.m_mat[1][2], a_mat.m_mat[1][3] },
-		{ a_mat.m_mat[2][0], a_mat.m_mat[2][1], a_mat.m_mat[2][2], a_mat.m_mat[2][3] },
-		{ a_mat.m_mat[3][0], a_mat.m_mat[3][1], a_mat.m_mat[3][2], a_mat.m_mat[3][3] },
-	};
+		for (int i = 0; i < 4; i++)
+		{
+			m_mat[i][j] = a_mat.m_mat[i][j];
+		}
+	}
 }
 
 
@@ -269,4 +277,60 @@ Vector4 Matrix4x4::operator*(Vector4 &rhs)
 		}
 	}
 	return temp;
+}
+
+void Matrix4x4::operator*=(Vector4 &rhs)
+{
+	Vector4 temp;
+	for (int j = 0; j < 4; j++)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			temp[j] += m_mat[j][i] * rhs[i];
+		}
+	}
+	rhs = temp;
+}
+
+Vector3 Matrix4x4::operator*(Vector3 &rhs)
+{
+	Vector4 rhsTemp(rhs.x, rhs.y, rhs.z, 1.0f);
+	Vector4 temp;
+	for (int j = 0; j < 4; j++)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			temp[j] += m_mat[j][i] * rhsTemp[i];
+		}
+	}
+
+	return Vector3(temp.x, temp.y, temp.z);
+}
+
+void Matrix4x4::operator*=(Vector3 &rhs)
+{
+	Vector4 rhsTemp(rhs.x, rhs.y, rhs.z, 1.0);
+	Vector4 temp;
+	for (int j = 0; j < 4; j++)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			temp[j] += m_mat[j][i] * rhsTemp[i];
+		}
+	}
+
+	rhs = Vector3(temp.x, temp.y, temp.z);
+}
+
+ostream& operator<<(ostream& os, const Matrix4x4& rhs)
+{
+	for (int j = 0; j < 4; j++)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			os << rhs.m_mat[j][i] << "	,	";
+		}
+		os << endl;
+	}
+	return os;
 }

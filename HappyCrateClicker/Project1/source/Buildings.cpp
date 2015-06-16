@@ -18,12 +18,12 @@ void Buildings::Purchase()
 {
 	b_count++;
 	b_cumulitiveCps = b_baseCps * b_count;
-	float temp = 1.15;
+	float temp = 1.15f;
 	for (int i = 1; i < b_count; i++)
 	{
-		temp *= 1.15;
+		temp *= 1.15f;
 	}
-	b_cost = (b_baseCost * temp);
+	b_cost = (int)(b_baseCost * temp);
 }
 
 void Buildings::Upg(Upgrade &a_upgd)

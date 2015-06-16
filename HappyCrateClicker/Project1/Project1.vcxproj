@@ -56,13 +56,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)AIE_GL\include\;$(SolutionDir)libraries\glfw3\include\GLFW\;$(SolutionDir)libraries\glew\include\;$(ProjectDir)include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)AIE_GL\include\;$(SolutionDir)libraries\glfw3\include\GLFW\;$(SolutionDir)libraries\glew\include\;$(SolutionDir)libraries\mathlib\include\;$(ProjectDir)include\;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)AIE_GL\bin\;$(SolutionDir)libraries\glew\lib\Release\Win32\;$(SolutionDir)libraries\glfw3\lib-vc2013\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OpenGL32.lib;AIE_GL_d.lib;glew32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OpenGL32.lib;MathLib.lib;AIE_GL_d.lib;glew32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)AIE_GL\bin\;$(SolutionDir)libraries\glew\lib\Release\Win32\;$(SolutionDir)libraries\glfw3\lib-vc2013\;$(SolutionDir)libraries\mathlib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -74,15 +74,15 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)AIE_GL\include\;$(SolutionDir)libraries\glfw3\include\GLFW\;$(SolutionDir)libraries\glew\include\;$(ProjectDir)include\;$(SolutionDir)libraries\glm\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)AIE_GL\include\;$(SolutionDir)libraries\glfw3\include\GLFW\;$(SolutionDir)libraries\glew\include\;$(SolutionDir)libraries\mathlib\include\;$(ProjectDir)include\;$(SolutionDir)libraries\glm\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>OpenGL32.lib;AIE_GL.lib;glew32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)AIE_GL\bin\;$(SolutionDir)libraries\glew\lib\Release\Win32\;$(SolutionDir)libraries\glfw3\lib-vc2013\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OpenGL32.lib;MathLib.lib;AIE_GL.lib;glew32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)AIE_GL\bin\;$(SolutionDir)libraries\glew\lib\Release\Win32\;$(SolutionDir)libraries\glfw3\lib-vc2013\;$(SolutionDir)libraries\mathlib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -90,31 +90,21 @@
     <ClCompile Include="source\Box.cpp" />
     <ClCompile Include="source\Buildings.cpp" />
     <ClCompile Include="source\Game1.cpp" />
-    <ClCompile Include="source\Matrix2x2.cpp" />
-    <ClCompile Include="source\Matrix3x3.cpp" />
-    <ClCompile Include="source\Matrix4x4.cpp" />
+    <ClCompile Include="source\GameObj.cpp" />
     <ClCompile Include="source\Mouse.cpp" />
     <ClCompile Include="source\Scene.cpp" />
     <ClCompile Include="source\Shop.cpp" />
     <ClCompile Include="source\Upgrade.cpp" />
-    <ClCompile Include="source\Vector2.cpp" />
-    <ClCompile Include="source\Vector3.cpp" />
-    <ClCompile Include="source\Vector4.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Box.h" />
     <ClInclude Include="include\Buildings.h" />
     <ClInclude Include="include\Game1.h" />
-    <ClInclude Include="include\Matrix2x2.h" />
-    <ClInclude Include="include\Matrix3x3.h" />
-    <ClInclude Include="include\Matrix4x4.h" />
+    <ClInclude Include="include\GameObj.h" />
     <ClInclude Include="include\Mouse.h" />
     <ClInclude Include="include\Scene.h" />
     <ClInclude Include="include\Shop.h" />
     <ClInclude Include="include\Upgrade.h" />
-    <ClInclude Include="include\Vector2.h" />
-    <ClInclude Include="include\Vector3.h" />
-    <ClInclude Include="include\Vector4.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
