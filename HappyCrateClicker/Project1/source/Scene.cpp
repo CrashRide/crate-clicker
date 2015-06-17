@@ -5,8 +5,6 @@ using namespace MathLib;
 Scene::Scene(SceneNode*firstBorn)
 {
 	m_scene_root = firstBorn;
-	//m_scene_root->AddChild(firstBorn);
-	m_scene_root->SetParent(nullptr);
 }
 
 Scene::~Scene()
@@ -17,7 +15,6 @@ Scene::~Scene()
 SceneNode::SceneNode()
 {
 	m_parent = nullptr;
-	pos = new Vector2(1, 1);
 	m_local_transform = new Matrix3x3();
 	m_global_transform = new Matrix3x3();
 }
@@ -25,15 +22,21 @@ SceneNode::SceneNode()
 SceneNode::SceneNode(Matrix3x3*local, Matrix3x3*global)
 {
 	m_parent = nullptr;
-	pos = new Vector2(1, 1);
 	m_local_transform = local;
 	m_global_transform = global;
 }
 
 SceneNode::~SceneNode()
 {
-	delete m_local_transform;
-	delete pos;
+	if (m_local_transform == m_global_transform)
+	{
+		delete m_local_transform;
+	}
+	else
+	{
+		delete m_local_transform;
+		delete m_global_transform;
+	}
 }
 
 void Scene::UpdateTransforms()
@@ -75,14 +78,11 @@ void SceneNode::UpdateTransforms()
 	if (m_parent != nullptr)
 		*m_global_transform = *m_parent->m_global_transform * *m_local_transform;
 	else
-		m_local_transform = m_global_transform;
+		m_global_transform = m_local_transform;
 	for (unsigned int i = 0; i < m_children.size(); i++)
 	{
 		m_children[i]->UpdateTransforms();
 	}
-	pos->x = 1;
-	pos->y = 1;
-	*m_global_transform *= *pos;
 }
 
 Matrix3x3* SceneNode::GetLocal()

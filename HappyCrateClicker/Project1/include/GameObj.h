@@ -25,11 +25,12 @@ public:
 
 	void UpdateMat();
 
+	float m_velo;
+	SceneNode m_localTrans;
+private:
 	Vector2 m_pos;
 	Vector2 m_scale;
-	float m_velo;
 	float m_rot;
-	SceneNode m_localTrans;
 };
 
 

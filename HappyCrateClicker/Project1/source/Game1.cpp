@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "Box.h"
 #include "MathLib.h"
+#include "GameObj.h"
 #include "Scene.h"
 #include <string>
 #include <vector>
@@ -110,16 +111,18 @@ Game1::Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscree
 	PortalBox = new Box(Vector2((float)temp - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
 	TimeMachineBox = new Box(Vector2((float)temp - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
 
-	v_tankBase = new Vector2((float)tankBase->GetWidth(), 720 - (float)tankBase->GetHeight() / 2);
+	v_tankBase = new Vector2();
 
-	tb = new SceneNode(new Matrix3x3(Vector3(1, 0, 0), Vector3(0, 1, 0), Vector3(v_tankBase->x, v_tankBase->y, 1)), new Matrix3x3(Vector3(1, 0, 0), Vector3(0, 1, 0), Vector3(v_tankBase->x, v_tankBase->y, 1)));
-	tt = new SceneNode(new Matrix3x3(Vector3(1, 0, 0), Vector3(0, 1.2f, 0), Vector3(-30,-6, 1)), new Matrix3x3());
-	gameScene = new Scene(tb);
-
-	tb->AddChild(tt);
+	tb = new GameObj();
+	tb->SetPos(Vector2((float)tankBase->GetWidth(), 720 - (float)tankBase->GetHeight() / 2));
+	tt = new GameObj();
+	tt->SetPos(Vector2(-32, -4));
+	tb->m_localTrans.AddChild(&tt->m_localTrans);
+	cookieMunitions = new GameObj();
+	cookieMunitions->SetPos(Vector2(tankTurret->GetWidth(), 0));
+	tt->m_localTrans.AddChild(&cookieMunitions->m_localTrans);	
 	
-	cookieMunitions = new SceneNode(new Matrix3x3(Vector3(1,0,0),Vector3(0,1,0),Vector3(75,0,1)), new Matrix3x3());
-	tt->AddChild(cookieMunitions);	
+	gameScene = new Scene(&tb->m_localTrans);
 
 	shop = new Shop(50);
 	textArr = 0;
@@ -144,7 +147,8 @@ Game1::~Game1()
 	delete shop;
 	delete cookieMunitions;
 	delete tt;
-	delete gameScene;
+	delete tb;
+	//delete gameScene;
 
 	delete Cursor;
 	delete Grandma;
@@ -423,43 +427,44 @@ void Game1::Update(float deltaTime)
 	}*/
 	if (GetInput()->IsKeyDown('W'))
 	{
-		tb->SetLocal(*tb->GetLocal() * Matrix3x3().CreateTranslateMat(0, -45 * deltaTime));
+		tb->Translate(Vector2(0, -45 * deltaTime));
 	}
 	if (GetInput()->IsKeyDown('S'))
 	{
-		tb->SetLocal(*tb->GetLocal() * Matrix3x3().CreateTranslateMat(0, 45 * deltaTime));
+		tb->Translate(Vector2(0, 45 * deltaTime));
 	}
 	if (GetInput()->IsKeyDown('D'))
 	{
-		tt->SetLocal(*tt->GetLocal() * Matrix3x3().CreateRotateMat(0.7f * deltaTime));
+		tt->Rot(0.7f *deltaTime);
 		ClampRot();
 	}
 	if (GetInput()->IsKeyDown('A'))
 	{
-		tt->SetLocal(*tt->GetLocal() * Matrix3x3().CreateRotateMat(-0.7f * deltaTime));
+		tt->Rot(-0.7f *deltaTime);
 		ClampRot();
 	}
 	if (GetInput()->WasKeyPressed('E'))
 	{
-		tt->RemoveChild(cookieMunitions);
+		tt->m_localTrans.RemoveChild(&cookieMunitions->m_localTrans);
+		cookieMunitions->SetPos(Vector2(cookieMunitions->m_localTrans.GetGlobal()->m_mat[0][2], cookieMunitions->m_localTrans.GetGlobal()->m_mat[1][2]));
+		cookieMunitions->SetRot(tt->GetRot());
 		allInFlight = true;
 	}
 	if (allInFlight)
 	{
-		//cookieMunitions->SetLocal(*cookieMunitions->GetLocal() * Matrix3x3().CreateTranslateMat(velX * deltaTime, 0));
-		cookieMunitions->UpdateTransforms();
 
-		if (cookieMunitions->pos->x > 1280 || cookieMunitions->pos->y < 0 || cookieMunitions->pos->y > 720)
+		if (cookieMunitions->GetPos().x > 1280 || cookieMunitions->GetPos().y < 0 || cookieMunitions->GetPos().y > 720)
 		{
-
-			//allInFlight = false;
-			
-			//cookieMunitions = new SceneNode(new Matrix3x3(Vector3(1, 0, 0), Vector3(0, 1, 0), Vector3(75, 0, 1)), new Matrix3x3());
-			//tt->AddChild(cookieMunitions);
-			
+			allInFlight = false;
+			tt->m_localTrans.AddChild(&cookieMunitions->m_localTrans);
+			cookieMunitions->SetPos(Vector2(87,0));
+			cookieMunitions->SetRot(0);
+		}	
+		else
+		{
+			cookieMunitions->Translate(Vector2(cookieMunitions->m_localTrans.GetGlobal()->m_mat[0][0] * 700 * deltaTime, cookieMunitions->m_localTrans.GetGlobal()->m_mat[1][0] * 700 * deltaTime));
+			cookieMunitions->m_localTrans.UpdateTransforms();
 		}
-	
-		
 	}
 	gameScene->UpdateTransforms();
 }
@@ -473,13 +478,13 @@ void Game1::ClampRot()
 	temp2.ScaleMat(1, 1.2f);
 	temp.RotateMat(angleClamp);
 	temp2.RotateMat(-angleClamp);
-	if (tt->GetLocal()->m_mat[0][0] <= temp2.m_mat[0][0] && tt->GetLocal()->m_mat[0][1] >= temp2.m_mat[0][1])
+	if (tt->m_localTrans.GetLocal()->m_mat[0][0] <= temp2.m_mat[0][0] && tt->m_localTrans.GetLocal()->m_mat[0][1] >= temp2.m_mat[0][1])
 	{
-		tt->SetLocal(*tt->GetLocal() * Matrix3x3().CreateRotateMat(0.0174532925f));
+		tt->Rot(0.0174532925f);
 	}
-	else if (tt->GetLocal()->m_mat[0][0] <= temp.m_mat[0][0] && tt->GetLocal()->m_mat[0][1] <= temp.m_mat[0][1])
+	else if (tt->m_localTrans.GetLocal()->m_mat[0][0] <= temp.m_mat[0][0] && tt->m_localTrans.GetLocal()->m_mat[0][1] <= temp.m_mat[0][1])
 	{
-		tt->SetLocal(*tt->GetLocal() * Matrix3x3().CreateRotateMat(-0.0174532925f));
+		tt->Rot(-0.0174532925f);
 	}
 }
 
@@ -495,9 +500,9 @@ void Game1::Draw()
 	m_spritebatch->Begin();
 
 	m_spritebatch->DrawSprite(m_crate, 640.0f, 360.0f, m_crate->GetWidth()*sizeMod, m_crate->GetHeight()*sizeMod);
-	m_spritebatch->DrawSpriteTransformed3x3(m_cookie, &cookieMunitions->GetGlobal()->m_mat[0][0], 32, 24, 0.5f);
-	m_spritebatch->DrawSpriteTransformed3x3(tankTurret, &tt->GetGlobal()->m_mat[0][0], (float)tankTurret->GetWidth(), (float)tankTurret->GetHeight(), -0.3f);
-	m_spritebatch->DrawSpriteTransformed3x3(tankBase, &tb->GetGlobal()->m_mat[0][0], (float)tankBase->GetWidth(), (float)tankBase->GetHeight(), 1.0f);
+	m_spritebatch->DrawSpriteTransformed3x3(m_cookie, &cookieMunitions->m_localTrans.GetGlobal()->m_mat[0][0], 32, 24, 0.5f);
+	//m_spritebatch->DrawSpriteTransformed3x3(tankTurret, &tt->m_localTrans.GetGlobal()->m_mat[0][0], (float)tankTurret->GetWidth(), (float)tankTurret->GetHeight(), -0.3f);
+	m_spritebatch->DrawSpriteTransformed3x3(tankBase, &tb->m_localTrans.GetGlobal()->m_mat[0][0], (float)tankBase->GetWidth(), (float)tankBase->GetHeight(), 1.0f);
 
 	for (int i = temp; i < 1280; i += 138)
 	{

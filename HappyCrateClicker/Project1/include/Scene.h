@@ -19,7 +19,7 @@ public:
 	Matrix3x3* GetLocal();
 	Matrix3x3* GetGlobal();
 	void SetLocal(Matrix3x3 &rhs);
-	Vector2* pos;
+
 protected:
 	
 	std::vector<SceneNode*> m_children;

@@ -21,12 +21,12 @@ class SceneNode;
 class String;
 class Box;
 class SpriteBatch;
+class GameObj;
 
 
 class Game1 : public Application
 {
 public:
-	float velX = 700.0f;
 	// assets loaded in constructor
 	Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscreen, const char *title);
 
@@ -112,9 +112,9 @@ protected:
 	void ClampRot();
 
 	Scene *gameScene;
-	SceneNode *tb;
-	SceneNode *tt;
-	SceneNode *cookieMunitions;
+	GameObj *tb;
+	GameObj *tt;
+	GameObj *cookieMunitions;
 
 	bool allInFlight = false;
 	int projInFlight = 0;
