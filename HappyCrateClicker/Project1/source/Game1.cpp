@@ -102,14 +102,16 @@ Game1::Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscree
 	int w = CursorBoxTexture->GetWidth() / 2;
 
 	CursorBox = new Box(Vector2((float)temp - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
-	GrandmaBox = new Box(Vector2((float)temp - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
-	FarmBox = new Box(Vector2((float)temp - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
-	FactoryBox = new Box(Vector2((float)temp - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
-	MineBox = new Box(Vector2((float)temp - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
-	ShipmentBox = new Box(Vector2((float)temp - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
-	AlchemyLabBox = new Box(Vector2((float)temp - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
-	PortalBox = new Box(Vector2((float)temp - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
-	TimeMachineBox = new Box(Vector2((float)temp - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
+	GrandmaBox = new Box(Vector2((float)(temp += m) - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
+	FarmBox = new Box(Vector2((float)(temp += m) - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
+	FactoryBox = new Box(Vector2((float)(temp += m) - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
+	MineBox = new Box(Vector2((float)(temp += m) - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
+	ShipmentBox = new Box(Vector2((float)(temp += m) - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
+	AlchemyLabBox = new Box(Vector2((float)(temp += m) - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
+	PortalBox = new Box(Vector2((float)(temp += m) - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
+	TimeMachineBox = new Box(Vector2((float)(temp += m) - (float)w, 100 - (float)h), Vector2((float)temp + (float)w, 100 + (float)h));
+
+	
 
 	v_tankBase = new Vector2();
 
@@ -235,7 +237,7 @@ void Game1::UpdateCPS(float &a_cps)
 void Game1::Update(float deltaTime)
 {
 	m_crateCount += *m_cps * deltaTime;
-	/*if (GetInput()->IsMouseButtonDown(0))
+	if (GetInput()->IsMouseButtonDown(0))
 	{
 		m_mouseCheck = true;
 		switch (ClickInput())
@@ -362,69 +364,69 @@ void Game1::Update(float deltaTime)
 		}
 		case 'M':
 		{
-					BuildTexture[4] = MineBoxTexture;
-					if (m_crateCount >= Mine->GetCost())
-					{
-						m_crateCount -= Mine->GetCost();
-						Mine->Purchase();
-						UpdateCPS(*m_cps);
-					}
-					break;
+			BuildTexture[4] = MineBoxTexture;
+			if (m_crateCount >= Mine->GetCost())
+			{
+				m_crateCount -= Mine->GetCost();
+				Mine->Purchase();
+				UpdateCPS(*m_cps);
+			}
+			break;
 		}
 		case 'S':
 		{
-					BuildTexture[5] = ShipmentBoxTexture;
-					if (m_crateCount >= Shipment->GetCost())
-					{
-						m_crateCount -= Shipment->GetCost();
-						Shipment->Purchase();
-						UpdateCPS(*m_cps);
-					}
-					break;
+			BuildTexture[5] = ShipmentBoxTexture;
+			if (m_crateCount >= Shipment->GetCost())
+			{
+				m_crateCount -= Shipment->GetCost();
+				Shipment->Purchase();
+				UpdateCPS(*m_cps);
+			}
+			break;
 		}
 		case 'A':
 		{
-					BuildTexture[6] = AlchemyLabBoxTexture;
-					if (m_crateCount >= AlchemyLab->GetCost())
-					{
-						m_crateCount -= AlchemyLab->GetCost();
-						AlchemyLab->Purchase();
-						UpdateCPS(*m_cps);
-					}
-					break;
+			BuildTexture[6] = AlchemyLabBoxTexture;
+			if (m_crateCount >= AlchemyLab->GetCost())
+			{
+				m_crateCount -= AlchemyLab->GetCost();
+				AlchemyLab->Purchase();
+				UpdateCPS(*m_cps);
+			}
+			break;
 		}
 		case 'P':
 		{
-					BuildTexture[7] = PortalBoxTexture;
-					if (m_crateCount >= Portal->GetCost())
-					{
-						m_crateCount -= Portal->GetCost();
-						Portal->Purchase();
-						UpdateCPS(*m_cps);
-					}
-					break;
+			BuildTexture[7] = PortalBoxTexture;
+			if (m_crateCount >= Portal->GetCost())
+			{
+				m_crateCount -= Portal->GetCost();
+				Portal->Purchase();
+				UpdateCPS(*m_cps);
+			}
+			break;
 		}
 		case 'T':
 		{
-					BuildTexture[8] = TimeMachineBoxTexture;
-					if (m_crateCount >= TimeMachine->GetCost())
-					{
-						m_crateCount -= TimeMachine->GetCost();
-						TimeMachine->Purchase();
-						UpdateCPS(*m_cps);
-					}
-					break;
+			BuildTexture[8] = TimeMachineBoxTexture;
+			if (m_crateCount >= TimeMachine->GetCost())
+			{
+				m_crateCount -= TimeMachine->GetCost();
+				TimeMachine->Purchase();
+				UpdateCPS(*m_cps);
+			}
+			break;
 		}
 		default:
 		{
-				   break;
+			break;
 		}
 		}
-	}*/
-	/*else
+	}
+	else
 	{
 		m_mouseCheck = false;
-	}*/
+	}
 	if (GetInput()->IsKeyDown('W'))
 	{
 		tb->Translate(Vector2(0, -45 * deltaTime));
@@ -445,25 +447,40 @@ void Game1::Update(float deltaTime)
 	}
 	if (GetInput()->WasKeyPressed('E'))
 	{
-		tt->m_localTrans.RemoveChild(&cookieMunitions->m_localTrans);
-		cookieMunitions->SetPos(Vector2(cookieMunitions->m_localTrans.GetGlobal()->m_mat[0][2], cookieMunitions->m_localTrans.GetGlobal()->m_mat[1][2]));
-		cookieMunitions->SetRot(tt->GetRot());
-		allInFlight = true;
+		if (!allInFlight)
+		{
+			tt->m_localTrans.RemoveChild(&cookieMunitions->m_localTrans);
+			cookieMunitions->SetPos(Vector2(cookieMunitions->m_localTrans.GetGlobal()->m_mat[0][2], cookieMunitions->m_localTrans.GetGlobal()->m_mat[1][2]));
+			cookieMunitions->SetRot(tt->GetRot());
+			allInFlight = true;
+			cookieMunitions->m_velo.x = 700;
+			cookieMunitions->m_velo.y = 700;
+		}
 	}
 	if (allInFlight)
 	{
-
-		if (cookieMunitions->GetPos().x > 1280 || cookieMunitions->GetPos().y < 0 || cookieMunitions->GetPos().y > 720)
+		cookieMunitions->Translate(Vector2(cookieMunitions->m_localTrans.GetGlobal()->m_mat[0][0] * cookieMunitions->m_velo.x * deltaTime, cookieMunitions->m_localTrans.GetGlobal()->m_mat[1][0] * cookieMunitions->m_velo.y * deltaTime));
+		cookieMunitions->m_localTrans.UpdateTransforms();
+		if (cookieMunitions->GetPos().x > 1280)
+		{
+			cookieMunitions->m_velo.x *= -1;
+		}
+		else if (cookieMunitions->GetPos().y < 0)
+		{
+			cookieMunitions->m_velo.y *= -1;
+		}
+		else if (cookieMunitions->GetPos().y > 720)
+		{
+			cookieMunitions->m_velo.y *= -1;
+		}
+		else if (cookieMunitions->GetPos().x < 0)
 		{
 			allInFlight = false;
+			delete cookieMunitions;
+			cookieMunitions = new GameObj();
 			tt->m_localTrans.AddChild(&cookieMunitions->m_localTrans);
-			cookieMunitions->SetPos(Vector2(87,0));
+			cookieMunitions->SetPos(Vector2(87, 0));
 			cookieMunitions->SetRot(0);
-		}	
-		else
-		{
-			cookieMunitions->Translate(Vector2(cookieMunitions->m_localTrans.GetGlobal()->m_mat[0][0] * 700 * deltaTime, cookieMunitions->m_localTrans.GetGlobal()->m_mat[1][0] * 700 * deltaTime));
-			cookieMunitions->m_localTrans.UpdateTransforms();
 		}
 	}
 	gameScene->UpdateTransforms();
@@ -501,7 +518,7 @@ void Game1::Draw()
 
 	m_spritebatch->DrawSprite(m_crate, 640.0f, 360.0f, m_crate->GetWidth()*sizeMod, m_crate->GetHeight()*sizeMod);
 	m_spritebatch->DrawSpriteTransformed3x3(m_cookie, &cookieMunitions->m_localTrans.GetGlobal()->m_mat[0][0], 32, 24, 0.5f);
-	//m_spritebatch->DrawSpriteTransformed3x3(tankTurret, &tt->m_localTrans.GetGlobal()->m_mat[0][0], (float)tankTurret->GetWidth(), (float)tankTurret->GetHeight(), -0.3f);
+	m_spritebatch->DrawSpriteTransformed3x3(tankTurret, &tt->m_localTrans.GetGlobal()->m_mat[0][0], (float)tankTurret->GetWidth(), (float)tankTurret->GetHeight(), -0.3f);
 	m_spritebatch->DrawSpriteTransformed3x3(tankBase, &tb->m_localTrans.GetGlobal()->m_mat[0][0], (float)tankBase->GetWidth(), (float)tankBase->GetHeight(), 1.0f);
 
 	for (int i = temp; i < 1280; i += 138)

@@ -5,7 +5,8 @@ GameObj::GameObj()
 	m_pos = Vector2(1.0f, 1.0f);
 	m_scale = Vector2(1.0f,1.0f);
 	m_rot = 0.0f;
-	m_velo = 1.0f;
+	m_velo.x = 1.0f;
+	m_velo.y = 1.0f;
 }
 
 GameObj::~GameObj()

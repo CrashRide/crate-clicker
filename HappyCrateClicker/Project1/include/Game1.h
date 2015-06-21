@@ -97,6 +97,8 @@ protected:
 
 	Buildings** Builds;
 
+	
+
 	Box *CursorBox;
 	Box *GrandmaBox;
 	Box *FarmBox;
