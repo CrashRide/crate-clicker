@@ -13,6 +13,7 @@ Vector2 lerp(Vector2 a, Vector2 b, float time){
 Node::Node(Vector2 a_Data){
 	data = a_Data;
 	N = NULL;
+	F = std::numeric_limits<float>().max();
 	G = std::numeric_limits<float>().max();
 }
 
@@ -225,6 +226,39 @@ void Graph::DSP(Node* startNode, Node* endNode)
 				{
 					(*iter)->b_node->N = currentNode;
 					(*iter)->b_node->G = (currentNode->G + (*iter)->a_cost);
+					a_openList.push((*iter)->b_node);
+				}
+			}
+			iter++;
+		}
+
+	}
+}
+
+void Graph::AStar(Node* startNode, Node* endNode)
+{
+	priority_queue<Node*> a_openList;
+	Node* currentNode = startNode;
+	currentNode->N = currentNode;
+	currentNode->G = 0.0f;
+	a_openList.push(currentNode);
+
+	while (!a_openList.empty())
+	{
+		currentNode = a_openList.top();
+		a_openList.pop();
+		currentNode->traversed = true;
+
+		std::vector<Edge*>::iterator iter = currentNode->a_edgy.begin();
+		while (iter != currentNode->a_edgy.end())
+		{
+			if (!(*iter)->b_node->traversed)
+			{
+				if ((currentNode->G + (*iter)->a_cost + Vector2(currentNode->data - endNode->data).SqrMagnatude()) < (*iter)->b_node->F)
+				{
+					(*iter)->b_node->N = currentNode;
+					(*iter)->b_node->G = (currentNode->G + (*iter)->a_cost);
+					(*iter)->b_node->F = (currentNode->G + (*iter)->a_cost + Vector2(currentNode->data - endNode->data).SqrMagnatude());
 					a_openList.push((*iter)->b_node);
 				}
 			}

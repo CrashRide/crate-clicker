@@ -119,7 +119,9 @@ void Game1::Update(float deltaTime)
 	// RUN BFS ON SPACE
 	if (GetInput()->WasKeyPressed(GLFW_KEY_SPACE)){
 		//m_Graph->BFS((*m_Graph)[0]);
-		m_Graph->DSP((*m_Graph)[0], (*m_Graph)[m_Graph->GetSize() - 1]);
+		//m_Graph->DSP((*m_Graph)[0], (*m_Graph)[m_Graph->GetSize() - 1]);
+		m_Graph->AStar((*m_Graph)[0], (*m_Graph)[m_Graph->GetSize() - 1]);
+		cout << "." << endl;
 	}
 }
 

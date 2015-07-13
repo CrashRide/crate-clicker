@@ -16,6 +16,7 @@ struct Node
 	~Node();
 	Node* N;
 	float G;
+	float F;
 	Vector2 data;
 	vector<Edge*> a_edgy;
 	void DrawEdges(SpriteBatch* m_SpriteBatch);
@@ -42,6 +43,7 @@ public:
 	void Draw(Texture* a_Texture, SpriteBatch* m_SpriteBatch);
 	void BFS(Node* startNode);
 	void DSP(Node* startNode, Node* endNode);
+	void AStar(Node* startNode, Node* endNode);
 	int GetSize();
 	Node* operator[](int index);
 
