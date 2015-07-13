@@ -5,6 +5,8 @@
 #include "Input.h"
 #include "Box.h"
 #include "MathLib.h"
+#define _USE_MATH_DEFINES
+#include <math.h>
 #include "GameObj.h"
 #include "Scene.h"
 #include <string>
@@ -429,11 +431,13 @@ void Game1::Update(float deltaTime)
 	}
 	if (GetInput()->IsKeyDown('W'))
 	{
-		tb->Translate(Vector2(0, -45 * deltaTime));
+		tb->Translate(Vector2(0, -69 * deltaTime));
+		ClampMovement();
 	}
 	if (GetInput()->IsKeyDown('S'))
 	{
-		tb->Translate(Vector2(0, 45 * deltaTime));
+		tb->Translate(Vector2(0, 69 * deltaTime));
+		ClampMovement();
 	}
 	if (GetInput()->IsKeyDown('D'))
 	{
@@ -461,17 +465,17 @@ void Game1::Update(float deltaTime)
 	{
 		cookieMunitions->Translate(Vector2(cookieMunitions->m_localTrans.GetGlobal()->m_mat[0][0] * cookieMunitions->m_velo.x * deltaTime, cookieMunitions->m_localTrans.GetGlobal()->m_mat[1][0] * cookieMunitions->m_velo.y * deltaTime));
 		cookieMunitions->m_localTrans.UpdateTransforms();
-		if (cookieMunitions->GetPos().x > 1280)
+		if (cookieMunitions->GetPos().x > 1280 - 16)
 		{
-			cookieMunitions->m_velo.x *= -1;
+			cookieMunitions->SetRot(M_PI - cookieMunitions->GetRot());
 		}
-		else if (cookieMunitions->GetPos().y < 0)
+		else if (cookieMunitions->GetPos().y < 0 + 12)
 		{
-			cookieMunitions->m_velo.y *= -1;
+			cookieMunitions->SetRot(cookieMunitions->GetRot() * -1);
 		}
-		else if (cookieMunitions->GetPos().y > 720)
+		else if (cookieMunitions->GetPos().y > 720 - 12)
 		{
-			cookieMunitions->m_velo.y *= -1;
+			cookieMunitions->SetRot(cookieMunitions->GetRot() * -1);
 		}
 		else if (cookieMunitions->GetPos().x < 0)
 		{
@@ -502,6 +506,18 @@ void Game1::ClampRot()
 	else if (tt->m_localTrans.GetLocal()->m_mat[0][0] <= temp.m_mat[0][0] && tt->m_localTrans.GetLocal()->m_mat[0][1] <= temp.m_mat[0][1])
 	{
 		tt->Rot(-0.0174532925f);
+	}
+}
+
+void Game1::ClampMovement()
+{
+	if (tb->GetPos().y > GetWindowHeight() - (tankBase->GetHeight()/2))
+	{
+		tb->SetPos(Vector2(tb->GetPos().x, GetWindowHeight() - (tankBase->GetHeight() / 2) + 1));
+	}
+	if (tb->GetPos().y < (tankBase->GetHeight() / 2))
+	{
+		tb->SetPos(Vector2(tb->GetPos().x, (tankBase->GetHeight() / 2)+1));
 	}
 }
 

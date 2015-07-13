@@ -112,6 +112,7 @@ protected:
 	Vector2 *v_tankBase;
 
 	void ClampRot();
+	void ClampMovement();
 
 	Scene *gameScene;
 	GameObj *tb;
