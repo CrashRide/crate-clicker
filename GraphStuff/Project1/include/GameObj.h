@@ -4,6 +4,8 @@
 #include "Scene.h"
 using namespace MathLib;
 class SpriteBatch;
+class Texture;
+
 class GameObj
 {
 public:
@@ -25,16 +27,18 @@ public:
 
 	void UpdateMat();
 
-	virtual void Draw(const SpriteBatch m_spritebatch);
+	virtual void Draw(SpriteBatch* m_spritebatch);
 	virtual void Update(const float dt);
 
 	Vector2 m_disp;
 	Vector2 m_vVelo;
 	Vector2 m_uVelo;
 	Vector2 m_accel;
-	float m_mass;
+	float m_mass = 1.0f;
+	Vector2 m_force;
 	SceneNode m_localTrans;
-
+	Texture* m_objTexture;
+	float m_friction;
 
 private:
 

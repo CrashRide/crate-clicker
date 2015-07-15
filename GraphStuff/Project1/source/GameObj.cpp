@@ -1,12 +1,18 @@
 #include "GameObj.h"
+#include "SpriteBatch.h"
+#include "Texture.h"
+#include "Scene.h"
 
 GameObj::GameObj()
 {
-	m_pos = Vector2(1.0f, 1.0f);
+	m_pos = Vector2(0.0f, 0.0f);
 	m_scale = Vector2(1.0f,1.0f);
 	m_rot = 0.0f;
-	m_velo.x = 1.0f;
-	m_velo.y = 1.0f;
+	m_mass = 1.0f;
+	m_uVelo.x = 0.0f;
+	m_uVelo.y = 0.0f;
+	m_objTexture = nullptr;
+	m_friction = 0.95f;
 }
 
 GameObj::~GameObj()
@@ -21,8 +27,8 @@ void GameObj::SetPos(Vector2 &rhs)
 
 void GameObj::Translate(Vector2 &rhs)
 {
-	m_disp = rhs;
-	SetPos(rhs + m_pos);
+	m_force = rhs;
+	//SetPos(rhs + m_pos);
 }
 
 Vector2 GameObj::GetPos()
@@ -70,6 +76,16 @@ void GameObj::UpdateMat()
 
 void GameObj::Update(const float dt)
 {
-	m_vVelo = m_disp / dt;
+	m_vVelo *= m_friction;
+	m_accel = m_force / m_mass;
+	m_vVelo += m_accel * dt;
+	m_pos += m_vVelo * dt;
+	m_accel = Vector2(0.0f, 0.0f);
+	m_force = Vector2(0.0f, 0.0f);
+	UpdateMat();
+}
 
+void GameObj::Draw(SpriteBatch* m_spritebatch)
+{
+	m_spritebatch->DrawSpriteTransformed3x3(m_objTexture, &m_localTrans.GetLocal()->m_mat[0][0], m_objTexture->GetWidth(), m_objTexture->GetHeight());
 }

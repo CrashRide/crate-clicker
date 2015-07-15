@@ -8,6 +8,7 @@ Description:
 
 #include "Application.h"
 #include "MathLib.h"
+#include "GameObj.h"
 using namespace MathLib;
 
 class SpriteBatch;
@@ -45,6 +46,8 @@ private:
 	// Temp Nodes for Edges
 	Node* one;
 	Node* two;
+
+	GameObj o_player;
 
 };
 
