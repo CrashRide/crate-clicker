@@ -9,6 +9,7 @@ Description:
 #include "Application.h"
 #include "MathLib.h"
 #include "GameObj.h"
+#include "Smith.h"
 using namespace MathLib;
 
 class SpriteBatch;
@@ -48,7 +49,7 @@ private:
 	Node* two;
 
 	GameObj o_player;
-
+	Smith* s_enemy;
 };
 
 #endif

@@ -4,13 +4,17 @@
 #include "Font.h"
 #include "Input.h"
 #include "Graph.h"
+#include "IFeels.h"
 #include <string>
 #include "MathLib.h"
+#include <time.h>
 using namespace MathLib;
 using namespace std;
 
 Game1::Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscreen, const char *title) : Application(windowWidth, windowHeight, fullscreen, title)
 {
+	srand(time(NULL));
+
 	// Create sprite batch
 	m_spritebatch = SpriteBatch::Factory::Create(this, SpriteBatch::GL3);
 
@@ -27,8 +31,14 @@ Game1::Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscree
 	one = nullptr;
 	two = nullptr;
 
-	o_player.SetPos(Vector2(320, 240));
+	o_player.SetPos(Vector2(200, 200));
 	o_player.m_objTexture = new Texture("./Images/box0_256.png");
+
+	s_enemy = new Smith(Vector2(320, 240.0f));
+	s_enemy->m_objTexture = new Texture("./Images/box0_256.png");
+	//s_enemy->AddFeels(new FleeFeels(&o_player));
+	s_enemy->AddFeels(new WanderFeels(20.0f, (s_enemy->m_objTexture->GetHeight()/10)*4, 1000.0f));
+	
 	m_spritebatch->SetColumnMajor(true);
 }
 
@@ -36,6 +46,7 @@ Game1::~Game1()
 {
 	SpriteBatch::Factory::Destroy(m_spritebatch);
 
+	delete s_enemy;
 	delete m_NodeTex;
 	delete m_Graph;
 	delete m_font;
@@ -126,15 +137,28 @@ void Game1::Update(float deltaTime)
 	if (GetInput()->WasKeyPressed(GLFW_KEY_SPACE)){
 		//m_Graph->BFS((*m_Graph)[0]);
 		//m_Graph->DSP((*m_Graph)[0], (*m_Graph)[m_Graph->GetSize() - 1]);
-		//m_Graph->AStar((*m_Graph)[0], (*m_Graph)[m_Graph->GetSize() - 1]);
+		m_Graph->AStar((*m_Graph)[0], (*m_Graph)[m_Graph->GetSize() - 1]);
 		cout << "." << endl;
 	}
 
+	if (GetInput()->IsKeyDown(GLFW_KEY_W))
+	{
+		o_player.ApplyForce(Vector2(0, -500));
+	}
+	if (GetInput()->IsKeyDown(GLFW_KEY_A))
+	{
+		o_player.ApplyForce(Vector2(-500, 0));
+	}
+	if (GetInput()->IsKeyDown(GLFW_KEY_S))
+	{
+		o_player.ApplyForce(Vector2(0, 500));
+	}
 	if (GetInput()->IsKeyDown(GLFW_KEY_D))
 	{
-		o_player.Translate(Vector2(250, 0));
+		o_player.ApplyForce(Vector2(500, 0));
 	}
 	o_player.Update(deltaTime);
+	s_enemy->Update(deltaTime);
 }
 
 void Game1::Draw()
@@ -146,6 +170,7 @@ void Game1::Draw()
 
 	// TODO: draw stuff.
 	o_player.Draw(m_spritebatch);
+	s_enemy->Draw(m_spritebatch);
 	m_Graph->Draw(m_NodeTex, m_spritebatch);
 
 	if (one != nullptr){

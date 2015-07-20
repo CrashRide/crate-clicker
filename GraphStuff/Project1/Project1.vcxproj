@@ -90,13 +90,17 @@
     <ClCompile Include="source\Game1.cpp" />
     <ClCompile Include="source\GameObj.cpp" />
     <ClCompile Include="source\Graph.cpp" />
+    <ClCompile Include="source\IFeels.cpp" />
     <ClCompile Include="source\Scene.cpp" />
+    <ClCompile Include="source\Smith.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Game1.h" />
     <ClInclude Include="include\GameObj.h" />
     <ClInclude Include="include\Graph.h" />
+    <ClInclude Include="include\IFeels.h" />
     <ClInclude Include="include\Scene.h" />
+    <ClInclude Include="include\Smith.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

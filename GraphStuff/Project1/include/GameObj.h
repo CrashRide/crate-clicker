@@ -11,11 +11,13 @@ class GameObj
 public:
 
 	GameObj();
-	~GameObj();
+	virtual ~GameObj();
 
 	void SetPos(Vector2 &rhs);
 	void Translate(Vector2 &rhs);
-	Vector2 GetPos();
+	Vector2 GetPos()const;
+
+	void ApplyForce(Vector2 &rhs);
 
 	void SetRot(float a_rad);
 	void Rot(float a_rad);
@@ -28,7 +30,7 @@ public:
 	void UpdateMat();
 
 	virtual void Draw(SpriteBatch* m_spritebatch);
-	virtual void Update(const float dt);
+	virtual void Update(float dt);
 
 	Vector2 m_disp;
 	Vector2 m_vVelo;
@@ -39,6 +41,7 @@ public:
 	SceneNode m_localTrans;
 	Texture* m_objTexture;
 	float m_friction;
+	Vector2 m_heading;
 
 private:
 

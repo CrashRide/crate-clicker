@@ -6,17 +6,19 @@
 GameObj::GameObj()
 {
 	m_pos = Vector2(0.0f, 0.0f);
-	m_scale = Vector2(1.0f,1.0f);
+	m_scale = Vector2(0.1f, 0.1f);
 	m_rot = 0.0f;
 	m_mass = 1.0f;
 	m_uVelo.x = 0.0f;
 	m_uVelo.y = 0.0f;
 	m_objTexture = nullptr;
 	m_friction = 0.95f;
+	m_heading = Vector2(0.0f, 0.0f);
 }
 
 GameObj::~GameObj()
 {
+	delete m_objTexture;
 }
 
 void GameObj::SetPos(Vector2 &rhs)
@@ -27,11 +29,15 @@ void GameObj::SetPos(Vector2 &rhs)
 
 void GameObj::Translate(Vector2 &rhs)
 {
-	m_force = rhs;
-	//SetPos(rhs + m_pos);
+	SetPos(rhs + m_pos);
 }
 
-Vector2 GameObj::GetPos()
+void GameObj::ApplyForce(Vector2 &rhs)
+{
+	m_force += rhs;
+}
+
+Vector2 GameObj::GetPos()const
 {
 	return m_pos;
 }
@@ -74,7 +80,7 @@ void GameObj::UpdateMat()
 	m_localTrans.SetLocal(temp);
 }
 
-void GameObj::Update(const float dt)
+void GameObj::Update(float dt)
 {
 	m_vVelo *= m_friction;
 	m_accel = m_force / m_mass;
@@ -83,6 +89,9 @@ void GameObj::Update(const float dt)
 	m_accel = Vector2(0.0f, 0.0f);
 	m_force = Vector2(0.0f, 0.0f);
 	UpdateMat();
+	if (m_vVelo < Vector2(0.00001f, 0.00001f) && m_vVelo > Vector2(-0.00001f, -0.00001f))
+		m_vVelo = Vector2(0.0f, 0.0f);
+	m_heading = m_vVelo.Normalised();
 }
 
 void GameObj::Draw(SpriteBatch* m_spritebatch)
