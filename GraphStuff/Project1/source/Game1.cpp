@@ -37,9 +37,14 @@ Game1::Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscree
 	s_enemy = new Smith(Vector2(320, 240.0f));
 	s_enemy->m_objTexture = new Texture("./Images/box0_256.png");
 	//s_enemy->AddFeels(new FleeFeels(&o_player));
-	s_enemy->AddFeels(new WanderFeels(20.0f, (s_enemy->m_objTexture->GetHeight()/10)*4, 1000.0f));
+	//s_enemy->AddFeels(new WanderFeels(25.0f, s_enemy->m_objTexture->GetHeight()/10, 25.0f));
 	
 	m_spritebatch->SetColumnMajor(true);
+
+	feelSwitch[0] = false;
+	feelSwitch[1] = false;
+	feelSwitch[2] = false;
+
 }
 
 Game1::~Game1()
@@ -53,7 +58,6 @@ Game1::~Game1()
 	delete one;
 	delete two;
 }
-
 
 void Game1::Update(float deltaTime)
 {
@@ -137,10 +141,24 @@ void Game1::Update(float deltaTime)
 	if (GetInput()->WasKeyPressed(GLFW_KEY_SPACE)){
 		//m_Graph->BFS((*m_Graph)[0]);
 		//m_Graph->DSP((*m_Graph)[0], (*m_Graph)[m_Graph->GetSize() - 1]);
-		m_Graph->AStar((*m_Graph)[0], (*m_Graph)[m_Graph->GetSize() - 1]);
+		//m_Graph->AStar((*m_Graph)[0], (*m_Graph)[m_Graph->GetSize() - 1]);
 		cout << "." << endl;
 	}
-
+	if (GetInput()->WasKeyPressed(GLFW_KEY_1))
+	{
+		s_enemy->AddFeels(new SeekFeels(&o_player));
+		feelSwitch[0] = !feelSwitch[0];
+	}
+	if (GetInput()->WasKeyPressed(GLFW_KEY_2))
+	{
+		s_enemy->AddFeels(new FleeFeels(&o_player));
+		feelSwitch[1] = !feelSwitch[1];
+	}
+	if (GetInput()->WasKeyPressed(GLFW_KEY_3))
+	{
+		s_enemy->AddFeels(new WanderFeels(25.0f, s_enemy->m_objTexture->GetHeight() / 10, 25.0f));
+		feelSwitch[2] = !feelSwitch[2];
+	}
 	if (GetInput()->IsKeyDown(GLFW_KEY_W))
 	{
 		o_player.ApplyForce(Vector2(0, -500));
@@ -205,6 +223,16 @@ void Game1::Draw()
 
 	m_spritebatch->DrawString(m_font, x.c_str(), GetWindowWidth() - 180, 50, 0.5f, 0.5f);
 	m_spritebatch->DrawString(m_font, y.c_str(), GetWindowWidth() - 90, 50, 0.5f, 0.5f);
+	m_spritebatch->DrawString(m_font, " 1. Seek	\n 2. Flee \n 3. Wander", 50.0f, 50.0f, 0.0f,0.0f);
+
+	float shiby = 20.0f;
+	for (int i = 0; i < 3; i++)
+	{
+		if (feelSwitch[i])
+			m_spritebatch->DrawString(m_font, "On", 205.0f, shiby+=30, 0.5f, 0.0f);
+		else
+			m_spritebatch->DrawString(m_font, "Off", 205.0f, shiby+=30, 0.5f, 0.0f);
+	}
 
 	m_spritebatch->End();
 

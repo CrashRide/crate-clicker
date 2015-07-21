@@ -50,6 +50,9 @@ private:
 
 	GameObj o_player;
 	Smith* s_enemy;
+
+
+	bool feelSwitch[3];
 };
 
 #endif

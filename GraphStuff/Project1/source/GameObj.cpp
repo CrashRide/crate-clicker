@@ -13,7 +13,7 @@ GameObj::GameObj()
 	m_uVelo.y = 0.0f;
 	m_objTexture = nullptr;
 	m_friction = 0.95f;
-	m_heading = Vector2(0.0f, 0.0f);
+	m_heading = Vector2(0.0f, 1.0f);
 }
 
 GameObj::~GameObj()
@@ -90,8 +90,12 @@ void GameObj::Update(float dt)
 	m_force = Vector2(0.0f, 0.0f);
 	UpdateMat();
 	if (m_vVelo < Vector2(0.00001f, 0.00001f) && m_vVelo > Vector2(-0.00001f, -0.00001f))
+	{
 		m_vVelo = Vector2(0.0f, 0.0f);
-	m_heading = m_vVelo.Normalised();
+		m_heading = Vector2(0.0f, 1.0f);
+	}
+	else
+		m_heading = m_vVelo.Normalised();
 }
 
 void GameObj::Draw(SpriteBatch* m_spritebatch)

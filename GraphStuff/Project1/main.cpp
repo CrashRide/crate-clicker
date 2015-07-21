@@ -9,7 +9,7 @@
 int main(int argc, char **argv)
 {
 	{
-		Game1 *pGame = new Game1(640, 480, false, "Graph Creator");
+		Game1 *pGame = new Game1(1440, 720, false, "Graph Creator");
 		pGame->RunGame();
 		delete pGame;
 	}

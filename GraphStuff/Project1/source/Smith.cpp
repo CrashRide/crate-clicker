@@ -24,6 +24,7 @@ void Smith::Update(float dt)
 		
 	}
 	this->GameObj::Update(dt);
+	cout << GetPos().x << " , " << GetPos().y << endl;
 }
 
 //void Smith::Draw(SpriteBatch*a_spriteBatch)
@@ -37,7 +38,20 @@ void Smith::Update(float dt)
 //
 //}
 
-void Smith::AddFeels(IFeels * a_feel)
+void Smith::AddFeels(IFeels *a_feel)
 {
-	m_feels.push_back(a_feel);
+	bool exists = false;
+	for (auto iter = m_feels.begin(); iter != m_feels.end(); iter++)
+	{
+		if ((*iter)->GetTarget() == a_feel->GetTarget() && (*iter)->m_type == a_feel->m_type)
+		{
+			exists = true;
+			m_feels.remove((*iter));
+			break;
+		}
+	}
+	if (!exists)
+	{
+		m_feels.push_back(a_feel);
+	}
 }

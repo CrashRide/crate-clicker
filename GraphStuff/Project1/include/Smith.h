@@ -12,7 +12,8 @@ public:
 	
 	void Update(float dt);
 	//void Draw(SpriteBatch*a_spriteBatch);
-	void AddFeels(IFeels * a_feel);
+	void AddFeels(IFeels *a_feel);
+	void RemoveFeels(IFeels * a_feel);
 
 protected:
 
