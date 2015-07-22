@@ -21,9 +21,14 @@ void Smith::Update(float dt)
 	for (auto iter = m_feels.begin(); iter != m_feels.end(); iter++)
 	{
 		(*iter)->Update(this);
-		
+		this->GameObj::Update(dt);
+		if (m_vVelo.SqrMagnatude() >= (m_maxVelo * m_maxVelo))
+		{
+			m_vVelo.Normalise();
+			m_vVelo *= m_maxVelo;
+			break;
+		}
 	}
-	this->GameObj::Update(dt);
 	cout << GetPos().x << " , " << GetPos().y << endl;
 }
 

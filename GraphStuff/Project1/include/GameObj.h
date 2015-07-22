@@ -10,7 +10,7 @@ class GameObj
 {
 public:
 
-	GameObj();
+	GameObj(Texture*,float);
 	virtual ~GameObj();
 
 	void SetPos(Vector2 &rhs);
@@ -35,6 +35,7 @@ public:
 	Vector2 m_disp;
 	Vector2 m_vVelo;
 	Vector2 m_uVelo;
+	float m_maxVelo;
 	Vector2 m_accel;
 	float m_mass = 1.0f;
 	Vector2 m_force;
