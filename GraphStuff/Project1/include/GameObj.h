@@ -10,6 +10,7 @@ class GameObj
 {
 public:
 
+	GameObj();
 	GameObj(Texture*,float);
 	virtual ~GameObj();
 

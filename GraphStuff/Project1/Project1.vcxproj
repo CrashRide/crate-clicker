@@ -93,6 +93,7 @@
     <ClCompile Include="source\GameObj.cpp" />
     <ClCompile Include="source\Graph.cpp" />
     <ClCompile Include="source\IFeels.cpp" />
+    <ClCompile Include="source\IGladiboxer.cpp" />
     <ClCompile Include="source\Scene.cpp" />
     <ClCompile Include="source\Smith.cpp" />
     <ClCompile Include="source\TreeNode.cpp" />
@@ -104,6 +105,7 @@
     <ClInclude Include="include\GameObj.h" />
     <ClInclude Include="include\Graph.h" />
     <ClInclude Include="include\IFeels.h" />
+    <ClInclude Include="include\IGladiboxer.h" />
     <ClInclude Include="include\Scene.h" />
     <ClInclude Include="include\Smith.h" />
     <ClInclude Include="include\TreeNode.h" />

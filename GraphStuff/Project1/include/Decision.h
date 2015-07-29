@@ -1,6 +1,7 @@
 #pragma once
 
 class Smith;
+class IFeels;
 
 class Decision
 {
@@ -32,3 +33,17 @@ public:
 
 };
 
+class Action : public Decision
+{
+public:
+
+	Action(Smith * a_owner, IFeels * a_action);
+	~Action();
+
+	void MakeDecision(float dt);
+
+private:
+
+	IFeels * m_action;
+
+};

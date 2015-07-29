@@ -3,6 +3,20 @@
 #include "Texture.h"
 #include "Scene.h"
 
+GameObj::GameObj()
+{
+	m_pos = Vector2(0.0f, 0.0f);
+	m_scale = Vector2(1.f, 1.f);
+	m_rot = 0.0f;
+	m_mass = 1.0f;
+	m_uVelo.x = 0.0f;
+	m_uVelo.y = 0.0f;
+	m_objTexture = nullptr;
+	m_friction = 0.95f;
+	m_heading = Vector2(0.0f, 1.0f);
+	m_maxVelo = 0.f;
+}
+
 GameObj::GameObj(Texture* a_objTex, float a_maxVelo)
 {
 	m_pos = Vector2(0.0f, 0.0f);

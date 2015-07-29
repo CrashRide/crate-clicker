@@ -1,5 +1,6 @@
-#include "Decision.h"]
+#include "Decision.h"
 #include "Smith.h"
+#include "IFeels.h"
 
 Decision::Decision(Smith * a_owner)
 {
@@ -30,4 +31,19 @@ void BoolDecision::MakeDecision(float dt)
 		m_trueDecision->MakeDecision(dt);
 	else
 		m_falseDecision->MakeDecision(dt);
+}
+
+Action::Action(Smith * a_owner, IFeels * a_action) :Decision(a_owner)
+{
+	m_action = a_action;
+}
+
+Action::~Action()
+{
+
+}
+
+void Action::MakeDecision(float dt)
+{
+	m_owner->AddFeels(m_action);
 }
