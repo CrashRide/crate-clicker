@@ -113,7 +113,7 @@ IsAttackUseful::~IsAttackUseful()
 void IsAttackUseful::MakeDecision(float dt)
 {
 
-	if (m_enemyType == 'W' && m_owner->GetAmmo() > 0 && ((m_owner->GetPos() - m_owner->m_opponent->GetPos()).SqrMagnatude() / m_owner->m_opponent->m_vVelo.SqrMagnatude()) > m_owner->m_stats.ATKSPD)
+	if (m_enemyType == 'W' && !(((Archer*)m_owner)->m_arrowInFlight) && m_owner->GetAmmo() > 0 && ((m_owner->GetPos() - m_owner->m_opponent->GetPos()).SqrMagnatude() / m_owner->m_opponent->m_vVelo.SqrMagnatude()) > m_owner->m_stats.ATKSPD)
 		m_tof = true;
 	else if (m_enemyType == 'A' && (m_owner->GetPos() - m_owner->m_opponent->GetPos()).SqrMagnatude() < (m_owner->m_stats.ATKRNG * m_owner->m_stats.ATKRNG))
 		m_tof = true;
@@ -181,7 +181,12 @@ IsObjectAvoidable::~IsObjectAvoidable()
 void IsObjectAvoidable::MakeDecision(float dt)
 {
 	
-	//farts
+	float timeTillCollision = ((Archer*)(m_owner->m_opponent))->m_shot->m_vVelo.SqrMagnatude();
+	Vector2 temp = (m_owner->GetPos() - (((Archer*)(m_owner->m_opponent))->m_shot->GetPos() + ((Archer*)(m_owner->m_opponent))->m_shot->m_vVelo)).Normalised() * m_owner->m_maxVelo;
+	Vector2 futurePos = m_owner->GetPos() + (m_owner->m_vVelo * 0.95f) + ((m_owner->m_force + (temp - m_owner->m_vVelo)) * timeTillCollision);
+
+	//box collision with line
+
 
 	if (m_tof)
 		m_trueDecision->MakeDecision(dt);
