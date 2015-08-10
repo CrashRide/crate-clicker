@@ -2,6 +2,7 @@
 #define _GAMEOBJ_H_
 #include "MathLib.h"
 #include "Scene.h"
+#include "Box.h"
 using namespace MathLib;
 class SpriteBatch;
 class Texture;
@@ -44,6 +45,7 @@ public:
 	Texture* m_objTexture;
 	float m_friction;
 	Vector2 m_heading;
+	Box m_collider;
 
 private:
 

@@ -36,6 +36,7 @@ private:
 
 class PursueFeels : public IFeels
 {
+public:
 	PursueFeels(const GameObj*, float);
 	~PursueFeels();
 

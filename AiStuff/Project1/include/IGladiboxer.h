@@ -1,5 +1,8 @@
 #pragma once
 
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 #include <list>
 #include "Smith.h"
 
@@ -27,11 +30,12 @@ public:
 	virtual int GetAmmo() = 0;
 	virtual int GetDurability() = 0;
 
-	std::list<Decision*> m_decisionTree;
+	Decision* m_decisionTreeRoot;
 
 	Stats m_stats;
-	IGladiboxer * m_opponent;
+
 	bool m_adrenalineMode = false;
+	bool m_attacking = false;
 	bool m_alive = true;
 
 };
@@ -40,7 +44,7 @@ class Warrior : public IGladiboxer
 {
 public:
 
-	Warrior(Stats a_stats, IGladiboxer * a_opponent);
+	Warrior(Stats a_stats, Archer * a_opponent);
 	~Warrior();
 
 	void Update(float dt);
@@ -49,6 +53,37 @@ public:
 	void ActivateAdrenaline();
 
 	int GetDurability();
+
+	bool m_blocking = false;
+
+	Archer * m_opponent;
+
+	class Sword : public GameObj
+	{
+	public:
+		Sword(Warrior * a_owner, Texture* a_tex)
+		{
+			m_owner = a_owner;
+			SetPos(m_owner->GetPos());
+			SetRot(m_owner->m_heading.AngleOf() - (M_PI / 2));
+			m_objTexture = a_tex;
+		}
+		~Sword();
+
+		void Swing(float dt)
+		{
+			Rot(dt * m_owner->m_stats.ATKSPD * M_PI);
+			if (GetRot() > (M_PI / 2))
+			{
+				m_owner->m_attacking = false;
+			}
+		}
+
+		Warrior * m_owner;
+	};
+
+	Sword wep;
+	Texture * shieldTex = nullptr;
 
 private:
 
@@ -61,7 +96,7 @@ class Archer : public IGladiboxer
 {
 public:
 
-	Archer(Stats a_stats, IGladiboxer * a_opponent);
+	Archer(Stats a_stats, Warrior * a_opponent);
 	~Archer();
 
 	void Update(float dt);
@@ -71,7 +106,10 @@ public:
 	int GetAmmo();
 
 	GameObj * m_shot = nullptr;
+	GameObj* m_strayArrowTarget;
 	bool m_arrowInFlight;
+
+	Warrior * m_opponent;
 
 private:
 

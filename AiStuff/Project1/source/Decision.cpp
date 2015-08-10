@@ -127,6 +127,28 @@ void IsAttackUseful::MakeDecision(float dt)
 
 }
 
+IsProjectileInFlight::IsProjectileInFlight(Warrior * a_owner) :BoolDecision(a_owner)
+{
+	m_owner = a_owner;
+}
+
+IsProjectileInFlight::~IsProjectileInFlight()
+{
+
+}
+
+void IsProjectileInFlight::MakeDecision(float dt)
+{
+
+	m_tof = ((Archer*)(m_owner->m_opponent))->m_arrowInFlight;
+
+	if (m_tof)
+		m_trueDecision->MakeDecision(dt);
+	else
+		m_falseDecision->MakeDecision(dt);
+
+}
+
 IsNumberTooLow::IsNumberTooLow(Archer * a_owner) :BoolDecision(a_owner)
 {
 	m_owner = a_owner;
@@ -184,9 +206,14 @@ void IsObjectAvoidable::MakeDecision(float dt)
 	float timeTillCollision = ((Archer*)(m_owner->m_opponent))->m_shot->m_vVelo.SqrMagnatude();
 	Vector2 temp = (m_owner->GetPos() - (((Archer*)(m_owner->m_opponent))->m_shot->GetPos() + ((Archer*)(m_owner->m_opponent))->m_shot->m_vVelo)).Normalised() * m_owner->m_maxVelo;
 	Vector2 futurePos = m_owner->GetPos() + (m_owner->m_vVelo * 0.95f) + ((m_owner->m_force + (temp - m_owner->m_vVelo)) * timeTillCollision);
-
+	GameObj tempWarrior(m_owner->m_objTexture, m_owner->m_maxVelo);
+	tempWarrior.SetPos(futurePos);
+	tempWarrior.Update(dt);
 	//box collision with line
-
+	if (tempWarrior.m_collider.LineCollision(m_owner->m_opponent->GetPos(), ((Archer*)(m_owner->m_opponent))->m_shot->m_vVelo))
+		m_tof = false;
+	else
+		m_tof = true;
 
 	if (m_tof)
 		m_trueDecision->MakeDecision(dt);
@@ -222,6 +249,20 @@ BlockAction::~BlockAction()
 void BlockAction::MakeDecision(float dt)
 {
 	m_owner->Block();
+}
+
+KnockBackAction::KnockBackAction(Warrior * a_owner) :Decision(a_owner)
+{
+	m_owner = a_owner;
+}
+
+void KnockBackAction::MakeDecision(float dt)
+{
+	if (m_owner->m_collider.BoxCollision(((Archer*)(m_owner->m_opponent))->m_shot->m_collider))
+	{
+		m_owner->ApplyForce(((Archer*)(m_owner->m_opponent))->m_shot->m_vVelo / 10);
+		((Archer*)(m_owner->m_opponent))->m_arrowInFlight = false;
+	}
 }
 
 Action::Action(Smith * a_owner, IFeels * a_action) :Decision(a_owner)

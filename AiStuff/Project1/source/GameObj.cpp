@@ -15,6 +15,7 @@ GameObj::GameObj()
 	m_friction = 0.95f;
 	m_heading = Vector2(0.0f, 1.0f);
 	m_maxVelo = 0.f;
+	m_collider = Box(Vector2(-1.f, 1.f), Vector2(1.f, 1.f));
 }
 
 GameObj::GameObj(Texture* a_objTex, float a_maxVelo)
@@ -25,11 +26,11 @@ GameObj::GameObj(Texture* a_objTex, float a_maxVelo)
 	m_mass = 1.0f;
 	m_uVelo.x = 0.0f;
 	m_uVelo.y = 0.0f;
-	m_objTexture = nullptr;
 	m_friction = 0.95f;
 	m_heading = Vector2(0.0f, 1.0f);
 	m_objTexture = a_objTex;
 	m_maxVelo = a_maxVelo;
+	m_collider = Box(Vector2(m_pos.x - ((m_objTexture->GetWidth()*m_scale.x) / 2), m_pos.y + ((m_objTexture->GetHeight()*m_scale.y) / 2)), Vector2(m_pos.x + ((m_objTexture->GetWidth()*m_scale.x) / 2), m_pos.y - ((m_objTexture->GetHeight()*m_scale.y) / 2)));
 }
 
 GameObj::~GameObj()
@@ -112,6 +113,7 @@ void GameObj::Update(float dt)
 	}
 	else
 		m_heading = m_vVelo.Normalised();
+	m_collider = Box(Vector2(m_pos.x - ((m_objTexture->GetWidth()*m_scale.x) / 2), m_pos.y + ((m_objTexture->GetHeight()*m_scale.y) / 2)), Vector2(m_pos.x + ((m_objTexture->GetWidth()*m_scale.x) / 2), m_pos.y - ((m_objTexture->GetHeight()*m_scale.y) / 2)));
 }
 
 void GameObj::Draw(SpriteBatch* m_spritebatch)

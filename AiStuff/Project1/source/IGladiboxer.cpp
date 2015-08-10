@@ -1,5 +1,7 @@
 #include "IGladiboxer.h"
 #include "Decision.h"
+#include "IFeels.h"
+#include "Texture.h"
 
 IGladiboxer::IGladiboxer()
 {
@@ -9,14 +11,23 @@ IGladiboxer::~IGladiboxer()
 {
 }
 
-Warrior::Warrior(Stats a_stats, IGladiboxer * a_opponent)
+Warrior::Warrior(Stats a_stats, Archer * a_opponent)
 {
+	wep = Sword(this, new Texture("./Images/warriorSword.png"));
 	m_stats = a_stats;
 	m_hasShield = true;
 	m_shieldDurability = 10;
 	m_opponent = a_opponent;
-	m_decisionTree.push_back(new IsOpponentAlive(this));
-
+	m_decisionTreeRoot = new IsOpponentAlive(this);
+	m_decisionTreeRoot->m_trueDecision = new IsAttackUseful(this);
+	m_decisionTreeRoot->m_trueDecision->m_trueDecision = new AttackAction(this);
+	m_decisionTreeRoot->m_trueDecision->m_falseDecision = new IsProjectileInFlight(this);
+	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_trueDecision = new IsObjectAvoidable(this);
+	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_falseDecision = new Action(this, new PursueFeels(m_opponent, 1.0f));
+	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_trueDecision->m_trueDecision = new Action(this, new EvadeFeels(m_opponent->m_shot, 1.0f));
+	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_trueDecision->m_falseDecision = new IsNumberTooLow(this);
+	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_trueDecision->m_falseDecision->m_trueDecision = new KnockBackAction(this);
+	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_trueDecision->m_falseDecision->m_falseDecision = new BlockAction(this);
 }
 
 Warrior::~Warrior()
@@ -26,7 +37,29 @@ Warrior::~Warrior()
 
 void Warrior::Update(float dt)
 {
+	m_decisionTreeRoot->MakeDecision(dt);
+	if (m_attacking)
+		wep.Swing(dt);
+	else if (m_blocking)
+		m_vVelo = Vector2(0.f, 0.f);
+	else
+		shieldTex = nullptr;
 	this->Smith::Update(dt);
+}
+
+void Warrior::Attack()
+{
+
+	m_attacking = true;
+
+}
+
+void Warrior::Block()
+{
+
+	shieldTex = new Texture("./Images/warriorShield");
+	m_blocking = true;
+
 }
 
 int Warrior::GetDurability()
@@ -34,7 +67,7 @@ int Warrior::GetDurability()
 	return m_shieldDurability;
 }
 
-Archer::Archer(Stats a_stats, IGladiboxer * a_opponent)
+Archer::Archer(Stats a_stats, Warrior * a_opponent)
 {
 
 	m_stats = a_stats;
@@ -47,7 +80,14 @@ Archer::Archer(Stats a_stats, IGladiboxer * a_opponent)
 	m_quiver.resize(m_maxArrows);
 	m_quiver.shrink_to_fit();
 
-	m_decisionTree.push_back(new IsOpponentAlive(this));
+	m_decisionTreeRoot = new IsOpponentAlive(this);
+	m_decisionTreeRoot->m_trueDecision = new IsAdrenalineActive(this);
+	m_decisionTreeRoot->m_trueDecision->m_trueDecision = new AttackAction(this);
+	m_decisionTreeRoot->m_trueDecision->m_falseDecision = new IsAttackUseful(this);
+	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_trueDecision = m_decisionTreeRoot->m_trueDecision->m_trueDecision;
+	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_falseDecision = new IsNumberTooLow(this);
+	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_falseDecision->m_trueDecision = new Action(this, new SeekFeels(m_strayArrowTarget, 1.0f));
+	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_falseDecision->m_falseDecision = new Action(this, new EvadeFeels(m_opponent, 1.0f));
 
 }
 

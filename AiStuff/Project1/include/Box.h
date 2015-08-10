@@ -10,10 +10,10 @@ public:
 	~Box();
 
 	bool LineCollision(Vector2 p0, Vector2 p1);
-	//bool BoxCollision(Box a_box);
+	bool BoxCollision(Box a_box);
 	bool ClickWithinBox(int &mouseX, int &mouseY);
+	bool VectorWithinBox(Vector2 a_vec);
 
-private:
 	Vector2 b_tl;
 	Vector2 b_br;
 };

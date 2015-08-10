@@ -31,6 +31,27 @@ bool Box::LineCollision(Vector2 p0, Vector2 p1)
 
 }
 
+bool Box::VectorWithinBox(Vector2 a_vec)
+{
+
+	if (a_vec > this->b_tl && a_vec < this->b_br)
+		return true;
+	else
+		return false;
+
+}
+
+bool Box::BoxCollision(Box a_box)
+{
+
+	if (VectorWithinBox(a_box.b_tl) || VectorWithinBox(a_box.b_br))
+		return true;
+	else if (VectorWithinBox(Vector2(a_box.b_tl.x, a_box.b_br.y)) || VectorWithinBox(Vector2(a_box.b_br.x, a_box.b_tl.y)))
+		return true;
+	else
+		return false;
+}
+
 bool Box::ClickWithinBox(int &mouseX, int &mouseY)
 {
 	Vector2 tempMouse((float)mouseX, (float)mouseY);

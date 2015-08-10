@@ -14,6 +14,9 @@ public:
 
 	virtual void MakeDecision(float dt) = 0;
 
+	Decision * m_trueDecision;
+	Decision * m_falseDecision;
+
 protected: 
 
 	Smith * m_owner;
@@ -78,6 +81,19 @@ public:
 
 };
 
+class IsProjectileInFlight : public BoolDecision
+{
+public:
+
+	IsProjectileInFlight(Warrior * a_owner);
+	~IsProjectileInFlight();
+
+	void MakeDecision(float dt);
+
+	Warrior * m_owner;
+
+};
+
 class IsNumberTooLow : public BoolDecision
 {
 public:
@@ -125,6 +141,19 @@ public:
 
 	BlockAction(Warrior * a_owner);
 	~BlockAction();
+
+	void MakeDecision(float dt);
+
+	Warrior * m_owner;
+
+};
+
+class KnockBackAction : public Decision
+{
+public:
+
+	KnockBackAction(Warrior * a_owner);
+	~KnockBackAction();
 
 	void MakeDecision(float dt);
 
