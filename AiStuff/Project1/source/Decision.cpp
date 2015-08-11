@@ -140,7 +140,7 @@ IsProjectileInFlight::~IsProjectileInFlight()
 void IsProjectileInFlight::MakeDecision(float dt)
 {
 
-	m_tof = ((Archer*)(m_owner->m_opponent))->m_arrowInFlight;
+	m_tof = m_owner->m_opponent->m_arrowInFlight;
 
 	if (m_tof)
 		m_trueDecision->MakeDecision(dt);
@@ -155,7 +155,7 @@ IsNumberTooLow::IsNumberTooLow(Archer * a_owner) :BoolDecision(a_owner)
 	m_ownerType = 'A';
 }
 
-IsNumberTooLow::IsNumberTooLow(Warrior * a_owner) : BoolDecision(a_owner)
+IsNumberTooLow::IsNumberTooLow(Warrior * a_owner) :BoolDecision(a_owner)
 {
 	m_owner = a_owner;
 	m_ownerType = 'W';
@@ -203,14 +203,14 @@ IsObjectAvoidable::~IsObjectAvoidable()
 void IsObjectAvoidable::MakeDecision(float dt)
 {
 	
-	float timeTillCollision = ((Archer*)(m_owner->m_opponent))->m_shot->m_vVelo.SqrMagnatude();
-	Vector2 temp = (m_owner->GetPos() - (((Archer*)(m_owner->m_opponent))->m_shot->GetPos() + ((Archer*)(m_owner->m_opponent))->m_shot->m_vVelo)).Normalised() * m_owner->m_maxVelo;
+	float timeTillCollision = (((Warrior*)(m_owner))->m_opponent)->m_shot->m_vVelo.SqrMagnatude();
+	Vector2 temp = (m_owner->GetPos() - (((Warrior*)(m_owner))->m_opponent)->m_shot->GetPos() + ((((Warrior*)(m_owner))->m_opponent)->m_shot->m_vVelo).Normalised() * m_owner->m_maxVelo);
 	Vector2 futurePos = m_owner->GetPos() + (m_owner->m_vVelo * 0.95f) + ((m_owner->m_force + (temp - m_owner->m_vVelo)) * timeTillCollision);
 	GameObj tempWarrior(m_owner->m_objTexture, m_owner->m_maxVelo);
 	tempWarrior.SetPos(futurePos);
 	tempWarrior.Update(dt);
 	//box collision with line
-	if (tempWarrior.m_collider.LineCollision(m_owner->m_opponent->GetPos(), ((Archer*)(m_owner->m_opponent))->m_shot->m_vVelo))
+	if (tempWarrior.m_collider.LineCollision(((Warrior*)(m_owner))->m_opponent->GetPos(), ((Warrior*)(m_owner))->m_opponent->m_shot->m_vVelo))
 		m_tof = false;
 	else
 		m_tof = true;
@@ -258,10 +258,10 @@ KnockBackAction::KnockBackAction(Warrior * a_owner) :Decision(a_owner)
 
 void KnockBackAction::MakeDecision(float dt)
 {
-	if (m_owner->m_collider.BoxCollision(((Archer*)(m_owner->m_opponent))->m_shot->m_collider))
+	if (m_owner->m_collider.BoxCollision(m_owner->m_opponent->m_shot->m_collider))
 	{
-		m_owner->ApplyForce(((Archer*)(m_owner->m_opponent))->m_shot->m_vVelo / 10);
-		((Archer*)(m_owner->m_opponent))->m_arrowInFlight = false;
+		m_owner->ApplyForce(m_owner->m_opponent->m_shot->m_vVelo / 10);
+		m_owner->m_opponent->m_arrowInFlight = false;
 	}
 }
 

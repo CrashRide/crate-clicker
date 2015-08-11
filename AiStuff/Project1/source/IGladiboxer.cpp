@@ -13,7 +13,8 @@ IGladiboxer::~IGladiboxer()
 
 Warrior::Warrior(Stats a_stats, Archer * a_opponent)
 {
-	wep = Sword(this, new Texture("./Images/warriorSword.png"));
+	wep = Sword();
+	m_objTexture = new Texture("./Images/box0_256.png");
 	m_stats = a_stats;
 	m_hasShield = true;
 	m_shieldDurability = 10;
@@ -43,13 +44,16 @@ void Warrior::Update(float dt)
 	else if (m_blocking)
 		m_vVelo = Vector2(0.f, 0.f);
 	else
+	{
+		delete  shieldTex;
 		shieldTex = nullptr;
+	}
 	this->Smith::Update(dt);
 }
 
 void Warrior::Attack()
 {
-
+	wep.Init(this, new Texture("./Images/warriorSword.png"));
 	m_attacking = true;
 
 }
@@ -57,7 +61,7 @@ void Warrior::Attack()
 void Warrior::Block()
 {
 
-	shieldTex = new Texture("./Images/warriorShield");
+	shieldTex = new Texture("./Images/warriorShield.png");
 	m_blocking = true;
 
 }
@@ -75,7 +79,11 @@ Archer::Archer(Stats a_stats, Warrior * a_opponent)
 	m_maxArrows = 25;
 	m_opponent = a_opponent;
 
+	m_objTexture = new Texture("./Images/box0_256.png");
+
 	m_arrowInFlight = false;
+
+	m_shot = Arrow();
 
 	m_quiver.resize(m_maxArrows);
 	m_quiver.shrink_to_fit();
@@ -99,7 +107,17 @@ Archer::~Archer()
 void Archer::Update(float dt)
 {
 	m_arrows = m_quiver.size();
+	m_decisionTreeRoot->MakeDecision(dt);
+	if (m_attacking)
+		m_shot.Flight(dt);
 	this->Smith::Update(dt);
+}
+
+void Archer::Attack()
+{
+	m_attacking = true;
+	m_shot.Init(this, new Texture("./Images/Arrow.png"));
+
 }
 
 int Archer::GetAmmo()

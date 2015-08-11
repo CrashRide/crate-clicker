@@ -34,6 +34,8 @@ public:
 
 	Stats m_stats;
 
+	IGladiboxer * m_opponent;
+
 	bool m_adrenalineMode = false;
 	bool m_attacking = false;
 	bool m_alive = true;
@@ -61,14 +63,25 @@ public:
 	class Sword : public GameObj
 	{
 	public:
-		Sword(Warrior * a_owner, Texture* a_tex)
+		Sword()
+		{
+			m_owner = nullptr;
+		}
+		~Sword();
+
+		void Init(Warrior * a_owner, Texture* a_tex)
 		{
 			m_owner = a_owner;
 			SetPos(m_owner->GetPos());
 			SetRot(m_owner->m_heading.AngleOf() - (M_PI / 2));
 			m_objTexture = a_tex;
 		}
-		~Sword();
+
+		void End()
+		{
+			delete this;
+			*this = Sword();
+		}
 
 		void Swing(float dt)
 		{
@@ -76,6 +89,7 @@ public:
 			if (GetRot() > (M_PI / 2))
 			{
 				m_owner->m_attacking = false;
+				End();
 			}
 		}
 
@@ -105,8 +119,48 @@ public:
 
 	int GetAmmo();
 
-	GameObj * m_shot = nullptr;
-	GameObj* m_strayArrowTarget;
+	class Arrow : public GameObj
+	{
+	public:
+		Arrow()
+		{
+			m_owner = nullptr;
+		}
+		~Arrow();
+
+		void Init(Archer * a_owner, Texture* a_tex)
+		{
+			m_owner = a_owner;
+			m_maxVelo = 500.f;
+			m_friction = 1.f;
+			SetPos(m_owner->GetPos());
+			SetRot((m_owner->m_opponent->GetPos() - GetPos()).AngleOf());
+			ApplyForce((m_owner->m_opponent->GetPos() - GetPos()).Normalised() * m_owner->m_stats.ATKRNG);
+			m_objTexture = a_tex;
+		}
+
+		void End()
+		{
+			delete this;
+			*this = Arrow();
+		}
+
+		void Flight(float dt)
+		{
+			flightTime += dt;
+			Update(dt);
+			if (m_collider.BoxCollision(m_owner->m_opponent->m_collider))
+				End();
+			else if ((flightTime * m_maxVelo) >= m_owner->m_stats.ATKRNG)
+				End();
+		}
+
+		Archer * m_owner;
+		float flightTime = 0.f;
+	};
+
+	Arrow m_shot;
+	GameObj * m_strayArrowTarget;
 	bool m_arrowInFlight;
 
 	Warrior * m_opponent;
