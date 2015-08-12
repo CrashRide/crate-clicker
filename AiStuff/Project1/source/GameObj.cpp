@@ -54,7 +54,7 @@ void GameObj::ApplyForce(Vector2 &rhs)
 	m_force += rhs;
 }
 
-Vector2 GameObj::GetPos()const
+Vector2 GameObj::GetPos() const
 {
 	return m_pos;
 }

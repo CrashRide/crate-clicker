@@ -1,5 +1,6 @@
 #include "Smith.h"
 #include "IFeels.h"
+#include "SpriteBatch.h"
 
 
 Smith::Smith()
@@ -37,16 +38,18 @@ void Smith::Update(float dt)
 	cout << GetPos().x << " , " << GetPos().y << endl;
 }
 
-//void Smith::Draw(SpriteBatch*a_spriteBatch)
-//{
-//
-//	for (auto iter = m_feels.begin(); iter != m_feels.end(); iter++)
-//	{
-//		(*iter)->DebugDraw(a_spriteBatch);
-//
-//	}
-//
-//}
+void Smith::Draw(SpriteBatch * a_spriteBatch)
+{
+
+	/*for (auto iter = m_feels.begin(); iter != m_feels.end(); iter++)
+	{
+		(*iter)->DebugDraw(a_spriteBatch);
+
+	}*/
+
+	this->GameObj::Draw(a_spriteBatch);
+
+}
 
 void Smith::AddFeels(IFeels *a_feel)
 {

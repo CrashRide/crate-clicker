@@ -6,6 +6,11 @@ using namespace MathLib;
 class Box
 {
 public:
+	Box()
+	{
+		b_tl = Vector2();
+		b_br = Vector2();
+	}
 	Box(Vector2 &b_topLeft, Vector2 &b_bottomRight);
 	~Box();
 

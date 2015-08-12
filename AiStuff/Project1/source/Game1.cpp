@@ -8,6 +8,7 @@
 #include <string>
 #include "MathLib.h"
 #include <time.h>
+#include "IGladiboxer.h"
 using namespace MathLib;
 using namespace std;
 
@@ -31,19 +32,24 @@ Game1::Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscree
 	one = nullptr;
 	two = nullptr;
 
-	o_player.SetPos(Vector2(200, 200));
-	o_player.m_objTexture = new Texture("./Images/box0_256.png");
+	m_Warrior = new Warrior(Stats(200.0, 25.0, 1.5, 100.0, 75.0, 'W'), m_Archer);
+	m_Archer = new Archer(Stats(150.0, 35.0, 2.5, 150.0, 320.0, 'A'), m_Warrior);
 
-	s_enemy = new Smith(Vector2(320, 240.0f));
-	s_enemy->m_objTexture = new Texture("./Images/box0_256.png");
+	m_Warrior->m_opponent = m_Archer;
+
+	//o_player.SetPos(Vector2(200, 200));
+	//o_player.m_objTexture = new Texture("./Images/box0_256.png");
+
+	//s_enemy = new Smith(Vector2(320, 240.0f));
+	//s_enemy->m_objTexture = new Texture("./Images/box0_256.png");
 	//s_enemy->AddFeels(new FleeFeels(&o_player));
 	//s_enemy->AddFeels(new WanderFeels(25.0f, s_enemy->m_objTexture->GetHeight()/10, 25.0f));
 	
 	m_spritebatch->SetColumnMajor(true);
 
-	feelSwitch[0] = false;
-	feelSwitch[1] = false;
-	feelSwitch[2] = false;
+	//feelSwitch[0] = false;
+	//feelSwitch[1] = false;
+	//feelSwitch[2] = false;
 
 }
 
@@ -51,7 +57,9 @@ Game1::~Game1()
 {
 	SpriteBatch::Factory::Destroy(m_spritebatch);
 
-	delete s_enemy;
+	//delete s_enemy;
+	delete m_Archer;
+	delete m_Warrior;
 	delete m_NodeTex;
 	delete m_Graph;
 	delete m_font;
@@ -144,7 +152,11 @@ void Game1::Update(float deltaTime)
 		//m_Graph->AStar((*m_Graph)[0], (*m_Graph)[m_Graph->GetSize() - 1]);
 		cout << "." << endl;
 	}
-	if (GetInput()->WasKeyPressed(GLFW_KEY_1))
+
+	m_Warrior->Update(deltaTime);
+	m_Archer->Update(deltaTime);
+
+	/*if (GetInput()->WasKeyPressed(GLFW_KEY_1))
 	{
 		s_enemy->AddFeels(new SeekFeels(&o_player, 0.5f));
 		feelSwitch[0] = !feelSwitch[0];
@@ -176,7 +188,7 @@ void Game1::Update(float deltaTime)
 		o_player.ApplyForce(Vector2(500, 0));
 	}
 	o_player.Update(deltaTime);
-	s_enemy->Update(deltaTime);
+	s_enemy->Update(deltaTime);*/
 }
 
 void Game1::Draw()
@@ -187,9 +199,9 @@ void Game1::Draw()
 	m_spritebatch->Begin();
 
 	// TODO: draw stuff.
-	o_player.Draw(m_spritebatch);
-	s_enemy->Draw(m_spritebatch);
-	m_Graph->Draw(m_NodeTex, m_spritebatch);
+	//o_player.Draw(m_spritebatch);
+	//s_enemy->Draw(m_spritebatch);
+	//m_Graph->Draw(m_NodeTex, m_spritebatch);
 
 	if (one != nullptr){
 		// Set red
@@ -223,16 +235,19 @@ void Game1::Draw()
 
 	m_spritebatch->DrawString(m_font, x.c_str(), GetWindowWidth() - 180, 50, 0.5f, 0.5f);
 	m_spritebatch->DrawString(m_font, y.c_str(), GetWindowWidth() - 90, 50, 0.5f, 0.5f);
-	m_spritebatch->DrawString(m_font, " 1. Seek	\n 2. Flee \n 3. Wander", 50.0f, 50.0f, 0.0f,0.0f);
+	//m_spritebatch->DrawString(m_font, " 1. Seek	\n 2. Flee \n 3. Wander", 50.0f, 50.0f, 0.0f,0.0f);
 
-	float shiby = 20.0f;
-	for (int i = 0; i < 3; i++)
-	{
-		if (feelSwitch[i])
-			m_spritebatch->DrawString(m_font, "On", 205.0f, shiby+=30, 0.5f, 0.0f);
-		else
-			m_spritebatch->DrawString(m_font, "Off", 205.0f, shiby+=30, 0.5f, 0.0f);
-	}
+	m_Archer->Draw(m_spritebatch);
+	m_Warrior->Draw(m_spritebatch);
+
+	//float shiby = 20.0f;
+	//for (int i = 0; i < 3; i++)
+	//{
+	//	if (feelSwitch[i])
+	//		m_spritebatch->DrawString(m_font, "On", 205.0f, shiby+=30, 0.5f, 0.0f);
+	//	else
+	//		m_spritebatch->DrawString(m_font, "Off", 205.0f, shiby+=30, 0.5f, 0.0f);
+	//}
 
 	m_spritebatch->End();
 

@@ -9,13 +9,15 @@ class Archer;
 class Decision
 {
 public:
+
+	Decision(){}
 	Decision(Smith * a_owner);
 	virtual ~Decision();
 
 	virtual void MakeDecision(float dt) = 0;
 
-	Decision * m_trueDecision;
-	Decision * m_falseDecision;
+	Decision * m_trueDecision = nullptr;
+	Decision * m_falseDecision = nullptr;
 
 protected: 
 
@@ -27,13 +29,11 @@ class BoolDecision : public Decision
 {
 public:
 
+	BoolDecision(){}
 	BoolDecision(Smith * a_owner);
 	virtual ~BoolDecision();
 
-	virtual void MakeDecision(float dt);
-
-	Decision * m_trueDecision;
-	Decision * m_falseDecision;
+	virtual void MakeDecision(float dt) = 0;
 
 	bool m_tof;
 

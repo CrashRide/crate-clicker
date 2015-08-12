@@ -1,19 +1,9 @@
-﻿Build started 15/07/2015 2:07:35 PM.
-     1>Project "C:\Users\matt.callahan\Desktop\WorkSpace\trunk\GraphStuff\AIE_GL\AIE_GL.vcxproj" on node 2 (Build target(s)).
+﻿Build started 12/08/2015 3:05:34 PM.
+     1>Project "C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\AIE_GL\AIE_GL.vcxproj" on node 2 (Build target(s)).
      1>Lib:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\Lib.exe /OUT:"C:\Users\matt.callahan\Desktop\WorkSpace\trunk\GraphStuff\AIE_GL\bin\AIE_GL_d.lib" OpenGL32.lib glew32.lib glfw3.lib /LIBPATH:C:\Users\matt.callahan\Desktop\WorkSpace\trunk\GraphStuff\libraries\glew\lib\Release\Win32\ /LIBPATH:"C:\Users\matt.callahan\Desktop\WorkSpace\trunk\GraphStuff\libraries\glfw3\lib-vc2013\\" /NOLOGO C:\Users\matt.callahan\Desktop\WorkSpace\trunk\GraphStuff\CompilerJunk\AIE_GL_dDebug\Application.obj
-         C:\Users\matt.callahan\Desktop\WorkSpace\trunk\GraphStuff\CompilerJunk\AIE_GL_dDebug\Font.obj
-         C:\Users\matt.callahan\Desktop\WorkSpace\trunk\GraphStuff\CompilerJunk\AIE_GL_dDebug\Input.obj
-         C:\Users\matt.callahan\Desktop\WorkSpace\trunk\GraphStuff\CompilerJunk\AIE_GL_dDebug\lodepng.obj
-         C:\Users\matt.callahan\Desktop\WorkSpace\trunk\GraphStuff\CompilerJunk\AIE_GL_dDebug\RenderTexture.obj
-         C:\Users\matt.callahan\Desktop\WorkSpace\trunk\GraphStuff\CompilerJunk\AIE_GL_dDebug\SpriteBatch.obj
-         C:\Users\matt.callahan\Desktop\WorkSpace\trunk\GraphStuff\CompilerJunk\AIE_GL_dDebug\SpriteBatch_GL3.obj
-         C:\Users\matt.callahan\Desktop\WorkSpace\trunk\GraphStuff\CompilerJunk\AIE_GL_dDebug\Texture.obj
-     1>glew32.lib(glew32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in OpenGL32.lib(OPENGL32.dll); second definition ignored
-     1>glew32.lib(glew32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
-         AIE_GL.vcxproj -> C:\Users\matt.callahan\Desktop\WorkSpace\trunk\GraphStuff\AIE_GL\bin\AIE_GL_d.lib
-     1>Done Building Project "C:\Users\matt.callahan\Desktop\WorkSpace\trunk\GraphStuff\AIE_GL\AIE_GL.vcxproj" (Build target(s)).
+         AIE_GL.vcxproj -> C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\AIE_GL\bin\AIE_GL_d.lib
+     1>Done Building Project "C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\AIE_GL\AIE_GL.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.29
+Time Elapsed 00:00:00.03

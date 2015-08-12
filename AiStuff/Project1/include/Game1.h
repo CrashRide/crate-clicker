@@ -10,12 +10,15 @@ Description:
 #include "MathLib.h"
 #include "GameObj.h"
 #include "Smith.h"
+
 using namespace MathLib;
 
 class SpriteBatch;
 class Graph;
 struct Node;
 class Font;
+class Warrior;
+class Archer;
 
 class Game1 : public Application
 {
@@ -48,11 +51,13 @@ private:
 	Node* one;
 	Node* two;
 
-	GameObj o_player;
-	Smith* s_enemy;
+	//GameObj o_player;
+	//Smith* s_enemy;
 
+	Warrior * m_Warrior;
+	Archer * m_Archer;
 
-	bool feelSwitch[3];
+	//bool feelSwitch[3];
 };
 
 #endif

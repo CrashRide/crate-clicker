@@ -136,7 +136,7 @@ const GameObj* FleeFeels::GetTarget()const
 	return m_target;
 }
 
-EvadeFeels::EvadeFeels(const GameObj * a_target, float a_weight)
+EvadeFeels::EvadeFeels(GameObj * a_target, float a_weight)
 {
 	m_target = a_target;
 	m_type = 'E';

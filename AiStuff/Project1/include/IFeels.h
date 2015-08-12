@@ -77,14 +77,14 @@ private:
 class EvadeFeels : public IFeels
 {
 public:
-	EvadeFeels(const GameObj * a_target, float);
+	EvadeFeels(GameObj * a_target, float);
 	~EvadeFeels();
 
 	const GameObj* GetTarget()const;
 	void Update(Smith * a_smith);
 
 private:
-	const GameObj * m_target;
+	GameObj * m_target;
 };
 
 class WanderFeels : public IFeels

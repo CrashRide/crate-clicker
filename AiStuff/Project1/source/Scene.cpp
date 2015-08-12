@@ -34,8 +34,8 @@ SceneNode::~SceneNode()
 	}
 	else
 	{
-		delete m_local_transform;
-		delete m_global_transform;
+		//delete m_global_transform;
+		//delete m_local_transform;
 	}
 }
 

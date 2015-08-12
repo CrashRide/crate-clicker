@@ -7,14 +7,35 @@
 #include "Smith.h"
 
 class Decision;
+class SpriteBatch;
+class Archer;
+class IsOpponentAlive;
 
 struct Stats
 {
-	float HP = 0.f;
-	float ATKDMG = 0.f;
-	float ATKSPD = 0.f;
-	float MVESPD = 0.f;
-	float ATKRNG = 0.f;
+	Stats()
+	{
+		HP = 0.f;
+		ATKDMG = 0.f;
+		ATKSPD = 0.f;
+		MVESPD = 0.f;
+		ATKRNG = 0.f;
+	}
+	Stats(float hp, float ad, float as, float ms, float ar, char cls)
+	{
+		HP = hp;
+		ATKDMG = ad;
+		ATKSPD = as;
+		MVESPD = ms;
+		ATKRNG = ar;
+		CLASS = cls;
+	}
+	float HP;
+	float ATKDMG;
+	float ATKSPD;
+	float MVESPD;
+	float ATKRNG;
+	char CLASS;
 };
 
 class IGladiboxer : public Smith
@@ -26,19 +47,20 @@ public:
 	virtual void Update(float dt) = 0;
 	virtual void ActivateAdrenaline() = 0;
 	virtual void Attack() = 0;
+	virtual void Draw(SpriteBatch * a_spritebatch) = 0;
 
 	virtual int GetAmmo() = 0;
 	virtual int GetDurability() = 0;
 
-	Decision* m_decisionTreeRoot;
+	IsOpponentAlive * m_decisionTreeRoot;
 
 	Stats m_stats;
 
 	IGladiboxer * m_opponent;
 
-	bool m_adrenalineMode = false;
-	bool m_attacking = false;
-	bool m_alive = true;
+	bool m_adrenalineMode;
+	bool m_attacking;
+	bool m_alive;
 
 };
 
@@ -50,15 +72,17 @@ public:
 	~Warrior();
 
 	void Update(float dt);
+	void Draw(SpriteBatch * a_spritebatch);
 	void Attack();
 	void Block();
-	void ActivateAdrenaline();
+	void ActivateAdrenaline(){}
 
 	int GetDurability();
+	int GetAmmo(){ return NULL; }
 
 	bool m_blocking = false;
 
-	Archer * m_opponent;
+	//Archer * m_opponent;
 
 	class Sword : public GameObj
 	{
@@ -67,7 +91,7 @@ public:
 		{
 			m_owner = nullptr;
 		}
-		~Sword();
+		~Sword(){}
 
 		void Init(Warrior * a_owner, Texture* a_tex)
 		{
@@ -79,7 +103,7 @@ public:
 
 		void End()
 		{
-			delete this;
+			//delete this;
 			*this = Sword();
 		}
 
@@ -114,10 +138,12 @@ public:
 	~Archer();
 
 	void Update(float dt);
+	void Draw(SpriteBatch * a_spritebatch);
 	void Attack();
-	void ActivateAdrenaline();
+	void ActivateAdrenaline(){}
 
 	int GetAmmo();
+	int GetDurability(){ return NULL; }
 
 	class Arrow : public GameObj
 	{
@@ -126,7 +152,7 @@ public:
 		{
 			m_owner = nullptr;
 		}
-		~Arrow();
+		~Arrow(){}
 
 		void Init(Archer * a_owner, Texture* a_tex)
 		{
@@ -141,7 +167,7 @@ public:
 
 		void End()
 		{
-			delete this;
+			//delete this;
 			*this = Arrow();
 		}
 
@@ -163,7 +189,7 @@ public:
 	GameObj * m_strayArrowTarget;
 	bool m_arrowInFlight;
 
-	Warrior * m_opponent;
+	//Warrior * m_opponent;
 
 private:
 
