@@ -1,4 +1,5 @@
 #include "IFeels.h"
+#include "IGladiboxer.h"
 #include "Smith.h"
 
 #define _USE_MATH_DEFINES
@@ -14,7 +15,7 @@ IFeels::~IFeels()
 {
 }
 
-SeekFeels::SeekFeels(const GameObj * a_target, float a_weight)
+SeekFeels::SeekFeels( IGladiboxer * a_target, float a_weight)
 {
 	m_target = a_target;
 	m_type = 'S';
@@ -37,14 +38,14 @@ void SeekFeels::Update(Smith * a_smith)
 	a_smith->ApplyForce((temp - a_smith->m_vVelo) * m_weight);
 }
 
-const GameObj* SeekFeels::GetTarget()const
+ IGladiboxer* SeekFeels::GetTarget()
 {
 	return m_target;
 }
 
-PursueFeels::PursueFeels(const GameObj * a_target, float a_weight)
+PursueFeels::PursueFeels( IGladiboxer * a_owner, float a_weight)
 {
-	m_target = a_target;
+	m_owner = a_owner;
 	m_type = 'P';
 	if (a_weight > 1.0f)
 		m_weight = 1.0f;
@@ -60,16 +61,16 @@ PursueFeels::~PursueFeels()
 
 void PursueFeels::Update(Smith * a_smith)
 {
-	Vector2 temp = ((m_target->GetPos() + m_target->m_vVelo) - a_smith->GetPos()).Normalised() * a_smith->m_maxVelo;
+	Vector2 temp = ((m_owner->m_opponent->GetPos() + m_owner->m_opponent->m_vVelo) - a_smith->GetPos()).Normalised() * a_smith->m_maxVelo;
 	a_smith->ApplyForce((temp - a_smith->m_vVelo) * m_weight);
 }
 
-const GameObj* PursueFeels::GetTarget()const
+ IGladiboxer* PursueFeels::GetTarget()
 {
-	return m_target;
+	return m_owner;
 }
 
-ArrivalFeels::ArrivalFeels(const GameObj * a_target, float a_weight, float a_radius)
+ArrivalFeels::ArrivalFeels( IGladiboxer * a_target, float a_weight, float a_radius)
 {
 	m_target = a_target;
 	m_type = '@';
@@ -103,12 +104,12 @@ void ArrivalFeels::Update(Smith * a_smith)
 	a_smith->ApplyForce((temp - a_smith->m_vVelo) * m_weight);
 }
 
-const GameObj* ArrivalFeels::GetTarget()const
+ IGladiboxer* ArrivalFeels::GetTarget()
 {
 	return m_target;
 }
 
-FleeFeels::FleeFeels(const GameObj * a_target, float a_weight)
+FleeFeels::FleeFeels( IGladiboxer * a_target, float a_weight)
 {
 	m_target = a_target;
 	m_type = 'F';
@@ -131,14 +132,14 @@ void FleeFeels::Update(Smith * a_smith)
 	a_smith->ApplyForce((temp - a_smith->m_vVelo) * m_weight);
 }
 
-const GameObj* FleeFeels::GetTarget()const
+ IGladiboxer* FleeFeels::GetTarget()
 {
 	return m_target;
 }
 
-EvadeFeels::EvadeFeels(GameObj * a_target, float a_weight)
+EvadeFeels::EvadeFeels(IGladiboxer * a_owner, float a_weight)
 {
-	m_target = a_target;
+	m_owner = a_owner;
 	m_type = 'E';
 	if (a_weight > 1.0f)
 		m_weight = 1.0f;
@@ -155,13 +156,13 @@ EvadeFeels::~EvadeFeels()
 
 void EvadeFeels::Update(Smith * a_smith)
 {
-	Vector2 temp = (a_smith->GetPos() - (m_target->GetPos() + m_target->m_vVelo)).Normalised() * a_smith->m_maxVelo;
-	a_smith->ApplyForce((temp - a_smith->m_vVelo) * m_weight);
+	Vector2 temp = (m_owner->GetPos() - (m_owner->m_opponent->GetPos() + m_owner->m_opponent->m_vVelo)).Normalised() * a_smith->m_maxVelo;
+	a_smith->ApplyForce((temp - m_owner->m_vVelo) * m_weight);
 }
 
-const GameObj* EvadeFeels::GetTarget()const
+ IGladiboxer* EvadeFeels::GetTarget()
 {
-	return m_target;
+	return m_owner->m_opponent;
 }
 
 WanderFeels::WanderFeels(float a_wanderRadius, float a_wanderDistance, float a_jitter, float a_weight)
@@ -224,7 +225,7 @@ void WanderFeels::DebugDraw(SpriteBatch * a_spriteBatch)
 
 }
 
-const GameObj* WanderFeels::GetTarget()const
+ IGladiboxer* WanderFeels::GetTarget()
 {
 	return nullptr;
 }

@@ -113,7 +113,10 @@ void GameObj::Update(float dt)
 	}
 	else
 		m_heading = m_vVelo.Normalised();
-	m_collider = Box(Vector2(m_pos.x - ((m_objTexture->GetWidth()*m_scale.x) / 2), m_pos.y + ((m_objTexture->GetHeight()*m_scale.y) / 2)), Vector2(m_pos.x + ((m_objTexture->GetWidth()*m_scale.x) / 2), m_pos.y - ((m_objTexture->GetHeight()*m_scale.y) / 2)));
+	if (m_objTexture != nullptr)
+		m_collider = Box(Vector2(m_pos.x - ((m_objTexture->GetWidth()*m_scale.x) / 2), m_pos.y + ((m_objTexture->GetHeight()*m_scale.y) / 2)), Vector2(m_pos.x + ((m_objTexture->GetWidth()*m_scale.x) / 2), m_pos.y - ((m_objTexture->GetHeight()*m_scale.y) / 2)));
+	else
+		m_collider = Box();
 }
 
 void GameObj::Draw(SpriteBatch* m_spritebatch)

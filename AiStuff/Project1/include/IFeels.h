@@ -3,8 +3,9 @@
 using namespace MathLib;
 
 class Smith;
-class GameObj;
+class IGladiboxer;
 class SpriteBatch;
+class IGladiboxer;
 class IFeels
 {
 public:
@@ -14,7 +15,7 @@ public:
 	virtual void Update(Smith* a_smith) = 0;
 	virtual void DebugDraw(SpriteBatch * a_spriteBatch) {};
 
-	virtual const GameObj* GetTarget()const = 0;
+	virtual  IGladiboxer* GetTarget() = 0;
 
 	//weight is a percentage of priority, a number between 0 and 1 incluisive.
 	float m_weight;
@@ -24,67 +25,67 @@ public:
 class SeekFeels : public IFeels
 {
 public:
-	SeekFeels(const GameObj * a_target, float);
+	SeekFeels( IGladiboxer * a_target, float);
 	~SeekFeels();
 
-	const GameObj* GetTarget()const;
+	 IGladiboxer* GetTarget();
 	void Update(Smith * a_smith);
 
 private:
-	const GameObj * m_target;
+	 IGladiboxer * m_target;
 };
 
 class PursueFeels : public IFeels
 {
 public:
-	PursueFeels(const GameObj*, float);
+	PursueFeels( IGladiboxer*, float);
 	~PursueFeels();
 
-	const GameObj* GetTarget()const;
+	 IGladiboxer* GetTarget();
 	void Update(Smith * a_smith);
 
 private:
-	const GameObj * m_target;
+	 IGladiboxer * m_owner;
 };
 
 class ArrivalFeels : public IFeels
 {
 public:
-	ArrivalFeels(const GameObj * a_target, float, float);
+	ArrivalFeels( IGladiboxer * a_target, float, float);
 	~ArrivalFeels();
 
-	const GameObj* GetTarget()const;
+	 IGladiboxer* GetTarget();
 	void Update(Smith * a_smith);
 
 private:
-	const GameObj * m_target;
+	 IGladiboxer * m_target;
 	float m_radius;
 };
 
 class FleeFeels : public IFeels
 {
 public:
-	FleeFeels(const GameObj * a_target, float);
+	FleeFeels( IGladiboxer * a_target, float);
 	~FleeFeels();
 
-	const GameObj* GetTarget()const;
+	 IGladiboxer* GetTarget();
 	void Update(Smith * a_smith);
 
 private:
-	const GameObj * m_target;
+	 IGladiboxer * m_target;
 };
 
 class EvadeFeels : public IFeels
 {
 public:
-	EvadeFeels(GameObj * a_target, float);
+	EvadeFeels(IGladiboxer * a_owner, float);
 	~EvadeFeels();
 
-	const GameObj* GetTarget()const;
+	 IGladiboxer* GetTarget();
 	void Update(Smith * a_smith);
 
 private:
-	GameObj * m_target;
+	IGladiboxer * m_owner;
 };
 
 class WanderFeels : public IFeels
@@ -96,7 +97,7 @@ public:
 	void Update(Smith * a_smith);
 	void DebugDraw(SpriteBatch * a_spriteBatch);
 
-	const GameObj* GetTarget()const;
+	 IGladiboxer* GetTarget();
 private:
 	float m_wanderRadius;
 	float m_wanderDistance;

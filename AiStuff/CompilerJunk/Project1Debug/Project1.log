@@ -1,10 +1,12 @@
-﻿Build started 17/08/2015 8:54:30 AM.
+﻿Build started 17/08/2015 10:27:36 AM.
      1>Project "C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\Project1\Project1.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\AIE_GL\include\ /IC:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\libraries\glfw3\include\GLFW\ /IC:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\libraries\glew\include\ /IC:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\Project1\include\ /IC:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\libraries\mathlib\ /IC:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\libraries\mathlib\include\ /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\CompilerJunk\Project1Debug\\" /Fd"C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\CompilerJunk\Project1Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt source\Decision.cpp
-         Decision.cpp
-     1>c:\users\matt.callahan\desktop\workspace\trunk\aistuff\project1\include\igladiboxer.h(100): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\matt.callahan\desktop\workspace\trunk\aistuff\project1\include\igladiboxer.h(112): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\AIE_GL\include\ /IC:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\libraries\glfw3\include\GLFW\ /IC:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\libraries\glew\include\ /IC:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\Project1\include\ /IC:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\libraries\mathlib\ /IC:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\libraries\mathlib\include\ /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\CompilerJunk\Project1Debug\\" /Fd"C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\CompilerJunk\Project1Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt source\IFeels.cpp
+         IFeels.cpp
+     1>c:\users\matt.callahan\desktop\workspace\trunk\aistuff\project1\include\igladiboxer.h(101): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\matt.callahan\desktop\workspace\trunk\aistuff\project1\include\igladiboxer.h(113): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\matt.callahan\desktop\workspace\trunk\aistuff\project1\source\ifeels.cpp(192): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\matt.callahan\desktop\workspace\trunk\aistuff\project1\source\ifeels.cpp(198): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\Compiled\Project1Debug\Project1.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\AIE_GL\bin\ /LIBPATH:C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\libraries\glew\lib\Release\Win32\ /LIBPATH:"C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\libraries\glfw3\lib-vc2013\\" /LIBPATH:C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\libraries\mathlib\ OpenGL32.lib MathLib.lib AIE_GL_d.lib glew32.lib glfw3.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\Compiled\Project1Debug\Project1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\Compiled\Project1Debug\Project1.lib" /MACHINE:X86 C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\CompilerJunk\Project1Debug\main.obj
          C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\CompilerJunk\Project1Debug\BinaryTree.obj
@@ -23,4 +25,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.53
+Time Elapsed 00:00:00.49

@@ -32,10 +32,11 @@ Game1::Game1(unsigned int windowWidth, unsigned int windowHeight, bool fullscree
 	one = nullptr;
 	two = nullptr;
 
-	m_Archer = new Archer(Stats(150.0, 35.0, 2.5, 150.0, 320.0, 'A'), m_Warrior);
-	m_Warrior = new Warrior(Stats(200.0, 25.0, 1.5, 100.0, 75.0, 'W'), m_Archer);
+	m_Archer = new Archer(Stats(150.0, 35.0, 2.5, 250.0, 640.0, 'A'));
+	m_Warrior = new Warrior(Stats(200.0, 25.0, 1.5, 200.0, 75.0, 'W'));
 
 	m_Warrior->m_opponent = m_Archer;
+	m_Archer->m_opponent = m_Warrior;
 
 	//o_player.SetPos(Vector2(200, 200));
 	//o_player.m_objTexture = new Texture("./Images/box0_256.png");

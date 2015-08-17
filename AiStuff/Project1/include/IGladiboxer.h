@@ -11,6 +11,7 @@ class SpriteBatch;
 class Archer;
 class IsOpponentAlive;
 
+
 struct Stats
 {
 	Stats()
@@ -68,7 +69,7 @@ class Warrior : public IGladiboxer
 {
 public:
 
-	Warrior(Stats a_stats, Archer * a_opponent);
+	Warrior(Stats a_stats);
 	~Warrior();
 
 	void Update(float dt);
@@ -134,7 +135,7 @@ class Archer : public IGladiboxer
 {
 public:
 
-	Archer(Stats a_stats, Warrior * a_opponent);
+	Archer(Stats a_stats);
 	~Archer();
 
 	void Update(float dt);
@@ -160,14 +161,15 @@ public:
 			m_maxVelo = 500.f;
 			m_friction = 1.f;
 			SetPos(m_owner->GetPos());
-			SetRot((m_owner->m_opponent->GetPos() - GetPos()).AngleOf());
-			ApplyForce((m_owner->m_opponent->GetPos() - GetPos()).Normalised() * m_owner->m_stats.ATKRNG);
+			SetRot(((m_owner->m_opponent)->GetPos() - GetPos()).AngleOf());
+			ApplyForce(((m_owner->m_opponent)->GetPos() - GetPos()).Normalised() * m_owner->m_stats.ATKRNG);
 			m_objTexture = a_tex;
 		}
 
 		void End()
 		{
 			//delete this;
+			m_owner->m_attacking = false;
 			*this = Arrow();
 		}
 
@@ -175,7 +177,7 @@ public:
 		{
 			flightTime += dt;
 			Update(dt);
-			if (m_collider.BoxCollision(m_owner->m_opponent->m_collider))
+			if (m_collider.BoxCollision((m_owner->m_opponent)->m_collider))
 				End();
 			else if ((flightTime * m_maxVelo) >= m_owner->m_stats.ATKRNG)
 				End();

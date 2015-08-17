@@ -16,23 +16,24 @@ IGladiboxer::~IGladiboxer()
 {
 }
 
-Warrior::Warrior(Stats a_stats, Archer * a_opponent)
+Warrior::Warrior(Stats a_stats)
 {
 	wep = Sword();
 	m_objTexture = new Texture("./Images/box0_256.png");
 	SetPos(Vector2(100.0, 100.0));
+	SetScale(Vector2(0.1f, 0.1f));
 	m_stats = a_stats;
 	m_maxVelo = m_stats.MVESPD;
 	m_hasShield = true;
 	m_shieldDurability = 10;
-	m_opponent = a_opponent;
+	m_opponent = nullptr;
 	m_decisionTreeRoot = new IsOpponentAlive(this);
 	m_decisionTreeRoot->m_trueDecision = new IsAttackUseful(this);
 	m_decisionTreeRoot->m_trueDecision->m_trueDecision = new AttackAction(this);
 	m_decisionTreeRoot->m_trueDecision->m_falseDecision = new IsProjectileInFlight(this);
 	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_trueDecision = new IsObjectAvoidable(this);
-	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_falseDecision = new Action(this, new PursueFeels(m_opponent, 1.0f));
-	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_trueDecision->m_trueDecision = new Action(this, new EvadeFeels(&static_cast<Archer*>(m_opponent)->m_shot, 1.0f));
+	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_falseDecision = new Action(this, new PursueFeels(this, 1.0f));
+	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_trueDecision->m_trueDecision = new Action(this, new EvadeFeels(this, 1.0f));
 	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_trueDecision->m_falseDecision = new IsNumberTooLow(this);
 	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_trueDecision->m_falseDecision->m_trueDecision = new KnockBackAction(this);
 	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_trueDecision->m_falseDecision->m_falseDecision = new BlockAction(this);
@@ -50,11 +51,11 @@ void Warrior::Update(float dt)
 		wep.Swing(dt);
 	else if (m_blocking)
 		m_vVelo = Vector2(0.f, 0.f);
-	else if (m_opponent->m_attacking)
+	else if ((m_opponent)->m_attacking)
 	{
 		if (m_collider.BoxCollision(static_cast<Archer*>(m_opponent)->m_shot.m_collider))
 		{
-			m_stats.HP -= m_opponent->m_stats.ATKDMG;
+			m_stats.HP -= (m_opponent)->m_stats.ATKDMG;
 		}
 	}
 	else
@@ -96,17 +97,18 @@ int Warrior::GetDurability()
 	return m_shieldDurability;
 }
 
-Archer::Archer(Stats a_stats, Warrior * a_opponent)
+Archer::Archer(Stats a_stats)
 {
 
 	m_stats = a_stats;
 	m_maxVelo = m_stats.MVESPD;
 	m_arrows = 25;
 	m_maxArrows = 25;
-	m_opponent = a_opponent;
+	m_opponent = nullptr;
 
 	SetPos(Vector2(500.0, 300.0));
 	m_objTexture = new Texture("./Images/box0_256.png");
+	SetScale(Vector2(0.1f, 0.1f));
 
 	m_arrowInFlight = false;
 
@@ -121,8 +123,8 @@ Archer::Archer(Stats a_stats, Warrior * a_opponent)
 	m_decisionTreeRoot->m_trueDecision->m_falseDecision = new IsAttackUseful(this);
 	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_trueDecision = m_decisionTreeRoot->m_trueDecision->m_trueDecision;
 	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_falseDecision = new IsNumberTooLow(this);
-	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_falseDecision->m_trueDecision = new Action(this, new SeekFeels(m_strayArrowTarget, 1.0f));
-	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_falseDecision->m_falseDecision = new Action(this, new EvadeFeels(m_opponent, 1.0f));
+	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_falseDecision->m_trueDecision = new Action(this, new SeekFeels(this, 1.0f));
+	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_falseDecision->m_falseDecision = new Action(this, new EvadeFeels(this, 1.0f));
 
 }
 
@@ -137,12 +139,12 @@ void Archer::Update(float dt)
 	m_decisionTreeRoot->MakeDecision(dt);
 	if (m_attacking)
 		m_shot.Flight(dt);
-	if (m_opponent->m_attacking)
+	if ((m_opponent)->m_attacking)
 	{
 		if (m_collider.BoxCollision(static_cast<Warrior*>(m_opponent)->wep.m_collider))
 		{
-			m_stats.HP -= m_opponent->m_stats.ATKDMG;
-			ApplyForce((GetPos() - m_opponent->GetPos()).Normalised() * m_opponent->m_stats.ATKRNG);
+			m_stats.HP -= (m_opponent)->m_stats.ATKDMG;
+			ApplyForce((GetPos() - (m_opponent)->GetPos()).Normalised() * (m_opponent)->m_stats.ATKRNG);
 		}
 	}
 	this->Smith::Update(dt);
