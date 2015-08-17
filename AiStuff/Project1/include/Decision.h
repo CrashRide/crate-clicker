@@ -1,5 +1,10 @@
 #pragma once
 
+#ifndef DBG_NEW
+#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__)
+#define new DBG_NEW
+#endif
+
 class Smith;
 class IFeels;
 class IGladiboxer;
@@ -10,7 +15,7 @@ class Decision
 {
 public:
 
-	Decision(){}
+	Decision();
 	Decision(Smith * a_owner);
 	virtual ~Decision();
 

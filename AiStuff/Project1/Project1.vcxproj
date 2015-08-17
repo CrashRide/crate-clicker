@@ -91,6 +91,7 @@
     <ClCompile Include="source\Box.cpp" />
     <ClCompile Include="source\Decision.cpp" />
     <ClCompile Include="source\Game1.cpp" />
+    <ClCompile Include="source\Game2.cpp" />
     <ClCompile Include="source\GameObj.cpp" />
     <ClCompile Include="source\Graph.cpp" />
     <ClCompile Include="source\IFeels.cpp" />
@@ -104,6 +105,7 @@
     <ClInclude Include="include\Box.h" />
     <ClInclude Include="include\Decision.h" />
     <ClInclude Include="include\Game1.h" />
+    <ClInclude Include="include\Game2.h" />
     <ClInclude Include="include\GameObj.h" />
     <ClInclude Include="include\Graph.h" />
     <ClInclude Include="include\IFeels.h" />

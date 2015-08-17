@@ -48,12 +48,13 @@ Edge::Edge(Node* a, Node* b, float cost){
 
 Graph::~Graph(){
 	std::vector<Node*>::iterator iter = a_list.begin();
-	while (iter != a_list.end()){
+	while (!a_list.empty()){
 		// Deletes data.
 		delete (*iter);
 		// Erase iter.
 		iter = a_list.erase(iter);
 	}
+	a_list.clear();
 }
 
 void Graph::AddNode(Vector2 a_Position)
@@ -254,11 +255,11 @@ void Graph::AStar(Node* startNode, Node* endNode)
 		{
 			if (!(*iter)->b_node->traversed)
 			{
-				if ((currentNode->G + (*iter)->a_cost + Vector2(currentNode->data - endNode->data).SqrMagnatude()) < (*iter)->b_node->F)
+				if ((currentNode->G + (*iter)->a_cost + Vector2(currentNode->data - endNode->data).Magnatude()) < (*iter)->b_node->F)
 				{
 					(*iter)->b_node->N = currentNode;
 					(*iter)->b_node->G = (currentNode->G + (*iter)->a_cost);
-					(*iter)->b_node->F = (currentNode->G + (*iter)->a_cost + Vector2(currentNode->data - endNode->data).SqrMagnatude());
+					(*iter)->b_node->F = (currentNode->G + (*iter)->a_cost + Vector2(currentNode->data - endNode->data).Magnatude());
 					a_openList.push((*iter)->b_node);
 				}
 			}
@@ -266,6 +267,25 @@ void Graph::AStar(Node* startNode, Node* endNode)
 		}
 
 	}
+}
+
+stack<Vector2> Graph::GetPath()
+{
+	stack<Vector2> path;
+	Node *currentNode = a_list.back();
+	bool pathFound = false;
+	while (!pathFound)
+	{
+		path.push(currentNode->data);
+
+		if (currentNode != currentNode->N)
+		{
+			currentNode = currentNode->N;
+		}
+		else
+			pathFound = true;
+	}
+	return path;
 }
 
 int Graph::GetSize(){ return a_list.size(); }

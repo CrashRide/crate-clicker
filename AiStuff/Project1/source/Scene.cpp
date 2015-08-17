@@ -31,11 +31,17 @@ SceneNode::~SceneNode()
 	if (m_local_transform == m_global_transform)
 	{
 		delete m_local_transform;
+		m_local_transform = nullptr;
 	}
-	else
+	else if (m_local_transform != nullptr)
 	{
-		//delete m_global_transform;
-		//delete m_local_transform;
+		delete m_local_transform;
+		m_local_transform = nullptr;
+	}
+	else if (m_global_transform != nullptr)
+	{
+		delete m_global_transform;
+		m_global_transform = nullptr;
 	}
 }
 

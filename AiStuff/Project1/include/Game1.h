@@ -6,6 +6,11 @@ Description:
 #ifndef GAME1_H
 #define GAME1_H
 
+#ifndef DBG_NEW
+#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__)
+#define new DBG_NEW
+#endif
+
 #include "Application.h"
 #include "MathLib.h"
 #include "GameObj.h"
@@ -52,10 +57,10 @@ private:
 	Node* two;
 
 	//GameObj o_player;
-	//Smith* s_enemy;
+	Smith* s_enemy;
 
-	Warrior * m_Warrior;
-	Archer * m_Archer;
+	//Warrior * m_Warrior;
+	//Archer * m_Archer;
 
 	//bool feelSwitch[3];
 };

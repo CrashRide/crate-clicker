@@ -3,6 +3,14 @@
 #include "IFeels.h"
 #include "IGladiboxer.h"
 
+Decision::Decision()
+{
+	m_owner = nullptr;
+	m_trueDecision = nullptr;
+	m_falseDecision = nullptr;
+
+}
+
 Decision::Decision(Smith * a_owner)
 {
 	m_owner = a_owner;
@@ -288,6 +296,7 @@ void KnockBackAction::MakeDecision(float dt)
 
 Action::Action(Smith * a_owner, IFeels * a_action) :Decision(a_owner)
 {
+	m_owner = a_owner;
 	m_action = a_action;
 }
 

@@ -1,6 +1,13 @@
 #pragma once
+
+#ifndef DBG_NEW
+#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__)
+#define new DBG_NEW
+#endif
+
 #include <vector>
 #include <deque>
+#include <stack>
 #include <list>
 class SpriteBatch;
 class Texture;
@@ -44,6 +51,7 @@ public:
 	void BFS(Node* startNode);
 	void DSP(Node* startNode, Node* endNode);
 	void AStar(Node* startNode, Node* endNode);
+	stack<Vector2> GetPath();
 	int GetSize();
 	Node* operator[](int index);
 

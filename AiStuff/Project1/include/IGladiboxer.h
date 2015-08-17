@@ -1,10 +1,16 @@
 #pragma once
 
+#ifndef DBG_NEW
+#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__)
+#define new DBG_NEW
+#endif
+
 #define _USE_MATH_DEFINES
 #include <math.h>
 
 #include <list>
 #include "Smith.h"
+#include "Texture.h"
 
 class Decision;
 class SpriteBatch;
@@ -91,15 +97,16 @@ public:
 		Sword()
 		{
 			m_owner = nullptr;
+			m_objTexture = new Texture("./Images/warriorSword.png");
 		}
 		~Sword(){}
 
-		void Init(Warrior * a_owner, Texture* a_tex)
+		void Init(Warrior * a_owner)
 		{
 			m_owner = a_owner;
 			SetPos(m_owner->GetPos());
-			SetRot(m_owner->m_heading.AngleOf() - (M_PI / 2));
-			m_objTexture = a_tex;
+			SetRot(m_owner->m_heading.AngleOf() - ((float)M_PI / 2));
+			
 		}
 
 		void End()
@@ -110,8 +117,8 @@ public:
 
 		void Swing(float dt)
 		{
-			Rot(dt * m_owner->m_stats.ATKSPD * M_PI);
-			if (GetRot() > (M_PI / 2))
+			Rot(dt * m_owner->m_stats.ATKSPD * (float)M_PI);
+			if (GetRot() > ((float)M_PI / 2))
 			{
 				m_owner->m_attacking = false;
 				End();

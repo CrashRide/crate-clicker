@@ -72,14 +72,14 @@ void Warrior::Draw(SpriteBatch * a_spritebatch)
 	this->Smith::Draw(a_spritebatch);
 	if (m_blocking)
 	{
-		a_spritebatch->DrawSprite(shieldTex, (GetPos() + (m_heading * m_objTexture->GetWidth())).x, (GetPos() + (m_heading * m_objTexture->GetHeight())).y, shieldTex->GetWidth(), shieldTex->GetHeight(), m_heading.AngleOf());
+		a_spritebatch->DrawSprite(shieldTex, (GetPos() + (m_heading * (float)m_objTexture->GetWidth())).x, (GetPos() + (m_heading * (float)m_objTexture->GetHeight())).y, (float)shieldTex->GetWidth(), (float)shieldTex->GetHeight(), m_heading.AngleOf());
 	}
 
 }
 
 void Warrior::Attack()
 {
-	wep.Init(this, new Texture("./Images/warriorSword.png"));
+	wep.Init(this);
 	m_attacking = true;
 
 }
@@ -121,7 +121,7 @@ Archer::Archer(Stats a_stats)
 	m_decisionTreeRoot->m_trueDecision = new IsAdrenalineActive(this);
 	m_decisionTreeRoot->m_trueDecision->m_trueDecision = new AttackAction(this);
 	m_decisionTreeRoot->m_trueDecision->m_falseDecision = new IsAttackUseful(this);
-	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_trueDecision = m_decisionTreeRoot->m_trueDecision->m_trueDecision;
+	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_trueDecision = new AttackAction(this);
 	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_falseDecision = new IsNumberTooLow(this);
 	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_falseDecision->m_trueDecision = new Action(this, new SeekFeels(this, 1.0f));
 	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_falseDecision->m_falseDecision = new Action(this, new EvadeFeels(this, 1.0f));

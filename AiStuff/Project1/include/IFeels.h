@@ -1,4 +1,10 @@
 #pragma once
+
+#ifndef DBG_NEW
+#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__)
+#define new DBG_NEW
+#endif
+
 #include "MathLib.h"
 using namespace MathLib;
 
@@ -28,8 +34,9 @@ public:
 	SeekFeels( IGladiboxer * a_target, float);
 	~SeekFeels();
 
-	 IGladiboxer* GetTarget();
+	IGladiboxer* GetTarget();
 	void Update(Smith * a_smith);
+	char m_targetType;
 
 private:
 	 IGladiboxer * m_target;

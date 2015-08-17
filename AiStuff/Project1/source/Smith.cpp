@@ -5,6 +5,7 @@
 
 Smith::Smith()
 {
+	
 }
 
 Smith::Smith(Vector2& a_startPos)
@@ -24,17 +25,22 @@ Smith::~Smith()
 
 void Smith::Update(float dt)
 {
-	for (auto iter = m_feels.begin(); iter != m_feels.end(); iter++)
+	if (!m_feels.empty())
 	{
-		(*iter)->Update(this);
-		this->GameObj::Update(dt);
-		if (m_vVelo.SqrMagnatude() >= (m_maxVelo * m_maxVelo))
+		for (auto iter = m_feels.begin(); iter != m_feels.end(); iter++)
 		{
-			m_vVelo.Normalise();
-			m_vVelo *= m_maxVelo;
-			break;
+			(*iter)->Update(this);
+			this->GameObj::Update(dt);
+			if (m_vVelo.SqrMagnatude() >= (m_maxVelo * m_maxVelo))
+			{
+				m_vVelo.Normalise();
+				m_vVelo *= m_maxVelo;
+				break;
+			}
 		}
 	}
+	else
+		this->GameObj::Update(dt);
 	cout << GetPos().x << " , " << GetPos().y << endl;
 }
 
@@ -59,7 +65,6 @@ void Smith::AddFeels(IFeels *a_feel)
 		if ((*iter)->GetTarget() == a_feel->GetTarget() && (*iter)->m_type == a_feel->m_type)
 		{
 			exists = true;
-			m_feels.remove((*iter));
 			break;
 		}
 	}

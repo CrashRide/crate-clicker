@@ -35,7 +35,11 @@ GameObj::GameObj(Texture* a_objTex, float a_maxVelo)
 
 GameObj::~GameObj()
 {
-	delete m_objTexture;
+	if (m_objTexture != nullptr)
+	{
+		delete m_objTexture;
+		m_objTexture = nullptr;
+	}
 }
 
 void GameObj::SetPos(Vector2 &rhs)
