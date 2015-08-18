@@ -1,5 +1,5 @@
 
-#include "Game2.h"
+#include "Game1.h"
 
 // DEBUG
 #ifdef _DEBUG
@@ -16,7 +16,7 @@
 int main(int argc, char **argv)
 {
 	{
-		Game2 *pGame = new Game2(1440, 720, false, "Graph Creator");
+		Game1 *pGame = new Game1(1440, 720, false, "Graph Creator");
 		pGame->RunGame();
 		delete pGame;
 	}

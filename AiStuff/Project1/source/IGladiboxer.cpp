@@ -18,7 +18,6 @@ IGladiboxer::~IGladiboxer()
 
 Warrior::Warrior(Stats a_stats)
 {
-	wep = Sword();
 	m_objTexture = new Texture("./Images/box0_256.png");
 	SetPos(Vector2(100.0, 100.0));
 	SetScale(Vector2(0.1f, 0.1f));
@@ -27,6 +26,18 @@ Warrior::Warrior(Stats a_stats)
 	m_hasShield = true;
 	m_shieldDurability = 10;
 	m_opponent = nullptr;
+	
+	wep = Sword(this);
+}
+
+Warrior::~Warrior()
+{
+
+}
+
+void Warrior::PlantTree()
+{
+
 	m_decisionTreeRoot = new IsOpponentAlive(this);
 	m_decisionTreeRoot->m_trueDecision = new IsAttackUseful(this);
 	m_decisionTreeRoot->m_trueDecision->m_trueDecision = new AttackAction(this);
@@ -37,10 +48,6 @@ Warrior::Warrior(Stats a_stats)
 	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_trueDecision->m_falseDecision = new IsNumberTooLow(this);
 	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_trueDecision->m_falseDecision->m_trueDecision = new KnockBackAction(this);
 	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_trueDecision->m_falseDecision->m_falseDecision = new BlockAction(this);
-}
-
-Warrior::~Warrior()
-{
 
 }
 
@@ -79,7 +86,7 @@ void Warrior::Draw(SpriteBatch * a_spritebatch)
 
 void Warrior::Attack()
 {
-	wep.Init(this);
+	wep.Init();
 	m_attacking = true;
 
 }
@@ -112,10 +119,21 @@ Archer::Archer(Stats a_stats)
 
 	m_arrowInFlight = false;
 
-	m_shot = Arrow();
 
 	m_quiver.resize(m_maxArrows);
 	m_quiver.shrink_to_fit();
+
+	m_shot = Arrow(this);
+	
+}
+
+Archer::~Archer()
+{
+
+}
+
+void Archer::PlantTree()
+{
 
 	m_decisionTreeRoot = new IsOpponentAlive(this);
 	m_decisionTreeRoot->m_trueDecision = new IsAdrenalineActive(this);
@@ -125,11 +143,6 @@ Archer::Archer(Stats a_stats)
 	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_falseDecision = new IsNumberTooLow(this);
 	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_falseDecision->m_trueDecision = new Action(this, new SeekFeels(this, 1.0f));
 	m_decisionTreeRoot->m_trueDecision->m_falseDecision->m_falseDecision->m_falseDecision = new Action(this, new EvadeFeels(this, 1.0f));
-
-}
-
-Archer::~Archer()
-{
 
 }
 
@@ -162,7 +175,7 @@ void Archer::Draw(SpriteBatch * a_spritebatch)
 void Archer::Attack()
 {
 	m_attacking = true;
-	m_shot.Init(this, new Texture("./Images/Arrow.png"));
+	m_shot.Init();
 
 }
 

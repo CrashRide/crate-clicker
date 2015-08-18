@@ -1,8 +1,17 @@
-﻿Build started 17/08/2015 6:50:18 PM.
+﻿Build started 18/08/2015 2:20:15 PM.
      1>Project "C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\Project1\Project1.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\AIE_GL\include\ /IC:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\libraries\glfw3\include\GLFW\ /IC:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\libraries\glew\include\ /IC:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\Project1\include\ /IC:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\libraries\mathlib\ /IC:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\libraries\mathlib\include\ /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\CompilerJunk\Project1Debug\\" /Fd"C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\CompilerJunk\Project1Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt source\Scene.cpp
-         Scene.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\AIE_GL\include\ /IC:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\libraries\glfw3\include\GLFW\ /IC:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\libraries\glew\include\ /IC:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\Project1\include\ /IC:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\libraries\mathlib\ /IC:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\libraries\mathlib\include\ /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\CompilerJunk\Project1Debug\\" /Fd"C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\CompilerJunk\Project1Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt source\Decision.cpp source\Game1.cpp source\Game2.cpp source\IFeels.cpp source\IGladiboxer.cpp
+         IGladiboxer.cpp
+         Generating Code...
+         Compiling...
+         IFeels.cpp
+         Game2.cpp
+     1>c:\users\matt.callahan\desktop\workspace\trunk\aistuff\project1\source\game2.cpp(16): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+         Decision.cpp
+         Generating Code...
+         Skipping... (no relevant changes detected)
+         Game1.cpp
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\Compiled\Project1Debug\Project1.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\AIE_GL\bin\ /LIBPATH:C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\libraries\glew\lib\Release\Win32\ /LIBPATH:"C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\libraries\glfw3\lib-vc2013\\" /LIBPATH:C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\libraries\mathlib\ OpenGL32.lib MathLib.lib AIE_GL_d.lib glew32.lib glfw3.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\Compiled\Project1Debug\Project1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\Compiled\Project1Debug\Project1.lib" /MACHINE:X86 C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\CompilerJunk\Project1Debug\main.obj
          C:\Users\matt.callahan\Desktop\WorkSpace\trunk\AiStuff\CompilerJunk\Project1Debug\BinaryTree.obj
@@ -22,4 +31,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.56
+Time Elapsed 00:00:01.44

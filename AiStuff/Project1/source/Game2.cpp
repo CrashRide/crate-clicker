@@ -26,6 +26,9 @@ Game2::Game2(unsigned int windowWidth, unsigned int windowHeight, bool fullscree
 	m_Archer->m_opponent = m_Warrior;
 	m_Warrior->m_opponent = m_Archer;
 
+	m_Archer->PlantTree();
+	m_Warrior->PlantTree();
+
 	m_spritebatch->SetColumnMajor(true);
 
 }

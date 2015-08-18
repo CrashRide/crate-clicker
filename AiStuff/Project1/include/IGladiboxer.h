@@ -56,6 +56,8 @@ public:
 	virtual void Attack() = 0;
 	virtual void Draw(SpriteBatch * a_spritebatch) = 0;
 
+	virtual void PlantTree() = 0;
+
 	virtual int GetAmmo() = 0;
 	virtual int GetDurability() = 0;
 
@@ -84,6 +86,8 @@ public:
 	void Block();
 	void ActivateAdrenaline(){}
 
+	void PlantTree();
+
 	int GetDurability();
 	int GetAmmo(){ return NULL; }
 
@@ -94,16 +98,17 @@ public:
 	class Sword : public GameObj
 	{
 	public:
-		Sword()
+		Sword(){ m_owner = nullptr; };
+		Sword(Warrior * a_owner)
 		{
-			m_owner = nullptr;
+			m_owner = a_owner;
 			m_objTexture = new Texture("./Images/warriorSword.png");
 		}
 		~Sword(){}
 
-		void Init(Warrior * a_owner)
+		void Init()
 		{
-			m_owner = a_owner;
+
 			SetPos(m_owner->GetPos());
 			SetRot(m_owner->m_heading.AngleOf() - ((float)M_PI / 2));
 			
@@ -112,7 +117,7 @@ public:
 		void End()
 		{
 			//delete this;
-			*this = Sword();
+			m_owner->m_attacking = false;
 		}
 
 		void Swing(float dt)
@@ -150,34 +155,35 @@ public:
 	void Attack();
 	void ActivateAdrenaline(){}
 
+	void PlantTree();
+
 	int GetAmmo();
 	int GetDurability(){ return NULL; }
 
 	class Arrow : public GameObj
 	{
 	public:
-		Arrow()
+		Arrow(){ m_owner = nullptr; };
+		Arrow(Archer * a_owner)
 		{
-			m_owner = nullptr;
+			m_owner = a_owner;
+			m_objTexture = new Texture("./Images/Arrow.png");
 		}
 		~Arrow(){}
 
-		void Init(Archer * a_owner, Texture* a_tex)
+		void Init()
 		{
-			m_owner = a_owner;
 			m_maxVelo = 500.f;
 			m_friction = 1.f;
 			SetPos(m_owner->GetPos());
 			SetRot(((m_owner->m_opponent)->GetPos() - GetPos()).AngleOf());
 			ApplyForce(((m_owner->m_opponent)->GetPos() - GetPos()).Normalised() * m_owner->m_stats.ATKRNG);
-			m_objTexture = a_tex;
 		}
 
 		void End()
 		{
 			//delete this;
 			m_owner->m_attacking = false;
-			*this = Arrow();
 		}
 
 		void Flight(float dt)
