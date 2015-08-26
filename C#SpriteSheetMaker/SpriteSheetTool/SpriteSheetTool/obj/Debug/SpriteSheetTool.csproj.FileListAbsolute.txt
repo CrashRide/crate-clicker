@@ -1,0 +1,1 @@
+C:\Users\matt.callahan\Desktop\WorkSpace\trunk\C#SpriteSheetMaker\SpriteSheetTool\SpriteSheetTool\bin\Debug\SpriteSheetTool.exe.config
