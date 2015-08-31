@@ -1,1 +1,9 @@
 C:\Users\matt.callahan\Desktop\WorkSpace\trunk\C#SpriteSheetMaker\SpriteSheetTool\SpriteSheetTool\bin\Debug\SpriteSheetTool.exe.config
+C:\Users\matt.callahan\Desktop\WorkSpace\trunk\C#SpriteSheetMaker\SpriteSheetTool\SpriteSheetTool\bin\Debug\SpriteSheetTool.exe
+C:\Users\matt.callahan\Desktop\WorkSpace\trunk\C#SpriteSheetMaker\SpriteSheetTool\SpriteSheetTool\bin\Debug\SpriteSheetTool.pdb
+C:\Users\matt.callahan\Desktop\WorkSpace\trunk\C#SpriteSheetMaker\SpriteSheetTool\SpriteSheetTool\obj\Debug\SpriteSheetTool.Form_main.resources
+C:\Users\matt.callahan\Desktop\WorkSpace\trunk\C#SpriteSheetMaker\SpriteSheetTool\SpriteSheetTool\obj\Debug\SpriteSheetTool.Properties.Resources.resources
+C:\Users\matt.callahan\Desktop\WorkSpace\trunk\C#SpriteSheetMaker\SpriteSheetTool\SpriteSheetTool\obj\Debug\SpriteSheetTool.csproj.GenerateResource.Cache
+C:\Users\matt.callahan\Desktop\WorkSpace\trunk\C#SpriteSheetMaker\SpriteSheetTool\SpriteSheetTool\obj\Debug\SpriteSheetTool.exe
+C:\Users\matt.callahan\Desktop\WorkSpace\trunk\C#SpriteSheetMaker\SpriteSheetTool\SpriteSheetTool\obj\Debug\SpriteSheetTool.pdb
+C:\Users\matt.callahan\Desktop\WorkSpace\trunk\C#SpriteSheetMaker\SpriteSheetTool\SpriteSheetTool\obj\Debug\SpriteSheetTool.csprojResolveAssemblyReference.cache
