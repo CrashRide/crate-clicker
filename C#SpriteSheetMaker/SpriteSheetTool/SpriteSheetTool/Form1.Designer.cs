@@ -50,6 +50,7 @@
             this.buttonRemoveSprite = new System.Windows.Forms.Button();
             this.buttonRemoveFrame = new System.Windows.Forms.Button();
             this.buttonAddFrame = new System.Windows.Forms.Button();
+            this.saveFileDialogSSXML = new System.Windows.Forms.SaveFileDialog();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -87,12 +88,14 @@
             this.importSpriteSheetToolStripMenuItem.Name = "importSpriteSheetToolStripMenuItem";
             this.importSpriteSheetToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.importSpriteSheetToolStripMenuItem.Text = "Import SpriteSheet";
+            this.importSpriteSheetToolStripMenuItem.Click += new System.EventHandler(this.importSpriteSheetToolStripMenuItem_Click);
             // 
             // exportSpriteSheetToolStripMenuItem
             // 
             this.exportSpriteSheetToolStripMenuItem.Name = "exportSpriteSheetToolStripMenuItem";
             this.exportSpriteSheetToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.exportSpriteSheetToolStripMenuItem.Text = "Export SpriteSheet";
+            this.exportSpriteSheetToolStripMenuItem.Click += new System.EventHandler(this.exportSpriteSheetToolStripMenuItem_Click);
             // 
             // quitToolStripMenuItem
             // 
@@ -122,7 +125,7 @@
             this.labelMouseX.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.labelMouseX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.labelMouseX.Font = new System.Drawing.Font("Emulogic", 8.249999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelMouseX.Location = new System.Drawing.Point(658, 249);
+            this.labelMouseX.Location = new System.Drawing.Point(661, 60);
             this.labelMouseX.Name = "labelMouseX";
             this.labelMouseX.Size = new System.Drawing.Size(97, 17);
             this.labelMouseX.TabIndex = 1;
@@ -134,7 +137,7 @@
             this.labelMouseY.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.labelMouseY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.labelMouseY.Font = new System.Drawing.Font("Emulogic", 8.249999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelMouseY.Location = new System.Drawing.Point(658, 278);
+            this.labelMouseY.Location = new System.Drawing.Point(661, 89);
             this.labelMouseY.Name = "labelMouseY";
             this.labelMouseY.Size = new System.Drawing.Size(97, 17);
             this.labelMouseY.TabIndex = 2;
@@ -146,7 +149,7 @@
             this.labelMouseXCoords.BackColor = System.Drawing.Color.White;
             this.labelMouseXCoords.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.labelMouseXCoords.Font = new System.Drawing.Font("Emulogic", 8.249999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelMouseXCoords.Location = new System.Drawing.Point(759, 249);
+            this.labelMouseXCoords.Location = new System.Drawing.Point(762, 60);
             this.labelMouseXCoords.MaximumSize = new System.Drawing.Size(64, 15);
             this.labelMouseXCoords.MinimumSize = new System.Drawing.Size(64, 15);
             this.labelMouseXCoords.Name = "labelMouseXCoords";
@@ -161,7 +164,7 @@
             this.labelMouseYCoords.BackColor = System.Drawing.Color.White;
             this.labelMouseYCoords.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.labelMouseYCoords.Font = new System.Drawing.Font("Emulogic", 8.249999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelMouseYCoords.Location = new System.Drawing.Point(759, 278);
+            this.labelMouseYCoords.Location = new System.Drawing.Point(762, 89);
             this.labelMouseYCoords.MaximumSize = new System.Drawing.Size(64, 15);
             this.labelMouseYCoords.MinimumSize = new System.Drawing.Size(64, 15);
             this.labelMouseYCoords.Name = "labelMouseYCoords";
@@ -175,7 +178,7 @@
             this.Panel_Editor.BackColor = System.Drawing.Color.DodgerBlue;
             this.Panel_Editor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Panel_Editor.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.Panel_Editor.Location = new System.Drawing.Point(12, 170);
+            this.Panel_Editor.Location = new System.Drawing.Point(12, 37);
             this.Panel_Editor.Name = "Panel_Editor";
             this.Panel_Editor.Size = new System.Drawing.Size(640, 420);
             this.Panel_Editor.TabIndex = 5;
@@ -195,7 +198,7 @@
             this.listBoxFrames.ItemHeight = 15;
             this.listBoxFrames.Items.AddRange(new object[] {
             "Frame 1"});
-            this.listBoxFrames.Location = new System.Drawing.Point(658, 511);
+            this.listBoxFrames.Location = new System.Drawing.Point(691, 323);
             this.listBoxFrames.MaximumSize = new System.Drawing.Size(120, 80);
             this.listBoxFrames.MinimumSize = new System.Drawing.Size(120, 80);
             this.listBoxFrames.Name = "listBoxFrames";
@@ -203,6 +206,7 @@
             this.listBoxFrames.ScrollAlwaysVisible = true;
             this.listBoxFrames.Size = new System.Drawing.Size(120, 79);
             this.listBoxFrames.TabIndex = 6;
+            this.listBoxFrames.SelectedIndexChanged += new System.EventHandler(this.listBoxFrames_SelectedIndexChanged);
             // 
             // listBoxSprites
             // 
@@ -210,7 +214,7 @@
             this.listBoxSprites.ItemHeight = 15;
             this.listBoxSprites.Items.AddRange(new object[] {
             "Sprite 1"});
-            this.listBoxSprites.Location = new System.Drawing.Point(658, 392);
+            this.listBoxSprites.Location = new System.Drawing.Point(691, 157);
             this.listBoxSprites.MaximumSize = new System.Drawing.Size(120, 80);
             this.listBoxSprites.MinimumSize = new System.Drawing.Size(120, 80);
             this.listBoxSprites.Name = "listBoxSprites";
@@ -225,7 +229,7 @@
             this.labelSprites.AutoSize = true;
             this.labelSprites.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.labelSprites.Font = new System.Drawing.Font("OCR A Extended", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelSprites.Location = new System.Drawing.Point(661, 370);
+            this.labelSprites.Location = new System.Drawing.Point(703, 135);
             this.labelSprites.Name = "labelSprites";
             this.labelSprites.Size = new System.Drawing.Size(94, 19);
             this.labelSprites.TabIndex = 8;
@@ -237,7 +241,7 @@
             this.labelFrames.AutoSize = true;
             this.labelFrames.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.labelFrames.Font = new System.Drawing.Font("OCR A Extended", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelFrames.Location = new System.Drawing.Point(673, 489);
+            this.labelFrames.Location = new System.Drawing.Point(704, 301);
             this.labelFrames.Name = "labelFrames";
             this.labelFrames.Size = new System.Drawing.Size(82, 19);
             this.labelFrames.TabIndex = 9;
@@ -246,9 +250,9 @@
             // 
             // buttonAddSprite
             // 
-            this.buttonAddSprite.Location = new System.Drawing.Point(784, 392);
+            this.buttonAddSprite.Location = new System.Drawing.Point(661, 242);
             this.buttonAddSprite.Name = "buttonAddSprite";
-            this.buttonAddSprite.Size = new System.Drawing.Size(55, 40);
+            this.buttonAddSprite.Size = new System.Drawing.Size(85, 21);
             this.buttonAddSprite.TabIndex = 10;
             this.buttonAddSprite.Text = "Add Sprite";
             this.buttonAddSprite.UseVisualStyleBackColor = true;
@@ -256,9 +260,9 @@
             // 
             // buttonRemoveSprite
             // 
-            this.buttonRemoveSprite.Location = new System.Drawing.Point(784, 431);
+            this.buttonRemoveSprite.Location = new System.Drawing.Point(752, 242);
             this.buttonRemoveSprite.Name = "buttonRemoveSprite";
-            this.buttonRemoveSprite.Size = new System.Drawing.Size(55, 40);
+            this.buttonRemoveSprite.Size = new System.Drawing.Size(87, 21);
             this.buttonRemoveSprite.TabIndex = 11;
             this.buttonRemoveSprite.Text = "Remove Sprite";
             this.buttonRemoveSprite.UseVisualStyleBackColor = true;
@@ -266,9 +270,9 @@
             // 
             // buttonRemoveFrame
             // 
-            this.buttonRemoveFrame.Location = new System.Drawing.Point(784, 550);
+            this.buttonRemoveFrame.Location = new System.Drawing.Point(752, 408);
             this.buttonRemoveFrame.Name = "buttonRemoveFrame";
-            this.buttonRemoveFrame.Size = new System.Drawing.Size(55, 40);
+            this.buttonRemoveFrame.Size = new System.Drawing.Size(87, 21);
             this.buttonRemoveFrame.TabIndex = 13;
             this.buttonRemoveFrame.Text = "Remove Frame";
             this.buttonRemoveFrame.UseVisualStyleBackColor = true;
@@ -276,9 +280,9 @@
             // 
             // buttonAddFrame
             // 
-            this.buttonAddFrame.Location = new System.Drawing.Point(784, 511);
+            this.buttonAddFrame.Location = new System.Drawing.Point(661, 408);
             this.buttonAddFrame.Name = "buttonAddFrame";
-            this.buttonAddFrame.Size = new System.Drawing.Size(55, 40);
+            this.buttonAddFrame.Size = new System.Drawing.Size(85, 21);
             this.buttonAddFrame.TabIndex = 12;
             this.buttonAddFrame.Text = "Add Frame";
             this.buttonAddFrame.UseVisualStyleBackColor = true;
@@ -289,11 +293,11 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.ClientSize = new System.Drawing.Size(844, 602);
+            this.ClientSize = new System.Drawing.Size(844, 462);
+            this.Controls.Add(this.buttonAddSprite);
             this.Controls.Add(this.buttonRemoveFrame);
             this.Controls.Add(this.buttonAddFrame);
             this.Controls.Add(this.buttonRemoveSprite);
-            this.Controls.Add(this.buttonAddSprite);
             this.Controls.Add(this.labelFrames);
             this.Controls.Add(this.labelSprites);
             this.Controls.Add(this.listBoxSprites);
@@ -304,8 +308,8 @@
             this.Controls.Add(this.labelMouseY);
             this.Controls.Add(this.labelMouseX);
             this.Controls.Add(this.menuStrip1);
-            this.MaximumSize = new System.Drawing.Size(860, 640);
-            this.MinimumSize = new System.Drawing.Size(860, 640);
+            this.MaximumSize = new System.Drawing.Size(860, 500);
+            this.MinimumSize = new System.Drawing.Size(860, 500);
             this.Name = "Form_main";
             this.Text = "SpriteSheet Maker";
             this.menuStrip1.ResumeLayout(false);
@@ -339,6 +343,7 @@
         private System.Windows.Forms.Button buttonRemoveSprite;
         private System.Windows.Forms.Button buttonRemoveFrame;
         private System.Windows.Forms.Button buttonAddFrame;
+        private System.Windows.Forms.SaveFileDialog saveFileDialogSSXML;
 
     }
 }
